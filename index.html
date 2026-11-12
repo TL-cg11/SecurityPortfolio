@@ -926,8 +926,11 @@
 
       <article class="wuitem" id="it-calc">
         <div class="wuih"><span class="ft">리버싱</span><h3>Calc.exe 어셈블리 해석</h3><a class="anchor" href="#calc">#calc</a></div>
-        <p>어셈블리에서 계산 로직을 C 형태로 옮겼습니다. 연산을 바꾸자 계산 결과가 달라지는 것을 확인했습니다.</p>
-        <figure class="fig"><button class="zoom" aria-label="확대: Calc 리버싱"><img src="assets/img/calc-03.webp" alt="Calc.exe 디스어셈블리 분석 화면" loading="lazy"></button><figcaption>어셈블리에서 복원한 연산 흐름</figcaption></figure>
+        <p>교육용 계산기 프로그램의 어셈블리를 한 줄씩 주석을 달며 읽고, 계산 로직을 C 형태로 복원했습니다. 연산 부분을 바꾸자 계산 결과가 달라지는 것을 확인했습니다.</p>
+        <div class="figrow two" style="margin-top:16px">
+          <figure class="fig"><button class="zoom" aria-label="확대: 구조 해석"><img src="assets/img/calc-00.webp" alt="함수 프롤로그·printf·scanf 호출에 주석을 단 디스어셈블리" loading="lazy"></button><figcaption>구조 해석 — 함수 프롤로그와 printf·scanf 호출 등 전체 구조에 주석을 달아 읽었습니다.</figcaption></figure>
+          <figure class="fig"><button class="zoom" aria-label="확대: 연산 흐름"><img src="assets/img/calc-03.webp" alt="Calc.exe 디스어셈블리에서 복원한 연산 흐름" loading="lazy"></button><figcaption>연산 복원 — 입력에 따라 분기하는 연산 흐름을 C 형태로 복원했습니다.</figcaption></figure>
+        </div>
       </article>
       <article class="wuitem" id="it-rpc">
         <div class="wuih"><span class="ft">CVE-1999-0209</span><h3>RPC 원격 → root · 해시 크랙</h3><a class="anchor" href="#rpc">#rpc</a></div>
@@ -1062,11 +1065,12 @@
       </article>
       <article class="wuitem" id="it-deface">
         <div class="wuih"><span class="ft">침해 분석</span><h3>Deface 침해 분석</h3><a class="anchor" href="#deface">#deface</a></div>
-        <p>명령 이력과 WordPress PHP 파일의 변경 시각을 대조해 웹 페이지 변조 과정을 추적했습니다.</p>
+        <p>웹 페이지가 변조된 침해 호스트를 분석했습니다. 인증 로그로 공격자의 접속 시점·출처를 확인하고, 명령 이력과 WordPress PHP 파일의 변경 시각을 대조해 변조 과정을 시간순으로 연결했습니다.</p>
         <p style="margin-top:10px">첨부된 보고서 형식 자료는 강의에서 제공된 것입니다.</p>
-        <div class="figrow two">
-          <figure class="fig"><button class="zoom" aria-label="확대: 공격자 명령 이력"><img src="assets/img/deface-02.webp" alt="침해 호스트의 bash 명령 이력에서 공격자 활동 재구성" loading="lazy"></button><figcaption>공격자 명령 이력 재구성</figcaption></figure>
-          <figure class="fig"><button class="zoom" aria-label="확대: 변조 파일"><img src="assets/img/deface-08.webp" alt="변경 시각 기준으로 찾은 변조 PHP 파일 목록" loading="lazy"></button><figcaption>변경 시각 기준 변조 파일 탐색</figcaption></figure>
+        <figure class="fig" style="margin-top:16px"><button class="zoom" aria-label="확대: 접속 로그"><img src="assets/img/deface-05.webp" alt="var log secure에서 공격자 IP의 SSH 로그인이 수락된 로그 라인" loading="lazy"></button><figcaption>접속 흔적 — <code class="inl">/var/log/secure</code>에서 공격자 IP의 SSH 로그인이 수락된 기록을 확인했습니다.</figcaption></figure>
+        <div class="figrow two" style="margin-top:14px">
+          <figure class="fig"><button class="zoom" aria-label="확대: 공격자 명령 이력"><img src="assets/img/deface-02.webp" alt="침해 호스트의 bash 명령 이력에서 공격자 활동 재구성" loading="lazy"></button><figcaption>명령 이력 — bash 히스토리에서 계정 생성·도구 다운로드 등 공격자 활동을 재구성했습니다.</figcaption></figure>
+          <figure class="fig"><button class="zoom" aria-label="확대: 변조 파일"><img src="assets/img/deface-08.webp" alt="변경 시각 기준으로 찾은 변조 PHP 파일 목록" loading="lazy"></button><figcaption>변조 파일 — 변경 시각 기준으로 변조된 PHP 파일을 찾아 연결했습니다.</figcaption></figure>
         </div>
       </article>
       <article class="wuitem" id="it-ftk">
@@ -1171,8 +1175,11 @@
       </article>
       <article class="wuitem" id="it-htear">
         <div class="wuih"><span class="ft">랜섬</span><h3>HiddenTear</h3><a class="anchor" href="#htear">#htear</a></div>
-        <p>확보한 키로 암호화된 실습 파일을 복호화해 복원 결과를 확인했습니다. 키 등 비밀값은 공개본에서 가렸습니다.</p>
-        <figure class="fig"><button class="zoom" aria-label="확대: 복호화"><img src="assets/img/htear-08.webp" alt="복호화 확인, 키 마스킹" loading="lazy"></button><figcaption>복호화 확인(값 마스킹)</figcaption></figure>
+        <p>교육용 오픈소스 랜섬웨어 HiddenTear를 실습 환경에서 다뤘습니다. 파일이 암호화되며 나타난 랜섬 노트를 확인하고, 확보한 키로 복호화해 복원 결과를 확인했습니다. 키 등 비밀값은 공개본에서 가렸습니다.</p>
+        <div class="figrow two" style="margin-top:16px">
+          <figure class="fig"><button class="zoom" aria-label="확대: 랜섬 노트"><img src="assets/img/htear-02.webp" alt="암호화 후 나타난 랜섬 노트 화면" loading="lazy"></button><figcaption>감염 결과 — 파일이 암호화되며 피해 화면(랜섬 노트)이 나타난 것을 확인했습니다.</figcaption></figure>
+          <figure class="fig"><button class="zoom" aria-label="확대: 복호화"><img src="assets/img/htear-08.webp" alt="복호화 확인, 키 마스킹" loading="lazy"></button><figcaption>복호화 — 확보한 키로 복호화해 "Files Decrypted!"를 확인했습니다. 키 값은 가렸습니다.</figcaption></figure>
+        </div>
       </article>
       <article class="wuitem" id="it-remcos">
         <div class="wuih"><span class="ft">RAT</span><h3>Remcos</h3><a class="anchor" href="#remcos">#remcos</a></div>
@@ -1180,18 +1187,20 @@
       </article>
       <article class="wuitem" id="it-orcus">
         <div class="wuih"><span class="ft">RAT</span><h3>Orcus</h3><a class="anchor" href="#orcus">#orcus</a></div>
-        <p>격리된 실습 환경에서 Orcus 설정을 열어 실행과 자동 시작 옵션을 살펴봤습니다. 키로거, 관리자 권한 강제, 설치 숨김 같은 은폐·지속성 옵션을 확인했습니다.</p>
-        <div class="figrow two">
-          <figure class="fig"><button class="zoom" aria-label="확대: 클라이언트 빌더"><img src="assets/img/orcus-06.webp" alt="Orcus 클라이언트 빌더의 키로거·권한 설정" loading="lazy"></button><figcaption>키로거·권한 설정</figcaption></figure>
-          <figure class="fig"><button class="zoom" aria-label="확대: 설치 옵션"><img src="assets/img/orcus-08.webp" alt="설치 프롬프트 숨김·자동 시작·생성 시각 변조 옵션" loading="lazy"></button><figcaption>은폐·지속성 설치 옵션</figcaption></figure>
+        <p>격리된 실습 환경에서 Orcus RAT의 서버와 클라이언트 빌더를 살펴봤습니다. C2 서버를 기동하고, 클라이언트 빌드에서 키로거·관리자 권한 강제·설치 숨김 같은 은폐·지속성 옵션을 확인했습니다.</p>
+        <figure class="fig" style="max-width:640px;margin-top:16px"><button class="zoom" aria-label="확대: C2 서버"><img src="assets/img/orcus-03.webp" alt="Orcus 서버가 리스너를 기동해 실행 중인 상태(비밀번호 필드는 가려짐)" loading="lazy"></button><figcaption>C2 서버 — 리스너를 기동해 서버가 동작(running)하는 상태를 확인했습니다. 접속 비밀번호는 입력란에 가려져 있습니다.</figcaption></figure>
+        <div class="figrow two" style="margin-top:14px">
+          <figure class="fig"><button class="zoom" aria-label="확대: 클라이언트 빌더"><img src="assets/img/orcus-06.webp" alt="Orcus 클라이언트 빌더의 키로거·권한 설정" loading="lazy"></button><figcaption>빌드 — 클라이언트 빌더에서 키로거와 관리자 권한 강제 설정을 확인했습니다.</figcaption></figure>
+          <figure class="fig"><button class="zoom" aria-label="확대: 설치 옵션"><img src="assets/img/orcus-08.webp" alt="설치 프롬프트 숨김·자동 시작·생성 시각 변조 옵션" loading="lazy"></button><figcaption>은폐·지속성 — 설치 프롬프트 숨김·자동 시작·생성 시각 변조 옵션을 확인했습니다.</figcaption></figure>
         </div>
       </article>
       <article class="wuitem" id="it-badusb">
         <div class="wuih"><span class="ft">장치</span><h3>BadUSB</h3><a class="anchor" href="#badusb">#badusb</a></div>
-        <p>Arduino Leonardo 보드를 키보드(HID)로 인식시키는 스케치를 업로드했습니다. 장치가 꽂히면 미리 정의한 입력이 실행되는 것을 확인했습니다.</p>
-        <div class="figrow two">
-          <figure class="fig"><button class="zoom" aria-label="확대: Leonardo 보드 선택"><img src="assets/img/badusb-03.webp" alt="Arduino IDE에서 보드를 Arduino Leonardo로 선택" loading="lazy"></button><figcaption>HID 보드(Leonardo) 지정</figcaption></figure>
-          <figure class="fig"><button class="zoom" aria-label="확대: 업로드 완료"><img src="assets/img/badusb-04.webp" alt="COM3의 Arduino Leonardo로 스케치 업로드 완료" loading="lazy"></button><figcaption>COM 포트로 업로드 완료</figcaption></figure>
+        <p>Arduino Leonardo 보드를 키보드(HID)로 인식시켜 BadUSB 동작을 실습했습니다. Duckyscript를 HID 키 입력 코드로 변환하고, 보드를 지정해 스케치를 업로드한 뒤, 장치가 꽂히면 미리 정의한 입력이 실행되는 것을 확인했습니다.</p>
+        <figure class="fig" style="margin-top:16px"><button class="zoom" aria-label="확대: 페이로드 변환"><img src="assets/img/badusb-02.webp" alt="Duckyscript(실행 대화상자에서 ipconfig 실행)를 Arduino HID 키 입력 코드로 변환하는 화면" loading="lazy"></button><figcaption>페이로드 — Duckyscript(실행 창을 열고 ipconfig를 입력하는 교육용 예제)를 Arduino HID 키 입력 코드로 변환했습니다.</figcaption></figure>
+        <div class="figrow two" style="margin-top:14px">
+          <figure class="fig"><button class="zoom" aria-label="확대: Leonardo 보드 선택"><img src="assets/img/badusb-03.webp" alt="Arduino IDE에서 보드를 Arduino Leonardo로 선택" loading="lazy"></button><figcaption>보드 지정 — HID 보드(Arduino Leonardo)를 지정했습니다.</figcaption></figure>
+          <figure class="fig"><button class="zoom" aria-label="확대: 업로드 완료"><img src="assets/img/badusb-04.webp" alt="COM3의 Arduino Leonardo로 스케치 업로드 완료" loading="lazy"></button><figcaption>업로드 — COM 포트로 스케치 업로드를 완료했습니다.</figcaption></figure>
         </div>
       </article>
       <article class="wuitem" id="it-banker">
@@ -1216,8 +1225,11 @@
       </article>
       <article class="wuitem" id="it-livemanager">
         <div class="wuih"><span class="ft">RAT</span><h3>LiveManagerPlayer</h3><a class="anchor" href="#livemanager">#livemanager</a></div>
-        <p>VirusTotal에서 다수 벤더가 qhosts·dropper·banker 계열로 분류한 것을 확인했습니다. 드로퍼(Install_LiveManagerPlayer) 분석과 겹치는 지표를 대조했습니다.</p>
-        <figure class="fig"><button class="zoom" aria-label="확대: VT 분류"><img src="assets/img/livemanager-03.webp" alt="VirusTotal에서 qhosts·banker 계열로 분류된 결과" loading="lazy"></button><figcaption>VirusTotal 계열 분류(qhosts·banker)</figcaption></figure>
+        <p>샘플의 해시로 VirusTotal을 조회해 다수 벤더가 qhosts·dropper·banker 계열로 분류한 것을 확인했습니다. 드로퍼(Install_LiveManagerPlayer) 분석과 겹치는 지표를 대조했습니다.</p>
+        <div class="figrow two" style="margin-top:16px">
+          <figure class="fig"><button class="zoom" aria-label="확대: 해시·VT 조회"><img src="assets/img/livemanager-02.webp" alt="샘플 파일 속성의 MD5·SHA 해시와 VirusTotal 링크" loading="lazy"></button><figcaption>해시 조회 — 파일 해시(MD5·SHA)로 VirusTotal 진입점을 확인했습니다.</figcaption></figure>
+          <figure class="fig"><button class="zoom" aria-label="확대: VT 분류"><img src="assets/img/livemanager-03.webp" alt="VirusTotal에서 qhosts·banker 계열로 분류된 결과" loading="lazy"></button><figcaption>벤더 분류 — VirusTotal에서 qhosts·dropper·banker 계열로 분류됐습니다.</figcaption></figure>
+        </div>
       </article>
       <div style="margin-top:26px;display:flex;gap:10px;flex-wrap:wrap"><a class="btn" href="#writeups">← 실습·분석 목록</a><a class="btn" href="#home">홈</a></div>
     </div>
