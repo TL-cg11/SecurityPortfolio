@@ -708,6 +708,7 @@
       <nav class="crumb" aria-label="위치"><a href="#home">홈</a><span class="sep">/</span><a href="#projects">프로젝트</a><span class="sep">/</span><span>miniEDR</span></nav>
       <h1 class="dtitle" tabindex="-1">miniEDR — Windows 파일 감시와 격리</h1>
       <p class="dsum">C++과 Win32 API로 만든 Windows 학습용 EDR입니다. 감시 폴더의 변경을 감지하고, YARA 규칙과 SHA-256 해시로 파일을 검사합니다. 탐지한 파일은 자동으로 격리하고 기록합니다.</p>
+      <div style="margin-top:14px"><a class="btn sm" href="https://github.com/TL-cg11/miniedr" target="_blank" rel="noopener noreferrer">GitHub · TL-cg11/miniedr ↗</a></div>
       <div class="meta">
         <div class="m"><div class="mk">수행 유형</div><div class="mv">개인 프로젝트</div></div>
         <div class="m"><div class="mk">언어 · 환경</div><div class="mv">C++17 · Win32 · MSVC</div></div>
@@ -719,16 +720,18 @@
           <div class="flow">
             <div class="f"><span class="n">SCAN</span><span class="t"><b>scan</b> 폴더 1회 재귀 탐색 · <b>monitor</b> ReadDirectoryChangesW로 생성·수정 실시간 감시</span></div>
             <div class="f"><span class="n">DETECT</span><span class="t">SHA256 블랙리스트 대조 + <b>libyara</b> 메모리 룰 매칭(경로 대신 내용을 읽어 스캔)</span></div>
-            <div class="f"><span class="n">RESPOND</span><span class="t">탐지 이벤트를 EventBus로 전달 → <b>MoveFileEx 격리·검증</b> · SQLite · JSONL 기록</span></div>
+            <div class="f"><span class="n">RESPOND</span><span class="t">탐지 이벤트를 EventBus로 전달 → <b>MoveFileEx 격리·검증</b> · SQLite(<code class="inl">events.db</code>) · JSONL(<code class="inl">events.jsonl</code>) 기록</span></div>
+            <div class="f"><span class="n">BEHAVIOR</span><span class="t">Sysmon 이벤트를 파싱·구독하는 <b>behavior 모듈</b>도 같은 EventBus 구조로 설계해, 파일 검사와 별개로 프로세스 행위를 다룰 수 있게 했습니다</span></div>
           </div>
-          <div class="pills" style="margin-top:14px"><span class="pill">C++17</span><span class="pill">Win32 API</span><span class="pill">CMake · vcpkg</span><span class="pill">libyara</span><span class="pill">Windows CNG</span><span class="pill">SQLite</span><span class="pill">spdlog</span></div>
+          <div class="pills" style="margin-top:14px"><span class="pill">C++17</span><span class="pill">Win32 API</span><span class="pill">CMake · vcpkg</span><span class="pill">libyara</span><span class="pill">Windows CNG</span><span class="pill">SQLite</span><span class="pill">spdlog</span><span class="pill">nlohmann/json</span><span class="pill">Sysmon</span></div>
         </div></div>
         <div class="rsec"><h3><span class="n">02</span> 모듈 설계</h3><div class="rbody">
           <div class="grid2">
             <figure class="fig"><button class="zoom" aria-label="확대: 전체 흐름도"><img src="assets/img/edr-arch.webp" alt="miniEDR 전체 흐름도" loading="lazy"></button><figcaption>전체 흐름 — Scan/Monitor → 탐지 → EventBus → 격리·DB·Logger</figcaption></figure>
             <figure class="fig"><button class="zoom" aria-label="확대: 모듈 구성"><img src="assets/img/edr-design.webp" alt="miniEDR 모듈별 역할 표" loading="lazy"></button><figcaption>모듈별 역할 — 8개 컴포넌트를 EventBus로 결합</figcaption></figure>
           </div>
-          <p style="margin-top:12px">설계 원칙은 RAII 기반 자원 관리, 외부 룰 파일 분리, 격리 후 기록입니다.</p>
+          <p style="margin-top:12px">설계 원칙은 RAII 기반 자원 관리, 외부 룰 파일 분리, 격리 후 기록입니다. 탐지기는 <code class="inl">IDetector</code> 인터페이스로 분리해 해시 탐지기와 YARA 탐지기를 같은 방식으로 끼워 넣도록 했고, 수집·탐지·격리·기록을 Scanner·Detection·Quarantine·Storage·Core(EventBus·Logger) 모듈로 나눴습니다.</p>
+          <p style="margin-top:10px">실행 모드는 <code class="inl">scan</code>(폴더 1회 검사)과 <code class="inl">monitor</code>(실시간 감시, 콘솔에 <code class="inl">stop</code> 입력으로 종료) 두 가지이며, 룰·해시 목록은 <code class="inl">--rules</code>·<code class="inl">--hashes</code>로 외부에서 지정합니다. 동작 검증은 EICAR 표준 테스트 파일과, 저장소에 포함한 랜섬웨어 시뮬레이터 스크립트(<code class="inl">tools/ransim.ps1</code>)로 했습니다.</p>
         </div></div>
         <div class="rsec"><h3><span class="n">03</span> 문제 해결 사례 — 한글 파일명 격리 오류</h3><div class="rbody">
           <p>한글 파일명을 처리하던 중 격리 단계에서 프로그램이 종료됐습니다.</p>
@@ -769,7 +772,8 @@
     <div class="wrap">
       <nav class="crumb" aria-label="위치"><a href="#home">홈</a><span class="sep">/</span><a href="#projects">프로젝트</a><span class="sep">/</span><span>묘라</span></nav>
       <h1 class="dtitle" tabindex="-1">묘라 — 운세 웹 서비스와 보안 모니터링 (팀장)</h1>
-      <p class="dsum">운세 웹 서비스에 개인정보 탐지와 보안 모니터링을 붙인 팀 프로젝트입니다. 팀장으로 서비스 개발, 3계층 인프라, 보안 로그 처리 전반을 설계·조율했습니다.</p>
+      <p class="dsum">고양이 상담사 '묘라'가 사주·타로·관상을 봐주는 운세 웹 서비스와, 그 서비스의 로그를 수집해 개인정보를 마스킹하고 보안 이벤트를 저장·시각화하는 보안 모니터링 파이프라인입니다. 팀장으로 서비스 개발, 3계층 인프라, 보안 로그 처리 전반을 설계·조율했습니다.</p>
+      <div style="margin-top:14px"><a class="btn sm" href="https://github.com/TL-cg11/Myora" target="_blank" rel="noopener noreferrer">GitHub · TL-cg11/Myora ↗</a></div>
       <div class="meta">
         <div class="m"><div class="mk">수행 유형</div><div class="mv">팀 프로젝트</div></div>
         <div class="m"><div class="mk">본인 역할</div><div class="mv">팀장 · 전반 조율</div></div>
@@ -806,6 +810,15 @@
             <p style="margin-top:10px">예시나 회신 불가 주소를 제외하는 학습 예제가 부족하고, 이메일 전용 판정 기준도 따로 없다고 판단했습니다. 이런 예제를 보강하고 이메일 판정 기준을 분리하는 방안을 제안했습니다.</p>
           </div>
           <p style="margin-top:12px">위 표의 지표는 전체 평가 결과이고, 이메일 5건은 그 안의 한 사례입니다. 개선안은 제안 단계이며, 재측정 결과는 근거가 확보되면 추가합니다.</p>
+        </div></div>
+        <div class="rsec"><h3><span class="n">04</span> 보안 모니터링 엔지니어링</h3><div class="rbody">
+          <p>서비스(FastAPI·React)·인프라(Nginx·MariaDB)·관측 스택을 하나의 모노레포로 묶고, Docker Compose 한 번으로 전체 스택이 뜨도록 구성했습니다. 로그 수집·탐지·시각화가 서비스와 같은 환경에서 재현되게 했습니다.</p>
+          <ul>
+            <li><b>스키마 계약 기반 검증</b> — 마스킹 로그와 보안 이벤트를 각각 버전드 JSON 스키마(<code class="inl">luck.masked-logs.v1</code> · <code class="inl">luck.security-events.v1</code>)로 정의하고, 정상·스키마 위반·미마스킹 fixture로 파이프라인이 규격을 지키는지 검증했습니다.</li>
+            <li><b>관측 스택</b> — Fluent-bit로 로그를 모아 Loki에 적재하고 Grafana로 보안 대시보드를, Prometheus로 지표를 구성했습니다. 네트워크 트래픽은 Suricata IDS로 관찰하고 DDoS 탐지 룰을 적용했습니다.</li>
+            <li><b>인증·대응</b> — 계정·IP 기반 로그인 잠금(lockout)과 역할 구분을 스키마 마이그레이션으로 관리하고, 위험 이벤트는 Discord로 알리도록 했습니다.</li>
+            <li><b>AI 가드레일</b> — 입력의 프롬프트 공격과 출력에 섞인 개인정보를 검사하는 가드레일 정책을 문서로 정리하고, AI 응답(DeepSeek 연동)과 분리된 비동기 경로에서 로그 탐지가 동작하게 했습니다.</li>
+          </ul>
         </div></div>
       </div>
       <div style="margin-top:28px"><button type="button" class="btn" data-back>← 뒤로가기</button></div>
