@@ -964,7 +964,7 @@
 
       <article class="wuitem" id="it-sqli">
         <div class="wuih"><span class="ft">SQLi</span><h3>SQL Injection — DB 구조 식별</h3><a class="anchor" href="#sqli">#sqli</a></div>
-        <p>도구 응답에서 데이터베이스의 테이블 목록을 확인했습니다. 추출한 값 중 민감한 부분은 공개본에서 가렸습니다.</p>
+        <p>도구 응답에서 데이터베이스의 테이블 목록을 확인했습니다.</p>
         <figure class="fig"><button class="zoom" aria-label="확대: SQLi"><img src="assets/img/webdiag-01.webp" alt="데이터베이스 테이블 목록" loading="lazy"></button><figcaption>도구 응답으로 확인한 테이블 목록</figcaption></figure>
       </article>
       <article class="wuitem" id="it-xss">
@@ -979,17 +979,17 @@
         <div class="wuih"><span class="ft">CSRF</span><h3>CSRF 댓글 작성 요청</h3><a class="anchor" href="#csrf">#csrf</a></div>
         <p>피해자가 숨겨진 요청이 담긴 글을 열기만 해도 피해자 권한으로 댓글이 작성되는 흐름을 확인했습니다. 다른 세션 권한에 미치는 영향은 확인하지 않았습니다.</p>
         <div class="figrow two" style="margin-top:16px">
-          <figure class="fig"><button class="zoom" aria-label="확대: CSRF 요청"><img src="assets/img/webdiag-06.webp" alt="댓글 작성 요청을 자동으로 보내는 iframe을 글 내용에 삽입한 화면(비밀번호 값은 가림)" loading="lazy"></button><figcaption>요청 — 댓글 작성 요청을 자동으로 보내는 iframe을 글 내용에 심었습니다. 요청의 비밀번호 값은 가렸습니다.</figcaption></figure>
+          <figure class="fig"><button class="zoom" aria-label="확대: CSRF 요청"><img src="assets/img/webdiag-06.webp" alt="댓글 작성 요청을 자동으로 보내는 iframe을 글 내용에 삽입한 화면" loading="lazy"></button><figcaption>요청 — 댓글 작성 요청을 자동으로 보내는 iframe을 글 내용에 심었습니다(num·co_content·co_pass 파라미터 포함).</figcaption></figure>
           <figure class="fig"><button class="zoom" aria-label="확대: CSRF 결과"><img src="assets/img/webdiag-07.webp" alt="CSRF로 자동 작성된 댓글" loading="lazy"></button><figcaption>결과 — 글을 연 것만으로 댓글이 자동 작성된 것을 확인했습니다.</figcaption></figure>
         </div>
       </article>
       <article class="wuitem" id="it-upload">
         <div class="wuih"><span class="ft">UPLOAD</span><h3>악성 파일 업로드</h3><a class="anchor" href="#upload">#upload</a></div>
-        <p>확장자를 제한하는 클라이언트 검사를 우회해 서버에 스크립트 파일을 올리고, 그 파일이 서버에서 실행되는 것까지 확인했습니다. 실행에 바로 쓸 수 있는 명령 문자열은 공개본에서 가렸습니다.</p>
+        <p>확장자를 제한하는 클라이언트 검사를 우회해 서버에 스크립트 파일을 올리고, 그 파일이 서버에서 시스템 명령을 실행하는 것까지 확인했습니다.</p>
         <figure class="fig" style="max-width:560px;margin-top:16px"><button class="zoom" aria-label="확대: 확장자 검사"><img src="assets/img/webdiag-31.webp" alt="허용 확장자를 jpg·hwp·pdf·jpeg·txt로 제한한다는 클라이언트 알림" loading="lazy"></button><figcaption>클라이언트 검사 — 허용 확장자를 제한하는 알림이 뜨지만, 이 검사는 브라우저 쪽이라 우회할 수 있었습니다.</figcaption></figure>
         <div class="figrow two" style="margin-top:14px">
           <figure class="fig"><button class="zoom" aria-label="확대: 업로드 파일 실행"><img src="assets/img/webdiag-33.webp" alt="업로드한 ASP 파일에 접근하자 Hello World가 출력됨" loading="lazy"></button><figcaption>실행 확인 — 올린 ASP 파일에 접근하자 코드가 실행돼 결과가 출력됐습니다.</figcaption></figure>
-          <figure class="fig"><button class="zoom" aria-label="확대: 시스템 명령 실행"><img src="assets/img/webdiag-34.webp" alt="업로드한 ASP가 시스템 명령을 실행해 ipconfig 결과를 반환(URL의 명령 문자열은 가림)" loading="lazy"></button><figcaption>영향 — 같은 방식으로 시스템 명령을 실행해 내부 네트워크 정보(ipconfig)가 반환됐습니다. URL의 명령 문자열은 가렸습니다.</figcaption></figure>
+          <figure class="fig"><button class="zoom" aria-label="확대: 시스템 명령 실행"><img src="assets/img/webdiag-34.webp" alt="업로드한 ASP가 cmd 명령으로 ipconfig를 실행해 결과를 반환" loading="lazy"></button><figcaption>영향 — 업로드한 ASP에 <code class="inl">cmd</code> 명령을 넘겨 ipconfig를 실행하자 내부 네트워크 정보가 반환됐습니다(웹셸 RCE).</figcaption></figure>
         </div>
       </article>
       <article class="wuitem" id="it-filedl">
@@ -1059,7 +1059,7 @@
         <div class="m"><div class="mk">수행 유형</div><div class="mv">교육 실습(사설망)</div></div>
         <div class="m"><div class="mk">도구</div><div class="mv">Metasploit · John · hping3</div></div>
         <div class="m"><div class="mk">성격</div><div class="mv">공개 취약점 재현·연계</div></div>
-        <div class="m"><div class="mk">공개 처리</div><div class="mv">비밀값 마스킹</div></div>
+        <div class="m"><div class="mk">공개 처리</div><div class="mv">실습 데이터 공개</div></div>
       </div>
 
       <article class="wuitem" id="it-calc">
@@ -1072,10 +1072,10 @@
       </article>
       <article class="wuitem" id="it-rpc">
         <div class="wuih"><span class="ft">CVE-1999-0209</span><h3>RPC 원격 → root · 해시 크랙</h3><a class="anchor" href="#rpc">#rpc</a></div>
-        <p>사설 실습망의 Solaris RPC 취약점을 공개 모듈로 재현해 셸을 얻고 이후 권한을 확인했습니다. 추출한 해시는 크랙 도구로 복원했습니다. 해시·평문 등 계정 정보는 공개본에서 가렸습니다.</p>
+        <p>사설 실습망의 Solaris RPC 취약점을 공개 모듈로 재현해 root 셸을 얻고, <code class="inl">/etc/shadow</code>에서 추출한 해시를 John the Ripper로 크랙했습니다.</p>
         <div class="figrow two">
-          <figure class="fig"><button class="zoom" aria-label="확대: RPC 셸"><img src="assets/img/rpc-07.webp" alt="RPC 취약점 재현으로 획득한 셸" loading="lazy"></button><figcaption>RPC 재현으로 획득한 셸</figcaption></figure>
-          <figure class="fig"><button class="zoom" aria-label="확대: 해시 크랙"><img src="assets/img/rpc-08.webp" alt="해시 크랙 결과, 비밀값 마스킹" loading="lazy"></button><figcaption>해시 크랙(값 마스킹)</figcaption></figure>
+          <figure class="fig"><button class="zoom" aria-label="확대: RPC 셸"><img src="assets/img/rpc-07.webp" alt="RPC 취약점 재현으로 획득한 root 셸과 /etc/shadow 출력" loading="lazy"></button><figcaption>셸 획득 — RPC 재현으로 root 셸을 얻고 <code class="inl">/etc/shadow</code>를 확인했습니다.</figcaption></figure>
+          <figure class="fig"><button class="zoom" aria-label="확대: 해시 크랙"><img src="assets/img/rpc-08.webp" alt="John the Ripper로 root 해시를 크랙한 결과" loading="lazy"></button><figcaption>해시 크랙 — John으로 root 계정 해시를 크랙했습니다.</figcaption></figure>
         </div>
       </article>
       <article class="wuitem" id="it-nmap">
@@ -1090,8 +1090,8 @@
       </article>
       <article class="wuitem" id="it-ssh">
         <div class="wuih"><span class="ft">SYSTEM</span><h3>Solaris SSH 접속 실습</h3><a class="anchor" href="#ssh">#ssh</a></div>
-        <p>교육용 Solaris 환경에서 Hydra로 사전 기반 SSH 접속을 시도해 일부 계정 접속을 확인했습니다. root 계정 획득은 확인하지 않았습니다. 공개본에서는 계정 비밀번호가 보이지 않도록 가린 구간만 실었습니다.</p>
-        <figure class="fig"><button class="zoom" aria-label="확대: SSH 사전 공격"><img src="assets/img/ssh-01.webp" alt="Hydra로 Solaris SSH에 사전 공격을 수행하는 로그(비밀번호 구간 제외)" loading="lazy"></button><figcaption>Hydra SSH 사전 공격 수행(비밀값 제외)</figcaption></figure>
+        <p>교육용 Solaris 환경에서 Hydra로 사전 기반 SSH 접속을 시도해 일부 계정 접속을 확인했습니다. root 계정 획득은 확인하지 않았습니다.</p>
+        <figure class="fig"><button class="zoom" aria-label="확대: SSH 사전 공격"><img src="assets/img/ssh-01.webp" alt="Hydra로 Solaris SSH에 사전 공격을 수행해 계정 접속을 확인한 로그" loading="lazy"></button><figcaption>Hydra 사전 공격 — 일부 계정의 SSH 접속을 확인했습니다.</figcaption></figure>
       </article>
       <article class="wuitem" id="it-cve3623">
         <div class="wuih"><span class="ft">CVE-2017-3623</span><h3>CVE-2017-3623</h3><a class="anchor" href="#cve3623">#cve3623</a></div>
@@ -1113,8 +1113,11 @@
       </article>
       <article class="wuitem" id="it-lindiag">
         <div class="wuih"><span class="ft">진단 · 수업</span><h3>리눅스·윈도우 취약점 진단</h3><a class="anchor" href="#lindiag">#lindiag</a></div>
-        <p>파일과 설정의 상태를 점검하는 진단 스크립트 실습입니다. 화면은 <code class="inl">/etc/shadow</code> 파일의 존재 여부를 확인하는 예제입니다. 완성된 통합 진단 스크립트 공개는 로드맵의 예정 항목입니다.</p>
-        <figure class="fig"><button class="zoom" aria-label="확대: 진단 스크립트"><img src="assets/img/lindiag-23.webp" alt="shadow 파일 존재 여부를 점검하는 진단 셸 스크립트" loading="lazy"></button><figcaption>shadow 파일 존재 점검 스크립트</figcaption></figure>
+        <p>파일과 설정의 상태를 점검하는 진단 스크립트 실습입니다. shadow 파일 존재 점검과 계정 해시 확인 예제를 다뤘습니다. 완성된 통합 진단 스크립트 공개는 로드맵의 예정 항목입니다.</p>
+        <div class="figrow two">
+          <figure class="fig"><button class="zoom" aria-label="확대: 진단 스크립트"><img src="assets/img/lindiag-23.webp" alt="shadow 파일 존재 여부를 점검하는 진단 셸 스크립트" loading="lazy"></button><figcaption>점검 — shadow 파일 존재 여부를 확인하는 스크립트입니다.</figcaption></figure>
+          <figure class="fig"><button class="zoom" aria-label="확대: 계정 해시"><img src="assets/img/lindiag-31.webp" alt="etc shadow의 계정 해시를 확인하는 점검 결과" loading="lazy"></button><figcaption>결과 — 점검 대상 계정의 해시 상태를 확인했습니다.</figcaption></figure>
+        </div>
       </article>
       <article class="wuitem" id="it-openedr">
         <div class="wuih"><span class="ft">소스 분석</span><h3>OpenEDR 소스 분석</h3><a class="anchor" href="#openedr">#openedr</a></div>
@@ -1142,7 +1145,7 @@
         <div class="m"><div class="mk">수행 유형</div><div class="mv">교육 실습(사설망)</div></div>
         <div class="m"><div class="mk">도구</div><div class="mv">pfSense · Suricata · Elastic · Wireshark</div></div>
         <div class="m"><div class="mk">성격</div><div class="mv">구성 · 수집 · 분석</div></div>
-        <div class="m"><div class="mk">공개 처리</div><div class="mv">식별 정보 마스킹</div></div>
+        <div class="m"><div class="mk">공개 처리</div><div class="mv">실습 데이터 공개</div></div>
       </div>
 
       <article class="wuitem" id="it-pfsense">
@@ -1301,7 +1304,7 @@
         <div class="m"><div class="mk">수행 유형</div><div class="mv">교육 실습 · 제공 샘플</div></div>
         <div class="m"><div class="mk">도구</div><div class="mv">DIE · Sysinternals · Volatility · FTK</div></div>
         <div class="m"><div class="mk">구분</div><div class="mv">자동 판정 ↔ 본인 해석</div></div>
-        <div class="m"><div class="mk">공개 처리</div><div class="mv">일부 값 마스킹</div></div>
+        <div class="m"><div class="mk">공개 처리</div><div class="mv">실습 데이터 공개</div></div>
       </div>
 
       <article class="wuitem" id="it-m518">
@@ -1353,13 +1356,13 @@
       </article>
       <article class="wuitem" id="it-clickfix">
         <div class="wuih"><span class="ft">메모리</span><h3>ClickFix 메모리 포렌식</h3><a class="anchor" href="#clickfix">#clickfix</a></div>
-        <p>ClickFix 침해 사고의 메모리 덤프를 Volatility 3으로 분석했습니다. 이미지 정보로 환경을 확인하고, 의심 프로세스와 레지스트리 실행 흔적, 메모리에 남은 URL을 차례로 대조했습니다. 실행에 바로 쓸 수 있는 악성 명령 문자열은 공개본에서 가렸습니다.</p>
+        <p>ClickFix 침해 사고의 메모리 덤프를 Volatility 3으로 분석했습니다. 이미지 정보·의심 프로세스·레지스트리 실행 흔적·메모리 URL·코드 인젝션·외부 연결·자격증명 덤프까지 차례로 확인했습니다.</p>
         <div class="figrow two" style="margin-top:16px">
           <figure class="fig"><button class="zoom" aria-label="확대: 이미지 정보"><img src="assets/img/clickfix-02.webp" alt="windows.info 플러그인으로 확인한 메모리 이미지의 운영체제·빌드 정보" loading="lazy"></button><figcaption>환경 — <code class="inl">windows.info</code>로 메모리 이미지가 Windows 10 환경임을 확인했습니다.</figcaption></figure>
           <figure class="fig"><button class="zoom" aria-label="확대: 의심 프로세스"><img src="assets/img/clickfix-03.webp" alt="프로세스·명령줄 목록에서 chrome.exe(PID 8700)를 식별한 화면" loading="lazy"></button><figcaption>프로세스 — 프로세스·명령줄 목록에서 최초 유입에 쓰인 chrome.exe(PID 8700)를 식별했습니다.</figcaption></figure>
         </div>
         <div class="figrow two" style="margin-top:14px">
-          <figure class="fig"><button class="zoom" aria-label="확대: RunMRU 레지스트리"><img src="assets/img/clickfix-07.webp" alt="RunMRU 레지스트리 키에 PowerShell 실행 명령이 남은 기록(명령 문자열은 가림)" loading="lazy"></button><figcaption>레지스트리 — 메모리의 <code class="inl">RunMRU</code> 키에서 사용자가 실행 대화상자(Win+R)로 PowerShell 명령을 실행한 흔적을 확인했습니다. 실제 명령 문자열은 가렸습니다.</figcaption></figure>
+          <figure class="fig"><button class="zoom" aria-label="확대: RunMRU 레지스트리"><img src="assets/img/clickfix-07.webp" alt="RunMRU 레지스트리 키에 남은 PowerShell 다운로드 실행 명령" loading="lazy"></button><figcaption>레지스트리 — 메모리의 <code class="inl">RunMRU</code>에서 사용자가 실행 대화상자(Win+R)로 PowerShell 다운로드 명령을 실행한 흔적을 확인했습니다.</figcaption></figure>
           <figure class="fig"><button class="zoom" aria-label="확대: 메모리 URL"><img src="assets/img/clickfix-06.webp" alt="YARA 규칙으로 메모리에서 추출한 HTTP URL 문자열" loading="lazy"></button><figcaption>연결 — YARA 규칙으로 메모리를 훑어 남아 있던 HTTP URL 문자열을 추출했습니다.</figcaption></figure>
         </div>
         <div class="figrow two" style="margin-top:14px">
@@ -1367,6 +1370,10 @@
           <figure class="fig"><button class="zoom" aria-label="확대: 외부 연결"><img src="assets/img/clickfix-14.webp" alt="netscan으로 확인한 내부 C2 주소로의 네트워크 연결" loading="lazy"></button><figcaption>스캔 — <code class="inl">netscan</code>으로 의심 프로세스가 내부 C2 주소로 연결한 흔적을 확인했습니다.</figcaption></figure>
         </div>
         <figure class="fig" style="margin-top:14px"><button class="zoom" aria-label="확대: 드롭 파일"><img src="assets/img/clickfix-08.webp" alt="filescan으로 Temp 폴더에서 드롭된 임시 실행 파일을 확인" loading="lazy"></button><figcaption>흔적 — <code class="inl">filescan</code>으로 Temp 폴더에 드롭된 실행 파일 흔적을 확인했습니다.</figcaption></figure>
+        <div class="figrow two" style="margin-top:14px">
+          <figure class="fig"><button class="zoom" aria-label="확대: 자격증명 덤프"><img src="assets/img/clickfix-16.webp" alt="hashdump로 추출한 로컬 계정 NTLM 해시" loading="lazy"></button><figcaption>자격증명 — <code class="inl">hashdump</code>로 메모리에서 로컬 계정 NTLM 해시를 추출했습니다.</figcaption></figure>
+          <figure class="fig"><button class="zoom" aria-label="확대: 지속성 Run 키"><img src="assets/img/clickfix-11.webp" alt="레지스트리 Run 키에 등록된 PowerShell 다운로드 실행 명령" loading="lazy"></button><figcaption>지속성 — 레지스트리 <code class="inl">Run</code> 키에 PowerShell 다운로드 명령이 등록된 것을 확인했습니다.</figcaption></figure>
+        </div>
       </article>
       <article class="wuitem" id="it-wanna">
         <div class="wuih"><span class="ft">랜섬</span><h3>WannaCry 침해 분석</h3><a class="anchor" href="#wanna">#wanna</a></div>
@@ -1379,11 +1386,11 @@
       </article>
       <article class="wuitem" id="it-htear">
         <div class="wuih"><span class="ft">랜섬</span><h3>HiddenTear</h3><a class="anchor" href="#htear">#htear</a></div>
-        <p>교육용 오픈소스 랜섬웨어 HiddenTear를 실습 환경에서 다뤘습니다. 파일이 암호화되며 나타난 랜섬 노트를 확인하고, 확보한 키로 복호화해 복원 결과를 확인했습니다. 키 등 비밀값은 공개본에서 가렸습니다.</p>
+        <p>교육용 오픈소스 랜섬웨어 HiddenTear를 실습 환경에서 다뤘습니다. AES 암호화 로직을 보고, 파일이 암호화되며 나타난 랜섬 노트를 확인한 뒤, 확보한 키로 복호화해 복원 결과를 확인했습니다.</p>
         <div class="figrow three" style="margin-top:16px">
           <figure class="fig"><button class="zoom" aria-label="확대: 암호화 코드"><img src="assets/img/htear-01.webp" alt="AES 암호화를 수행하는 HiddenTear 소스 코드" loading="lazy"></button><figcaption>암호화 로직 — AES로 파일을 암호화하는 소스 코드를 확인했습니다.</figcaption></figure>
           <figure class="fig"><button class="zoom" aria-label="확대: 랜섬 노트"><img src="assets/img/htear-02.webp" alt="암호화 후 나타난 랜섬 노트 화면" loading="lazy"></button><figcaption>감염 결과 — 파일이 암호화되며 피해 화면(랜섬 노트)이 나타난 것을 확인했습니다.</figcaption></figure>
-          <figure class="fig"><button class="zoom" aria-label="확대: 복호화"><img src="assets/img/htear-08.webp" alt="복호화 확인, 키 마스킹" loading="lazy"></button><figcaption>복호화 — 확보한 키로 복호화해 "Files Decrypted!"를 확인했습니다. 키 값은 가렸습니다.</figcaption></figure>
+          <figure class="fig"><button class="zoom" aria-label="확대: 복호화"><img src="assets/img/htear-08.webp" alt="확보한 키로 복호화해 Files Decrypted가 표시된 화면" loading="lazy"></button><figcaption>복호화 — 확보한 키로 복호화해 "Files Decrypted!"를 확인했습니다.</figcaption></figure>
         </div>
       </article>
       <article class="wuitem" id="it-remcos">
@@ -1526,7 +1533,7 @@
           <tr><td>입력 처리 · 폼</td><td>입력 폼·검색 기능 없음</td><td>해당 없음</td></tr>
           <tr><td>출력 렌더링 · XSS</td><td>본문은 작성자가 넣은 정적 HTML이며, 스크립트는 외부·사용자 데이터를 <code class="inl">innerHTML</code>로 삽입하지 않습니다. 플레이 영상은 사용자가 클릭할 때만 고정된 유튜브(nocookie) 임베드를 불러오고, 평소에는 외부 호출이 없습니다</td><td style="color:var(--good)">소스에서 확인</td></tr>
           <tr><td>외부 링크</td><td>모든 <code class="inl">target="_blank"</code> 링크에 <code class="inl">rel="noopener noreferrer"</code>를 적용했습니다</td><td style="color:var(--good)">소스에서 확인</td></tr>
-          <tr><td>비밀값 노출</td><td>공개 이미지의 쿠키·토큰·키·암호·해시·개인정보를 픽셀로 가렸고, 남은 캡처를 계속 확인하고 있습니다</td><td style="color:var(--amber)">이미지 추가 확인 중</td></tr>
+          <tr><td>비밀값 노출</td><td>실습 캡처의 자격증명·키·해시는 교육용 사설망에서 만든 테스트 값이라 그대로 싣되, 실제 외부 서비스 자격증명(예: 외부 API 토큰)만 가립니다</td><td style="color:var(--good)">실습 데이터로 공개</td></tr>
           <tr><td>정적 산출물 정보 노출</td><td>배포 파일을 검토한 범위에서 키·토큰·개인정보를 발견하지 못했습니다</td><td style="color:var(--good)">소스에서 확인</td></tr>
           <tr><td>보안 헤더 · HTTPS</td><td>CSP·HSTS·X-Content-Type-Options 등은 배포 환경에서 적용·확인할 예정입니다</td><td style="color:var(--amber)">보완 예정</td></tr>
           <tr><td>접근성 · 안정성</td><td>표준 문서 선언·언어·뷰포트, 모바일 메뉴, 접근 가능한 이미지 확대 대화상자, 대비 개선을 적용했습니다</td><td style="color:var(--good)">적용</td></tr>
