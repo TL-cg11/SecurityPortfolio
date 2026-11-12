@@ -587,17 +587,80 @@
       </div>
 
       <div class="subhead">실무 프로젝트 · 스윙크</div>
-      <div class="cards two">
-        <div class="ic"><div class="icb"><span class="ictag">UNITY · COCOS · 2024.07–2026.03</span><h3>키즈엠 젤리아이 — 교육용 플랫폼·콘텐츠</h3><p>팀장 보조로 Unity–WebView 브릿지 통신 구조를 설계하고, 공통 기능을 외부 플러그인으로 분리해 중앙 관리 구조를 만들었습니다. 정적 로딩을 서버 기반 동적·지연 로딩으로 재설계하고, 특정 Android의 WebAudio 음질 문제를 DOM 제어로 해결했습니다.</p></div></div>
-        <div class="ic"><div class="icb"><span class="ictag">COCOS CREATOR · HTML5 · 2024.05–2024.10</span><h3>메가스터디 · 천재교과서 — 인터랙티브 콘텐츠</h3><p>Cocos Creator와 TypeScript로 학습 화면의 인터랙션과 콘텐츠 로직을 구현하고, 웹뷰 환경의 디바이스 파편화에 대응했습니다. 반복되는 패턴을 공통 로직으로 정리해 개발 속도를 높였습니다.</p></div></div>
+      <p class="dsum" style="margin-top:4px;font-size:14px">사진이 공개되지 않는 상용 프로젝트라, 맡은 일과 해결한 문제를 설명으로 정리했습니다.</p>
+      <div class="report job">
+        <div class="rsec" style="border-top:none;padding-top:8px"><h3 style="font-size:1.1rem;text-transform:none;letter-spacing:0;color:var(--white)">키즈엠 젤리아이 — 교육용 플랫폼·콘텐츠</h3><div class="rbody">
+          <div class="jobrow"><span>스윙크 · 클라이언트 개발(팀장 보조)</span><b>2024.07 — 2026.03</b></div>
+          <div class="pills" style="margin-top:12px"><span class="pill">Unity 6000 · C#</span><span class="pill">Cocos Creator · TypeScript</span><span class="pill">WebView(HTML5)</span><span class="pill">Android · iOS · PC</span></div>
+          <p style="margin-top:14px">Unity 앱과 WebView 콘텐츠가 함께 돌아가는 교육용 플랫폼을 개발했습니다. 공통 구조 정비와 콘텐츠 개발, 부서 간 기술 이슈 조율을 맡았습니다.</p>
+          <ul>
+            <li><b>하이브리드 구조</b> — Unity와 WebView가 서로 기능을 호출하고 데이터를 주고받는 브릿지 통신 구조를 설계·구현했습니다.</li>
+            <li><b>공통 모듈·배포</b> — 반복 기능을 외부 플러그인으로 분리해 여러 콘텐츠가 공유하는 중앙 관리 구조를 만들고, 플랫폼별 빌드 파이프라인과 리소스 업로드를 정립해 반복 빌드·검수 부담을 줄였습니다.</li>
+            <li><b>로딩 최적화</b> — 한꺼번에 불러오던 정적 로딩을 서버 기반 동적 할당·지연 로딩으로 재설계하고 이미지 압축을 적용해 초기 진입을 개선했습니다.</li>
+            <li><b>엔진 한계 극복</b> — 특정 Android에서 발생한 WebAudio 음질 저하를 엔진 API 한계로 분석하고, DOM 레벨에서 오디오 객체를 직접 제어해 해결했습니다.</li>
+          </ul>
+        </div></div>
+        <div class="rsec"><h3 style="font-size:1.1rem;text-transform:none;letter-spacing:0;color:var(--white)">메가스터디 · 천재교과서 — 인터랙티브 콘텐츠</h3><div class="rbody">
+          <div class="jobrow"><span>스윙크 · 클라이언트 개발</span><b>2024.05 — 2024.10</b></div>
+          <div class="pills" style="margin-top:12px"><span class="pill">Cocos Creator 2.4</span><span class="pill">TypeScript</span><span class="pill">web-mobile(HTML5)</span></div>
+          <p style="margin-top:14px">HTML5 인터랙티브 학습 콘텐츠를 개발했습니다. 기획·시나리오를 바탕으로 학습 화면의 인터랙션과 콘텐츠 로직을 구현했습니다.</p>
+          <ul>
+            <li><b>인터랙션 구현</b> — 기획서 기반 UI/UX 인터랙션 시스템과 콘텐츠 로직을 구현했습니다.</li>
+            <li><b>디바이스 대응</b> — 기기마다 달라지는 웹뷰 동작을 조정해 파편화에 대응하고 콘텐츠를 최적화했습니다.</li>
+            <li><b>재사용 구조</b> — 반복되는 콘텐츠 패턴을 공통 로직으로 정리해 여러 콘텐츠를 일관된 품질로 개발·배포했습니다.</li>
+          </ul>
+        </div></div>
       </div>
 
       <div class="subhead">개인 개발 프로젝트</div>
-      <div class="cards two">
-        <div class="ic"><div class="icb"><span class="ictag">UNITY · PHOTON 2 · 2023.06–2024.01</span><h3>Top Survival 온라인</h3><p>Photon 2와 뒤끝 서버를 연동한 실시간 멀티플레이 서바이벌 게임. 계정 인증·데이터 저장, 테트리스형 그리드 인벤토리, 탑뷰 전투·좌우 랜덤 반동, Raycasting 부채꼴 시야 시스템을 구현했습니다.</p></div></div>
-        <div class="ic"><div class="icb"><span class="ictag">UNITY · 2020.08–2021.01</span><h3>Zombie Crash</h3><p>차량을 강화하며 생존하는 디펜스형 드라이빙 액션 게임. 생존 시간에 비례한 재화 획득, 차량 스탯 업그레이드, 파밍→생존→보상→강화 순환 루프를 설계·구현했습니다.</p></div></div>
-        <div class="ic"><div class="icb"><span class="ictag">UNITY · 2020.01–2020.04</span><h3>Car Slash</h3><p>여러 이동수단으로 강해지는 적을 물리치는 생존 게임. 머테리얼 제어 색상 커스터마이징, 이동수단별 스탯 차별화, 플레이 타임 기반 난이도 밸런싱을 구현했습니다.</p></div></div>
-        <div class="ic"><div class="icb"><span class="ictag">UNITY · 2019.08</span><h3>Ball Game</h3><p>같은 단계의 공을 합쳐 진화시키는 물리 기반 퍼즐 게임. Collision 기반 병합 로직, 1~15단계 오브젝트 계층, 랜덤 생성 확률과 경계선 접촉 게임오버 판정을 구현했습니다.</p></div></div>
+      <div class="report job">
+        <div class="rsec" style="border-top:none;padding-top:8px"><h3 style="font-size:1.1rem;text-transform:none;letter-spacing:0;color:var(--white)">Top Survival 온라인</h3><div class="rbody">
+          <div class="jobrow"><span>개인 · 온라인 멀티플레이 서바이벌</span><b>2023.06 — 2024.01</b></div>
+          <div class="pills" style="margin-top:12px"><span class="pill">Unity 2021 · C#</span><span class="pill">Photon 2</span><span class="pill">뒤끝 서버</span><span class="pill">Android</span></div>
+          <div class="grid2" style="margin-top:14px">
+            <div>
+              <p style="margin-top:0">Photon 2와 뒤끝 서버를 연동해 만든 실시간 멀티플레이 서바이벌 게임입니다.</p>
+              <ul>
+                <li><b>서버·인증</b> — 뒤끝 서버 API로 회원가입·로그인과 계정별 게임 데이터 저장/로드를 구현했습니다.</li>
+                <li><b>그리드 인벤토리</b> — <code class="inl">Dictionary&lt;Vector2Int,string&gt;</code>로 좌표·아이템을 매핑한 테트리스형 배치·회전 UI를 만들고 상태를 서버에 직렬화해 저장했습니다.</li>
+                <li><b>전투</b> — 탑뷰 시점에 맞춘 총기 좌우 랜덤 반동 로직을 구현했습니다.</li>
+                <li><b>멀티플레이</b> — Photon 로비·룸(생성/참가/대기)과 캐릭터 이동·액션 동기화를 처리했습니다.</li>
+                <li><b>시야 시스템</b> — Raycasting으로 부채꼴 형태의 시야를 구현했습니다.</li>
+              </ul>
+            </div>
+            <figure class="fig"><button class="zoom" aria-label="확대: Top Survival"><img src="assets/img/dev-02.webp" alt="Top Survival 탑뷰 전투와 부채꼴 시야가 보이는 게임 화면" loading="lazy"></button><figcaption>탑뷰 전투 · Raycasting 부채꼴 시야</figcaption></figure>
+          </div>
+        </div></div>
+        <div class="rsec"><h3 style="font-size:1.1rem;text-transform:none;letter-spacing:0;color:var(--white)">Zombie Crash</h3><div class="rbody">
+          <div class="jobrow"><span>개인 · 디펜스형 드라이빙 액션</span><b>2020.08 — 2021.01</b></div>
+          <div class="pills" style="margin-top:12px"><span class="pill">Unity 2019 · C#</span><span class="pill">Android</span></div>
+          <p style="margin-top:14px">차량을 강화하며 좀비로부터 최대한 오래 생존하는 게임입니다.</p>
+          <ul>
+            <li><b>경제·강화</b> — 생존 시간에 비례한 재화 획득 알고리즘과 상점 UI, 차량 스탯 업그레이드 데이터 관리를 구현했습니다.</li>
+            <li><b>게임 루프</b> — 파밍 → 생존 → 보상 → 강화로 이어지는 순환 콘텐츠 구조를 설계했습니다.</li>
+            <li><b>상호작용</b> — 필드 드랍 아이템 획득과 플레이어 스탯 즉시 반영을 처리했습니다.</li>
+          </ul>
+        </div></div>
+        <div class="rsec"><h3 style="font-size:1.1rem;text-transform:none;letter-spacing:0;color:var(--white)">Car Slash</h3><div class="rbody">
+          <div class="jobrow"><span>개인 · 생존 액션</span><b>2020.01 — 2020.04</b></div>
+          <div class="pills" style="margin-top:12px"><span class="pill">Unity 2018 · C#</span><span class="pill">Android</span></div>
+          <p style="margin-top:14px">여러 이동수단으로 점점 강해지는 적을 물리치는 생존 게임입니다.</p>
+          <ul>
+            <li><b>커스터마이징</b> — 차량 머테리얼 제어로 색상을 바꾸고, 3종 이동수단별 고유 스탯·조작감을 차별화했습니다.</li>
+            <li><b>난이도 밸런싱</b> — 플레이 타임 경과에 따라 적 스폰 주기를 단축하고 상위 객체를 생성하는 로직을 구현했습니다.</li>
+            <li><b>상태 관리</b> — 내구도·무기·이동속도 등 여러 변수의 업그레이드 시스템을 구축했습니다.</li>
+          </ul>
+        </div></div>
+        <div class="rsec"><h3 style="font-size:1.1rem;text-transform:none;letter-spacing:0;color:var(--white)">Ball Game</h3><div class="rbody">
+          <div class="jobrow"><span>개인 · 물리 기반 퍼즐</span><b>2019.08</b></div>
+          <div class="pills" style="margin-top:12px"><span class="pill">Unity 2018 · C#</span><span class="pill">Android</span></div>
+          <p style="margin-top:14px">같은 단계의 공을 합쳐 더 높은 단계로 진화시키는 물리 기반 퍼즐 게임입니다.</p>
+          <ul>
+            <li><b>충돌·병합</b> — Collision 이벤트로 동일 오브젝트 충돌을 감지해 상위 오브젝트를 생성하고, 1~15단계 계층 구조를 설계했습니다.</li>
+            <li><b>랜덤 생성</b> — 플레이어가 다루는 1~5단계 공의 스폰 확률 로직을 구현했습니다.</li>
+            <li><b>게임 오버</b> — 경계선 접촉 시간 체크로 게임 오버 조건을 처리했습니다.</li>
+          </ul>
+        </div></div>
       </div>
       <div style="margin-top:28px"><button type="button" class="btn" data-back>← 뒤로가기</button></div>
     </div>
