@@ -1215,6 +1215,11 @@
           <figure class="fig"><button class="zoom" aria-label="확대: 캐시 아티팩트"><img src="assets/img/dbd-04.webp" alt="브라우저 캐시에 남은 악성 스크립트 다운로드 출처와 시간" loading="lazy"></button><figcaption>캐시 단서 — 다운로드 출처와 시각을 확인했습니다.</figcaption></figure>
           <figure class="fig"><button class="zoom" aria-label="확대: 최종 페이로드"><img src="assets/img/dbd-08.webp" alt="svchost.exe로 위장했지만 설명이 hidden-tear인 드롭된 실행 파일 속성" loading="lazy"></button><figcaption>페이로드 — svchost로 위장한 드롭 파일이 실제로는 hidden-tear 계열임을 확인했습니다.</figcaption></figure>
         </div>
+        <p class="st" style="margin-top:16px"><b>2편 · 유포 서버 로그 분석</b> — 악성코드를 유포한 서버의 웹 로그에서 공격 도구의 흔적을 시간순으로 찾았습니다.</p>
+        <div class="figrow two" style="margin-top:6px">
+          <figure class="fig"><button class="zoom" aria-label="확대: WhatWeb 흔적"><img src="assets/img/dbd2-02.webp" alt="Apache 접근 로그에서 WhatWeb 스캐너의 요청을 확인" loading="lazy"></button><figcaption>정보 수집 — 로그에서 WhatWeb 스캐너의 요청을 확인했습니다.</figcaption></figure>
+          <figure class="fig"><button class="zoom" aria-label="확대: WPScan 흔적"><img src="assets/img/dbd2-04.webp" alt="Apache 접근 로그에서 WPScan이 wp-content·wp-config 백업을 열거한 요청" loading="lazy"></button><figcaption>취약점 스캔 — WPScan이 플러그인과 설정 백업을 열거한 요청을 확인했습니다.</figcaption></figure>
+        </div>
       </article>
       <article class="wuitem" id="it-deface">
         <div class="wuih"><span class="ft">침해 분석</span><h3>Deface 침해 분석</h3><a class="anchor" href="#deface">#deface</a></div>
@@ -1250,6 +1255,10 @@
         <figure class="fig" style="margin-top:16px"><button class="zoom" aria-label="확대: 데몬 기동 문제"><img src="assets/img/cuckoo-87.webp" alt="supervisord 로그에서 cuckoo-daemon이 여러 번 FATAL로 종료된 뒤 RUNNING 상태로 안정화된 기록" loading="lazy"></button><figcaption>구축 문제 — supervisord 로그에서 cuckoo-daemon이 반복 종료(FATAL)된 뒤, 재시도 조건을 조정하자 RUNNING 상태로 30초 이상 유지되는 것을 확인했습니다.</figcaption></figure>
         <figure class="fig" style="margin-top:14px"><button class="zoom" aria-label="확대: 분석 엔진 기동"><img src="assets/img/cuckoo-86.webp" alt="cuckoo 로그에 YARA 룰 로드, ResultServer 기동, cuckoo1 VM 스냅샷 복원, 분석 작업 대기 메시지가 출력됨" loading="lazy"></button><figcaption>엔진 기동 — YARA 룰 로드와 ResultServer 기동 후, cuckoo1 VM을 스냅샷으로 복원하고 "Waiting for analysis tasks"로 분석 대기에 들어간 것을 확인했습니다.</figcaption></figure>
         <figure class="fig" style="margin-top:14px"><button class="zoom" aria-label="확대: 샘플 제출·분석"><img src="assets/img/cuckoo-80.webp" alt="REST API로 샘플을 제출해 task_id가 발급되고, 작업 조회에서 category file 분석이 completed 상태로 표시됨" loading="lazy"></button><figcaption>분석 실행 — REST API로 샘플을 제출하자 task_id가 발급됐고, 작업 조회에서 해당 분석이 VirtualBox 게스트에서 실행돼 완료(status stopped·duration 133s)된 것을 확인했습니다.</figcaption></figure>
+        <div class="figrow two" style="margin-top:14px">
+          <figure class="fig"><button class="zoom" aria-label="확대: 웹 서비스 구성"><img src="assets/img/cuckoo-78.webp" alt="Cuckoo API를 nginx·uwsgi로 연결하는 구성" loading="lazy"></button><figcaption>구성 — Cuckoo API를 nginx·uwsgi로 연결해 서비스로 띄웠습니다.</figcaption></figure>
+          <figure class="fig"><button class="zoom" aria-label="확대: 데몬 기동"><img src="assets/img/cuckoo-85.webp" alt="supervisorctl로 cuckoo 데몬을 기동한 결과" loading="lazy"></button><figcaption>기동 — supervisor로 cuckoo 데몬을 올려 서비스를 시작했습니다.</figcaption></figure>
+        </div>
       </article>
       <article class="wuitem" id="it-hyper">
         <div class="wuih"><span class="ft">환경 구축</span><h3>하이퍼바이저·분석 환경</h3><a class="anchor" href="#hyper">#hyper</a></div>
@@ -1317,6 +1326,11 @@
           <figure class="fig"><button class="zoom" aria-label="확대: 프로세스 트리"><img src="assets/img/beast-11.webp" alt="샘플 실행 후 생성된 프로세스를 보여주는 프로세스 트리" loading="lazy"></button><figcaption>동적 — 실행 후 생성된 프로세스를 프로세스 트리에서 확인했습니다.</figcaption></figure>
           <figure class="fig"><button class="zoom" aria-label="확대: 서비스 중지"><img src="assets/img/beast-05.webp" alt="샌드박스 보고서에서 ControlService로 다수 서비스를 중지하려 시도한 기록(54건 중 50건)" loading="lazy"></button><figcaption>행위 — 샌드박스 보고서에서 방화벽(BFE)·BITS·CryptSvc 등 동작 중인 서비스 다수를 중지하려 시도한 기록을 확인했습니다.</figcaption></figure>
         </div>
+        <div class="figrow three" style="margin-top:14px">
+          <figure class="fig"><button class="zoom" aria-label="확대: 파일 위장 복사"><img src="assets/img/beast-13.webp" alt="샘플이 자신을 C:\Windows\svchost.exe로 복사하는 CopyFile 동작" loading="lazy"></button><figcaption>위장 — 자신을 <code class="inl">C:\Windows\svchost.exe</code> 등으로 복사해 정상 파일처럼 숨겼습니다.</figcaption></figure>
+          <figure class="fig"><button class="zoom" aria-label="확대: 타임스톰핑"><img src="assets/img/beast-14.webp" alt="드롭한 파일에 SetFileTime·SYSTEM 속성을 적용하는 동작" loading="lazy"></button><figcaption>은폐 — 드롭 파일에 시각 변조(SetFileTime)와 SYSTEM 속성을 적용했습니다.</figcaption></figure>
+          <figure class="fig"><button class="zoom" aria-label="확대: 자동 실행 등록"><img src="assets/img/beast-25.webp" alt="레지스트리 Run·Active Setup에 자동 실행을 등록하는 기록" loading="lazy"></button><figcaption>지속성 — 레지스트리 Run·Active Setup에 자동 실행을 등록했습니다.</figcaption></figure>
+        </div>
       </article>
       <article class="wuitem" id="it-clickfix">
         <div class="wuih"><span class="ft">메모리</span><h3>ClickFix 메모리 포렌식</h3><a class="anchor" href="#clickfix">#clickfix</a></div>
@@ -1328,6 +1342,10 @@
         <div class="figrow two" style="margin-top:14px">
           <figure class="fig"><button class="zoom" aria-label="확대: RunMRU 레지스트리"><img src="assets/img/clickfix-07.webp" alt="RunMRU 레지스트리 키에 PowerShell 실행 명령이 남은 기록(명령 문자열은 가림)" loading="lazy"></button><figcaption>레지스트리 — 메모리의 <code class="inl">RunMRU</code> 키에서 사용자가 실행 대화상자(Win+R)로 PowerShell 명령을 실행한 흔적을 확인했습니다. 실제 명령 문자열은 가렸습니다.</figcaption></figure>
           <figure class="fig"><button class="zoom" aria-label="확대: 메모리 URL"><img src="assets/img/clickfix-06.webp" alt="YARA 규칙으로 메모리에서 추출한 HTTP URL 문자열" loading="lazy"></button><figcaption>연결 — YARA 규칙으로 메모리를 훑어 남아 있던 HTTP URL 문자열을 추출했습니다.</figcaption></figure>
+        </div>
+        <div class="figrow two" style="margin-top:14px">
+          <figure class="fig"><button class="zoom" aria-label="확대: 코드 인젝션"><img src="assets/img/clickfix-09.webp" alt="malfind 플러그인이 svchost.exe에서 실행 가능한 주입 메모리 영역을 탐지" loading="lazy"></button><figcaption>인젝션 — <code class="inl">malfind</code>로 svchost.exe에 주입된 실행 메모리 영역을 확인했습니다.</figcaption></figure>
+          <figure class="fig"><button class="zoom" aria-label="확대: 외부 연결"><img src="assets/img/clickfix-14.webp" alt="netscan으로 확인한 내부 C2 주소로의 네트워크 연결" loading="lazy"></button><figcaption>스캔 — <code class="inl">netscan</code>으로 의심 프로세스가 내부 C2 주소로 연결한 흔적을 확인했습니다.</figcaption></figure>
         </div>
       </article>
       <article class="wuitem" id="it-wanna">
@@ -1354,7 +1372,10 @@
       <article class="wuitem" id="it-orcus">
         <div class="wuih"><span class="ft">RAT</span><h3>Orcus</h3><a class="anchor" href="#orcus">#orcus</a></div>
         <p>격리된 실습 환경에서 Orcus RAT의 서버와 클라이언트 빌더를 살펴봤습니다. C2 서버를 기동하고, 클라이언트 빌드에서 키로거·관리자 권한 강제·설치 숨김 같은 은폐·지속성 옵션을 확인했습니다.</p>
-        <figure class="fig" style="max-width:640px;margin-top:16px"><button class="zoom" aria-label="확대: C2 서버"><img src="assets/img/orcus-03.webp" alt="Orcus 서버가 리스너를 기동해 실행 중인 상태(비밀번호 필드는 가려짐)" loading="lazy"></button><figcaption>C2 서버 — 리스너를 기동해 서버가 동작(running)하는 상태를 확인했습니다. 접속 비밀번호는 입력란에 가려져 있습니다.</figcaption></figure>
+        <div class="figrow two" style="margin-top:16px">
+          <figure class="fig"><button class="zoom" aria-label="확대: C2 서버"><img src="assets/img/orcus-03.webp" alt="Orcus 서버가 리스너를 기동해 실행 중인 상태(비밀번호 필드는 가려짐)" loading="lazy"></button><figcaption>C2 서버 — 리스너를 기동해 서버가 동작(running)하는 상태를 확인했습니다. 비밀번호 입력란은 가려져 있습니다.</figcaption></figure>
+          <figure class="fig"><button class="zoom" aria-label="확대: 서버 설정"><img src="assets/img/orcus-02.webp" alt="Orcus 서버의 IP·포트 리스너와 빌드 설정 화면(비밀번호는 가려짐)" loading="lazy"></button><figcaption>서버 설정 — IP·포트 리스너를 추가하고 빌드하는 설정을 확인했습니다. 비밀번호는 가려져 있습니다.</figcaption></figure>
+        </div>
         <div class="figrow two" style="margin-top:14px">
           <figure class="fig"><button class="zoom" aria-label="확대: 클라이언트 빌더"><img src="assets/img/orcus-06.webp" alt="Orcus 클라이언트 빌더의 키로거·권한 설정" loading="lazy"></button><figcaption>빌드 — 클라이언트 빌더에서 키로거와 관리자 권한 강제 설정을 확인했습니다.</figcaption></figure>
           <figure class="fig"><button class="zoom" aria-label="확대: 설치 옵션"><img src="assets/img/orcus-08.webp" alt="설치 프롬프트 숨김·자동 시작·생성 시각 변조 옵션" loading="lazy"></button><figcaption>은폐·지속성 — 설치 프롬프트 숨김·자동 시작·생성 시각 변조 옵션을 확인했습니다.</figcaption></figure>
@@ -1376,6 +1397,7 @@
           <figure class="fig"><button class="zoom" aria-label="확대: 해시·VT"><img src="assets/img/banker-02.webp" alt="샘플 해시와 VirusTotal 다수 탐지 확인" loading="lazy"></button><figcaption>해시·VirusTotal 탐지</figcaption></figure>
           <figure class="fig"><button class="zoom" aria-label="확대: 패킹 판정"><img src="assets/img/banker-04.webp" alt="DIE로 압축·패킹된 PE 구조 판정" loading="lazy"></button><figcaption>DIE 패킹 판정</figcaption></figure>
         </div>
+        <figure class="fig" style="margin-top:14px"><button class="zoom" aria-label="확대: PEStudio 지표"><img src="assets/img/banker-06.webp" alt="PEStudio 초기 평가에서 표시된 위험 지표 목록" loading="lazy"></button><figcaption>지표 — PEStudio 초기 평가로 블랙리스트 함수 등 위험 지표를 교차 확인했습니다.</figcaption></figure>
       </article>
       <article class="wuitem" id="it-installlmp">
         <div class="wuih"><span class="ft">드로퍼</span><h3>Install_LiveManagerPlayer.exe</h3><a class="anchor" href="#installlmp">#installlmp</a></div>
@@ -1388,6 +1410,10 @@
           <figure class="fig"><button class="zoom" aria-label="확대: IDA 분석"><img src="assets/img/installlmp-08.webp" alt="IDA WinMain에서 은행 도메인 문자열을 다루는 코드" loading="lazy"></button><figcaption>코드 — IDA로 본 WinMain에서 은행 도메인을 다루는 문자열을 확인했습니다.</figcaption></figure>
           <figure class="fig"><button class="zoom" aria-label="확대: 레지스트리 지속성"><img src="assets/img/installlmp-16.webp" alt="IDA 코드에서 HKCU Software HDSoft 키를 생성하고 값을 설정하는 레지스트리 지속성 루틴" loading="lazy"></button><figcaption>지속성 — <code class="inl">HKCU\Software\HDSoft</code> 키를 만들어 값을 등록하는 레지스트리 루틴을 코드에서 확인했습니다.</figcaption></figure>
         </div>
+        <div class="figrow two" style="margin-top:14px">
+          <figure class="fig"><button class="zoom" aria-label="확대: 정적 지표"><img src="assets/img/installlmp-03.webp" alt="PEStudio가 블랙리스트 임포트와 WinRAR SFX 매니페스트를 지표로 표시" loading="lazy"></button><figcaption>정적 지표 — PEStudio에서 블랙리스트 임포트·WinRAR SFX 매니페스트 등 위험 지표를 확인했습니다.</figcaption></figure>
+          <figure class="fig"><button class="zoom" aria-label="확대: 보안 영역 변경"><img src="assets/img/installlmp-15.webp" alt="IDA 코드에서 인터넷 옵션 보안 영역(Zones) 레지스트리를 수정하는 루틴" loading="lazy"></button><figcaption>설정 변조 — 인터넷 보안 영역(Zones) 레지스트리를 수정해 보안 설정을 낮추는 코드를 확인했습니다.</figcaption></figure>
+        </div>
       </article>
       <article class="wuitem" id="it-livemanager">
         <div class="wuih"><span class="ft">RAT</span><h3>LiveManagerPlayer</h3><a class="anchor" href="#livemanager">#livemanager</a></div>
@@ -1396,6 +1422,7 @@
           <figure class="fig"><button class="zoom" aria-label="확대: 해시·VT 조회"><img src="assets/img/livemanager-02.webp" alt="샘플 파일 속성의 MD5·SHA 해시와 VirusTotal 링크" loading="lazy"></button><figcaption>해시 조회 — 파일 해시(MD5·SHA)로 VirusTotal 진입점을 확인했습니다.</figcaption></figure>
           <figure class="fig"><button class="zoom" aria-label="확대: VT 분류"><img src="assets/img/livemanager-03.webp" alt="VirusTotal에서 qhosts·banker 계열로 분류된 결과" loading="lazy"></button><figcaption>벤더 분류 — VirusTotal에서 qhosts·dropper·banker 계열로 분류됐습니다.</figcaption></figure>
         </div>
+        <figure class="fig" style="max-width:720px;margin-top:14px"><button class="zoom" aria-label="확대: 파일 구조"><img src="assets/img/livemanager-04.webp" alt="Detect It Easy로 샘플이 WinRAR SFX·RAR 오버레이 구조임을 식별" loading="lazy"></button><figcaption>구조 — Detect It Easy로 WinRAR SFX·RAR 오버레이 구조임을 확인했습니다(드로퍼와 동일 계열).</figcaption></figure>
       </article>
       <div class="listfoot" style="margin-top:28px"><button type="button" class="btn" data-back>← 뒤로가기</button></div>
     </div>
