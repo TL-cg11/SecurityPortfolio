@@ -890,6 +890,7 @@
       <div class="subhead" id="c-mal">악성코드</div>
       <div class="rowlist">
         <a class="row" href="#m518"><span class="rdom">대표</span><span class="rt"><b>518.exe 정적·동적 분석</b><span>DIE·Autoruns·Regshot을 교차해 레지스트리 자동 실행 등록을 확인했습니다.</span></span><span class="rgo">읽기 →</span></a>
+        <a class="row" href="#bpf"><span class="rdom">공격 체인</span><span class="rt"><b>BPFDoor 공격 체인 분석</b><span>웹셸 업로드 → PwnKit 권한 상승 → BPFDoor 백도어 상주·매직 패킷 트리거까지 재현했습니다.</span></span><span class="rgo">읽기 →</span></a>
         <a class="row" href="#beast"><span class="rdom">RAT</span><span class="rt"><b>BeastDoor</b><span>샘플 실행 뒤 생성된 프로세스를 프로세스 트리에서 확인했습니다.</span></span><span class="rgo">읽기 →</span></a>
         <a class="row" href="#clickfix"><span class="rdom">메모리</span><span class="rt"><b>ClickFix 메모리 포렌식</b><span>Volatility로 메모리에서 의심 문자열·외부 연결·지속성 단서를 확인했습니다.</span></span><span class="rgo">읽기 →</span></a>
         <a class="row" href="#wanna"><span class="rdom">랜섬</span><span class="rt"><b>WannaCry 침해 분석</b><span>디스크 이미지에서 레지스트리·캐시·서비스에 남은 감염 흔적을 확인했습니다.</span></span><span class="rgo">읽기 →</span></a>
@@ -1317,6 +1318,20 @@
           <figure class="fig"><button class="zoom" aria-label="확대: Sysmon 프로세스 생성"><img src="assets/img/m518-07.webp" alt="Sysmon 이벤트에서 518.exe 프로세스 생성이 기록됨" loading="lazy"></button><figcaption>동적 — Sysmon이 518.exe의 프로세스 생성을 기록했습니다.</figcaption></figure>
           <figure class="fig"><button class="zoom" aria-label="확대: 자식 프로세스"><img src="assets/img/m518-08.webp" alt="Sysmon 이벤트에서 518.exe가 cmd.exe를 자식 프로세스로 실행" loading="lazy"></button><figcaption>행위 — 518.exe가 cmd.exe를 자식 프로세스로 실행한 것을 확인했습니다.</figcaption></figure>
         </div>
+        <figure class="fig" style="max-width:720px;margin-top:14px"><button class="zoom" aria-label="확대: 인젝션 임포트"><img src="assets/img/m518-05.webp" alt="VirtualAlloc·VirtualProtect 등 코드 인젝션에 쓰이는 임포트 목록" loading="lazy"></button><figcaption>정적 보강 — VirtualAlloc·VirtualProtect 등 코드 인젝션에 쓰이는 임포트를 확인했습니다.</figcaption></figure>
+      </article>
+      <article class="wuitem" id="it-bpf">
+        <div class="wuih"><span class="ft">공격 체인 · 백도어</span><h3>BPFDoor 공격 체인 분석</h3><a class="anchor" href="#bpf">#bpf</a></div>
+        <p>교육용 사설망에서 초기 침투부터 백도어 상주까지 이어지는 공격 체인을 재현·분석했습니다. 취약한 WordPress 플러그인으로 웹셸을 올리고, PwnKit(CVE-2021-4034)으로 권한을 상승한 뒤, BPFDoor 백도어를 심어 매직 패킷으로 역방향 연결을 유도하는 흐름입니다. 공개 PoC를 교육용 환경 조건에 맞춰 재현한 기록입니다.</p>
+        <figure class="fig" style="max-width:760px;margin-top:16px"><button class="zoom" aria-label="확대: 공격 흐름도"><img src="assets/img/bpf-00.webp" alt="초기 접근, 파일 업로드, 권한 상승, BPFDoor로 이어지는 전체 공격 흐름도" loading="lazy"></button><figcaption>전체 흐름 — 초기 접근 → 파일 업로드 → 권한 상승 → BPFDoor로 이어지는 단계를 정리했습니다.</figcaption></figure>
+        <div class="figrow two" style="margin-top:14px">
+          <figure class="fig"><button class="zoom" aria-label="확대: 취약 플러그인"><img src="assets/img/bpf-06.webp" alt="파일 업로드가 가능한 취약한 WordPress 플러그인" loading="lazy"></button><figcaption>초기 침투 — 파일 업로드가 되는 취약 플러그인으로 웹셸을 올렸습니다.</figcaption></figure>
+          <figure class="fig"><button class="zoom" aria-label="확대: 권한 상승"><img src="assets/img/bpf-22.webp" alt="CVE-2021-4034(PwnKit) 실행 후 whoami가 root로 바뀐 결과" loading="lazy"></button><figcaption>권한 상승 — PwnKit(CVE-2021-4034)으로 <code class="inl">root</code> 권한을 얻었습니다.</figcaption></figure>
+        </div>
+        <div class="figrow two" style="margin-top:14px">
+          <figure class="fig"><button class="zoom" aria-label="확대: 백도어 상주"><img src="assets/img/bpf-24.webp" alt="ps -ef에서 bpfdoor 프로세스가 root로 실행 중인 상태" loading="lazy"></button><figcaption>백도어 상주 — BPFDoor가 root 프로세스로 상주하는 것을 확인했습니다.</figcaption></figure>
+          <figure class="fig"><button class="zoom" aria-label="확대: 매직 패킷 트리거"><img src="assets/img/bpf-26.webp" alt="트리거 클라이언트가 UDP 매직 패킷을 보내 역방향 연결을 유도한 결과" loading="lazy"></button><figcaption>트리거 — UDP 매직 패킷을 보내 BPFDoor의 역방향 연결을 유도했습니다.</figcaption></figure>
+        </div>
       </article>
       <article class="wuitem" id="it-beast">
         <div class="wuih"><span class="ft">RAT</span><h3>BeastDoor</h3><a class="anchor" href="#beast">#beast</a></div>
@@ -1330,6 +1345,10 @@
           <figure class="fig"><button class="zoom" aria-label="확대: 파일 위장 복사"><img src="assets/img/beast-13.webp" alt="샘플이 자신을 C:\Windows\svchost.exe로 복사하는 CopyFile 동작" loading="lazy"></button><figcaption>위장 — 자신을 <code class="inl">C:\Windows\svchost.exe</code> 등으로 복사해 정상 파일처럼 숨겼습니다.</figcaption></figure>
           <figure class="fig"><button class="zoom" aria-label="확대: 타임스톰핑"><img src="assets/img/beast-14.webp" alt="드롭한 파일에 SetFileTime·SYSTEM 속성을 적용하는 동작" loading="lazy"></button><figcaption>은폐 — 드롭 파일에 시각 변조(SetFileTime)와 SYSTEM 속성을 적용했습니다.</figcaption></figure>
           <figure class="fig"><button class="zoom" aria-label="확대: 자동 실행 등록"><img src="assets/img/beast-25.webp" alt="레지스트리 Run·Active Setup에 자동 실행을 등록하는 기록" loading="lazy"></button><figcaption>지속성 — 레지스트리 Run·Active Setup에 자동 실행을 등록했습니다.</figcaption></figure>
+        </div>
+        <div class="figrow two" style="margin-top:14px">
+          <figure class="fig"><button class="zoom" aria-label="확대: 프로세스 스캔"><img src="assets/img/beast-02.webp" alt="실행 중인 프로세스를 훑어 샌드박스 회피 여부를 확인하는 동작" loading="lazy"></button><figcaption>회피 — 실행 중인 프로세스를 훑는(샌드박스 회피) 동작을 확인했습니다.</figcaption></figure>
+          <figure class="fig"><button class="zoom" aria-label="확대: 드롭 파일"><img src="assets/img/beast-19.webp" alt="System32에 .com 확장자로 드롭된 파일들" loading="lazy"></button><figcaption>드롭 — System32에 <code class="inl">.com</code> 파일로 복제된 흔적을 확인했습니다.</figcaption></figure>
         </div>
       </article>
       <article class="wuitem" id="it-clickfix">
@@ -1347,6 +1366,7 @@
           <figure class="fig"><button class="zoom" aria-label="확대: 코드 인젝션"><img src="assets/img/clickfix-09.webp" alt="malfind 플러그인이 svchost.exe에서 실행 가능한 주입 메모리 영역을 탐지" loading="lazy"></button><figcaption>인젝션 — <code class="inl">malfind</code>로 svchost.exe에 주입된 실행 메모리 영역을 확인했습니다.</figcaption></figure>
           <figure class="fig"><button class="zoom" aria-label="확대: 외부 연결"><img src="assets/img/clickfix-14.webp" alt="netscan으로 확인한 내부 C2 주소로의 네트워크 연결" loading="lazy"></button><figcaption>스캔 — <code class="inl">netscan</code>으로 의심 프로세스가 내부 C2 주소로 연결한 흔적을 확인했습니다.</figcaption></figure>
         </div>
+        <figure class="fig" style="margin-top:14px"><button class="zoom" aria-label="확대: 드롭 파일"><img src="assets/img/clickfix-08.webp" alt="filescan으로 Temp 폴더에서 드롭된 임시 실행 파일을 확인" loading="lazy"></button><figcaption>흔적 — <code class="inl">filescan</code>으로 Temp 폴더에 드롭된 실행 파일 흔적을 확인했습니다.</figcaption></figure>
       </article>
       <article class="wuitem" id="it-wanna">
         <div class="wuih"><span class="ft">랜섬</span><h3>WannaCry 침해 분석</h3><a class="anchor" href="#wanna">#wanna</a></div>
@@ -1360,7 +1380,8 @@
       <article class="wuitem" id="it-htear">
         <div class="wuih"><span class="ft">랜섬</span><h3>HiddenTear</h3><a class="anchor" href="#htear">#htear</a></div>
         <p>교육용 오픈소스 랜섬웨어 HiddenTear를 실습 환경에서 다뤘습니다. 파일이 암호화되며 나타난 랜섬 노트를 확인하고, 확보한 키로 복호화해 복원 결과를 확인했습니다. 키 등 비밀값은 공개본에서 가렸습니다.</p>
-        <div class="figrow two" style="margin-top:16px">
+        <div class="figrow three" style="margin-top:16px">
+          <figure class="fig"><button class="zoom" aria-label="확대: 암호화 코드"><img src="assets/img/htear-01.webp" alt="AES 암호화를 수행하는 HiddenTear 소스 코드" loading="lazy"></button><figcaption>암호화 로직 — AES로 파일을 암호화하는 소스 코드를 확인했습니다.</figcaption></figure>
           <figure class="fig"><button class="zoom" aria-label="확대: 랜섬 노트"><img src="assets/img/htear-02.webp" alt="암호화 후 나타난 랜섬 노트 화면" loading="lazy"></button><figcaption>감염 결과 — 파일이 암호화되며 피해 화면(랜섬 노트)이 나타난 것을 확인했습니다.</figcaption></figure>
           <figure class="fig"><button class="zoom" aria-label="확대: 복호화"><img src="assets/img/htear-08.webp" alt="복호화 확인, 키 마스킹" loading="lazy"></button><figcaption>복호화 — 확보한 키로 복호화해 "Files Decrypted!"를 확인했습니다. 키 값은 가렸습니다.</figcaption></figure>
         </div>
@@ -1380,6 +1401,7 @@
           <figure class="fig"><button class="zoom" aria-label="확대: 클라이언트 빌더"><img src="assets/img/orcus-06.webp" alt="Orcus 클라이언트 빌더의 키로거·권한 설정" loading="lazy"></button><figcaption>빌드 — 클라이언트 빌더에서 키로거와 관리자 권한 강제 설정을 확인했습니다.</figcaption></figure>
           <figure class="fig"><button class="zoom" aria-label="확대: 설치 옵션"><img src="assets/img/orcus-08.webp" alt="설치 프롬프트 숨김·자동 시작·생성 시각 변조 옵션" loading="lazy"></button><figcaption>은폐·지속성 — 설치 프롬프트 숨김·자동 시작·생성 시각 변조 옵션을 확인했습니다.</figcaption></figure>
         </div>
+        <figure class="fig" style="max-width:720px;margin-top:14px"><button class="zoom" aria-label="확대: 인증 로그"><img src="assets/img/orcus-05.webp" alt="Orcus 관리 콘솔의 클라이언트 목록과 인증 로그(비밀번호는 가려짐)" loading="lazy"></button><figcaption>관제 — 관리 콘솔의 클라이언트 목록과 인증 로그를 확인했습니다. 비밀번호는 로그에서 가려져 있습니다.</figcaption></figure>
       </article>
       <article class="wuitem" id="it-badusb">
         <div class="wuih"><span class="ft">장치</span><h3>BadUSB</h3><a class="anchor" href="#badusb">#badusb</a></div>
@@ -1414,6 +1436,7 @@
           <figure class="fig"><button class="zoom" aria-label="확대: 정적 지표"><img src="assets/img/installlmp-03.webp" alt="PEStudio가 블랙리스트 임포트와 WinRAR SFX 매니페스트를 지표로 표시" loading="lazy"></button><figcaption>정적 지표 — PEStudio에서 블랙리스트 임포트·WinRAR SFX 매니페스트 등 위험 지표를 확인했습니다.</figcaption></figure>
           <figure class="fig"><button class="zoom" aria-label="확대: 보안 영역 변경"><img src="assets/img/installlmp-15.webp" alt="IDA 코드에서 인터넷 옵션 보안 영역(Zones) 레지스트리를 수정하는 루틴" loading="lazy"></button><figcaption>설정 변조 — 인터넷 보안 영역(Zones) 레지스트리를 수정해 보안 설정을 낮추는 코드를 확인했습니다.</figcaption></figure>
         </div>
+        <figure class="fig" style="max-width:640px;margin-top:14px"><button class="zoom" aria-label="확대: 권한 임포트"><img src="assets/img/installlmp-05.webp" alt="LookupPrivilegeValue·AdjustTokenPrivileges 등 권한 조정 임포트" loading="lazy"></button><figcaption>권한 — 토큰 권한을 조정하는 임포트(LookupPrivilegeValue·AdjustTokenPrivileges)를 확인했습니다.</figcaption></figure>
       </article>
       <article class="wuitem" id="it-livemanager">
         <div class="wuih"><span class="ft">RAT</span><h3>LiveManagerPlayer</h3><a class="anchor" href="#livemanager">#livemanager</a></div>
@@ -1556,7 +1579,7 @@
     calc:{v:"system",a:"it-calc"},rpc:{v:"system",a:"it-rpc"},nmap:{v:"system",a:"it-nmap"},ssploit:{v:"system",a:"it-ssploit"},ssh:{v:"system",a:"it-ssh"},cve3623:{v:"system",a:"it-cve3623"},tcpclose:{v:"system",a:"it-tcpclose"},sshtunnel:{v:"system",a:"it-sshtunnel"},lindiag:{v:"system",a:"it-lindiag"},openedr:{v:"system",a:"it-openedr"},
     pfsense:{v:"network",a:"it-pfsense"},elastic:{v:"network",a:"it-elastic"},packet:{v:"network",a:"it-packet"},nitroba:{v:"network",a:"it-nitroba"},
     dbd:{v:"forensic",a:"it-dbd"},recon:{v:"forensic",a:"it-recon"},deface:{v:"forensic",a:"it-deface"},ftk:{v:"forensic",a:"it-ftk"},driveby:{v:"forensic",a:"it-driveby"},cuckoo:{v:"forensic",a:"it-cuckoo"},hyper:{v:"forensic",a:"it-hyper"},
-    m518:{v:"malware",a:"it-m518"},beast:{v:"malware",a:"it-beast"},clickfix:{v:"malware",a:"it-clickfix"},wanna:{v:"malware",a:"it-wanna"},htear:{v:"malware",a:"it-htear"},remcos:{v:"malware",a:"it-remcos"},orcus:{v:"malware",a:"it-orcus"},badusb:{v:"malware",a:"it-badusb"},banker:{v:"malware",a:"it-banker"},installlmp:{v:"malware",a:"it-installlmp"},livemanager:{v:"malware",a:"it-livemanager"}
+    m518:{v:"malware",a:"it-m518"},bpf:{v:"malware",a:"it-bpf"},beast:{v:"malware",a:"it-beast"},clickfix:{v:"malware",a:"it-clickfix"},wanna:{v:"malware",a:"it-wanna"},htear:{v:"malware",a:"it-htear"},remcos:{v:"malware",a:"it-remcos"},orcus:{v:"malware",a:"it-orcus"},badusb:{v:"malware",a:"it-badusb"},banker:{v:"malware",a:"it-banker"},installlmp:{v:"malware",a:"it-installlmp"},livemanager:{v:"malware",a:"it-livemanager"}
   };
   // collection views that hold addressable practice items, and their field labels
   var FIELDS=["web","system","network","forensic","malware"];
