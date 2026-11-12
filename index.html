@@ -841,18 +841,28 @@
       </article>
       <article class="wuitem" id="it-xss">
         <div class="wuih"><span class="ft">XSS</span><h3>저장형 XSS</h3><a class="anchor" href="#xss">#xss</a></div>
-        <p>저장한 스크립트가 글을 열었을 때 실행되는 것을 확인했습니다. 실행 범위는 실습 계정의 브라우저이며, 세션 탈취는 확인하지 않았습니다.</p>
-        <figure class="fig"><button class="zoom" aria-label="확대: XSS"><img src="assets/img/webdiag-02.webp" alt="저장형 XSS 실행" loading="lazy"></button><figcaption>열람 시 저장 스크립트 실행</figcaption></figure>
+        <p>게시판 글 내용에 스크립트를 저장하고, 그 글을 열었을 때 스크립트가 실행되는 것을 확인했습니다. 실행 범위는 실습 계정의 브라우저이며, 세션 탈취는 확인하지 않았습니다.</p>
+        <div class="figrow two" style="margin-top:16px">
+          <figure class="fig"><button class="zoom" aria-label="확대: 스크립트 저장"><img src="assets/img/webdiag-04.webp" alt="글 내용(HTML)에 스크립트 태그를 넣어 저장하는 화면" loading="lazy"></button><figcaption>저장 — 글 내용(HTML)에 스크립트 태그를 넣어 저장했습니다(교육용 리다이렉트 예제).</figcaption></figure>
+          <figure class="fig"><button class="zoom" aria-label="확대: 스크립트 실행"><img src="assets/img/webdiag-02.webp" alt="저장된 글을 열자 스크립트가 실행된 결과" loading="lazy"></button><figcaption>실행 — 저장된 글을 열자 스크립트가 실행되는 것을 확인했습니다.</figcaption></figure>
+        </div>
       </article>
       <article class="wuitem" id="it-csrf">
         <div class="wuih"><span class="ft">CSRF</span><h3>CSRF 댓글 작성 요청</h3><a class="anchor" href="#csrf">#csrf</a></div>
-        <p>외부 요청만으로 댓글이 작성되는 흐름을 확인했습니다. 다른 세션 권한에 미치는 영향은 확인하지 않았습니다.</p>
-        <figure class="fig"><button class="zoom" aria-label="확대: CSRF"><img src="assets/img/webdiag-07.webp" alt="CSRF 댓글 작성" loading="lazy"></button><figcaption>자동 요청에 의한 댓글 작성</figcaption></figure>
+        <p>피해자가 숨겨진 요청이 담긴 글을 열기만 해도 피해자 권한으로 댓글이 작성되는 흐름을 확인했습니다. 다른 세션 권한에 미치는 영향은 확인하지 않았습니다.</p>
+        <div class="figrow two" style="margin-top:16px">
+          <figure class="fig"><button class="zoom" aria-label="확대: CSRF 요청"><img src="assets/img/webdiag-06.webp" alt="댓글 작성 요청을 자동으로 보내는 iframe을 글 내용에 삽입한 화면(비밀번호 값은 가림)" loading="lazy"></button><figcaption>요청 — 댓글 작성 요청을 자동으로 보내는 iframe을 글 내용에 심었습니다. 요청의 비밀번호 값은 가렸습니다.</figcaption></figure>
+          <figure class="fig"><button class="zoom" aria-label="확대: CSRF 결과"><img src="assets/img/webdiag-07.webp" alt="CSRF로 자동 작성된 댓글" loading="lazy"></button><figcaption>결과 — 글을 연 것만으로 댓글이 자동 작성된 것을 확인했습니다.</figcaption></figure>
+        </div>
       </article>
       <article class="wuitem" id="it-upload">
         <div class="wuih"><span class="ft">UPLOAD</span><h3>악성 파일 업로드</h3><a class="anchor" href="#upload">#upload</a></div>
-        <p>업로드 성공 응답을 확인했습니다. 업로드한 파일이 서버에서 실행되는지는 확인하지 않았습니다.</p>
-        <figure class="fig"><button class="zoom" aria-label="확대: 업로드"><img src="assets/img/webdiag-34.webp" alt="확장자 우회 업로드 응답" loading="lazy"></button><figcaption>확장자 우회 업로드 응답</figcaption></figure>
+        <p>확장자를 제한하는 클라이언트 검사를 우회해 서버에 스크립트 파일을 올리고, 그 파일이 서버에서 실행되는 것까지 확인했습니다. 실행에 바로 쓸 수 있는 명령 문자열은 공개본에서 가렸습니다.</p>
+        <figure class="fig" style="max-width:560px;margin-top:16px"><button class="zoom" aria-label="확대: 확장자 검사"><img src="assets/img/webdiag-31.webp" alt="허용 확장자를 jpg·hwp·pdf·jpeg·txt로 제한한다는 클라이언트 알림" loading="lazy"></button><figcaption>클라이언트 검사 — 허용 확장자를 제한하는 알림이 뜨지만, 이 검사는 브라우저 쪽이라 우회할 수 있었습니다.</figcaption></figure>
+        <div class="figrow two" style="margin-top:14px">
+          <figure class="fig"><button class="zoom" aria-label="확대: 업로드 파일 실행"><img src="assets/img/webdiag-33.webp" alt="업로드한 ASP 파일에 접근하자 Hello World가 출력됨" loading="lazy"></button><figcaption>실행 확인 — 올린 ASP 파일에 접근하자 코드가 실행돼 결과가 출력됐습니다.</figcaption></figure>
+          <figure class="fig"><button class="zoom" aria-label="확대: 시스템 명령 실행"><img src="assets/img/webdiag-34.webp" alt="업로드한 ASP가 시스템 명령을 실행해 ipconfig 결과를 반환(URL의 명령 문자열은 가림)" loading="lazy"></button><figcaption>영향 — 같은 방식으로 시스템 명령을 실행해 내부 네트워크 정보(ipconfig)가 반환됐습니다. URL의 명령 문자열은 가렸습니다.</figcaption></figure>
+        </div>
       </article>
       <article class="wuitem" id="it-filedl">
         <div class="wuih"><span class="ft">PATH</span><h3>파일 다운로드 — 경로 조작</h3><a class="anchor" href="#filedl">#filedl</a></div>
