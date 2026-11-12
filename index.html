@@ -1592,6 +1592,9 @@
   var FIELDS=["web","system","network","forensic","malware"];
   var FIELDLABEL={web:"웹 진단",system:"시스템·리버싱",network:"네트워크·관제",forensic:"침해사고·포렌식",malware:"악성코드"};
   var listScroll={}, curView=null, curSolo=false;
+  if("scrollRestoration" in history){ try{ history.scrollRestoration="manual"; }catch(e){} }
+  // instant (non-animated) scroll for view changes, bypassing CSS smooth-scroll
+  function jump(y){ try{ window.scrollTo({top:y,left:0,behavior:"instant"}); }catch(e){ try{ window.scrollTo(0,y); }catch(e2){} } }
   var navlinks=document.querySelectorAll(".navmenu a[data-nav]");
 
   function routeName(){ var h=(location.hash||"").replace(/^#/,""); if(h==="contact") return "home"; if(VIEWS.indexOf(h)>=0) return h; if(ITEMS[h]) return ITEMS[h].v; return "home"; }
@@ -1599,10 +1602,11 @@
     VIEWS.forEach(function(v){ var el=document.getElementById("view-"+v); if(el) el.hidden=(v!==name); });
     var grp=GROUP[name]||"";
     navlinks.forEach(function(a){ if(a.getAttribute("data-nav")===grp){ a.setAttribute("aria-current","true"); } else { a.removeAttribute("aria-current"); } });
-    window.scrollTo(0,0);
-    if(skipFocus) return;
-    var view=document.getElementById("view-"+name);
-    if(view){ var h=view.querySelector(".dtitle, h1.name"); if(h){ try{ h.focus({preventScroll:true}); }catch(e){ h.focus(); } } }
+    if(!skipFocus){
+      var view=document.getElementById("view-"+name);
+      if(view){ var h=view.querySelector(".dtitle, h1.name"); if(h){ try{ h.focus({preventScroll:true}); }catch(e){ h.focus(); } } }
+    }
+    jump(0);
   }
   // solo mode: render a single practice item as its own page
   function clearSolo(){
@@ -1630,8 +1634,8 @@
     head.querySelector(".cur").textContent=title; // set as text to avoid markup issues
     foot.innerHTML='<div style="margin-top:32px;border-top:1px solid var(--line);padding-top:22px">'+
       '<button type="button" class="btn" data-back>← 뒤로가기</button></div>';
-    window.scrollTo(0,0);
     if(titleEl){ titleEl.setAttribute("tabindex","-1"); try{ titleEl.focus({preventScroll:true}); }catch(e){ titleEl.focus(); } }
+    jump(0);
   }
   function route(){
     var h=(location.hash||"").replace(/^#/,"");
@@ -1641,7 +1645,7 @@
     if(ITEMS[h]){ var it=ITEMS[h]; show(it.v,true); enterSolo(it.v,h,it.a); curView=it.v; curSolo=true; return; }
     var name=routeName();
     clearSolo(); show(name); curView=name; curSolo=false;
-    if(listScroll[name]!=null){ var y=listScroll[name]; try{ window.scrollTo(0,y); }catch(e){} }
+    if(listScroll[name]!=null){ var y=listScroll[name]; jump(y); }
   }
   window.addEventListener("hashchange",route);
 
