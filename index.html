@@ -221,6 +221,16 @@
   @media(min-width:560px){.figrow.two{grid-template-columns:1fr 1fr}}
   @media(min-width:820px){.figrow.three{grid-template-columns:repeat(3,1fr)}}
 
+  /* click-to-play YouTube facade (loads the player only on click) */
+  .ytf{position:relative;display:block;width:100%;padding:0;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:#000;aspect-ratio:16/9;cursor:pointer}
+  .ytf img{width:100%;height:100%;object-fit:cover;display:block;opacity:.92;transition:opacity .2s}
+  .ytf:hover img,.ytf:focus-visible img{opacity:1}
+  .ytf .ytp{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none}
+  .ytf .ytp b{display:flex;align-items:center;justify-content:center;width:60px;height:42px;background:rgba(18,18,22,.82);border:1px solid var(--line-2);border-radius:9px;color:#fff;font-size:15px;font-weight:600}
+  .ytf:hover .ytp b,.ytf:focus-visible .ytp b{background:var(--amber);color:#111;border-color:transparent}
+  .ytf iframe{width:100%;height:100%;border:0;display:block}
+  .ytcap{font-family:var(--mono);font-size:12px;color:var(--muted);margin-top:8px;word-break:keep-all}
+
   /* terminal/code stays dark in both themes for legibility */
   .term{border:1px solid #242428;border-radius:8px;background:#0a0a0c;overflow:hidden;font-family:var(--mono);margin-top:4px}
   .term .bar{display:flex;justify-content:space-between;gap:10px;background:#16161a;border-bottom:1px solid #242428;padding:9px 14px;font-size:12px;color:#8b8b93}
@@ -634,32 +644,56 @@
         <div class="rsec"><h3 style="font-size:1.1rem;text-transform:none;letter-spacing:0;color:var(--white)">Zombie Crash</h3><div class="rbody">
           <div class="jobrow"><span>개인 · 디펜스형 드라이빙 액션</span><b>2020.08 — 2021.01</b></div>
           <div class="pills" style="margin-top:12px"><span class="pill">Unity 2019 · C#</span><span class="pill">Android</span></div>
-          <p style="margin-top:14px">차량을 강화하며 좀비로부터 최대한 오래 생존하는 게임입니다.</p>
-          <ul>
-            <li><b>경제·강화</b> — 생존 시간에 비례한 재화 획득 알고리즘과 상점 UI, 차량 스탯 업그레이드 데이터 관리를 구현했습니다.</li>
-            <li><b>게임 루프</b> — 파밍 → 생존 → 보상 → 강화로 이어지는 순환 콘텐츠 구조를 설계했습니다.</li>
-            <li><b>상호작용</b> — 필드 드랍 아이템 획득과 플레이어 스탯 즉시 반영을 처리했습니다.</li>
-          </ul>
+          <div class="grid2" style="margin-top:14px">
+            <div>
+              <p style="margin-top:0">차량을 강화하며 좀비로부터 최대한 오래 생존하는 게임입니다.</p>
+              <ul>
+                <li><b>경제·강화</b> — 생존 시간에 비례한 재화 획득 알고리즘과 상점 UI, 차량 스탯 업그레이드 데이터 관리를 구현했습니다.</li>
+                <li><b>게임 루프</b> — 파밍 → 생존 → 보상 → 강화로 이어지는 순환 콘텐츠 구조를 설계했습니다.</li>
+                <li><b>상호작용</b> — 필드 드랍 아이템 획득과 플레이어 스탯 즉시 반영을 처리했습니다.</li>
+              </ul>
+            </div>
+            <div>
+              <button class="ytf" data-yt="TGId5GZiQe8" aria-label="Zombie Crash 플레이 영상 재생"><img src="assets/img/game-zombie.webp" alt="Zombie Crash 차량 강화 화면" loading="lazy"><span class="ytp"><b>▶ 재생</b></span></button>
+              <p class="ytcap">클릭하면 유튜브에서 플레이 영상이 재생됩니다.</p>
+            </div>
+          </div>
         </div></div>
         <div class="rsec"><h3 style="font-size:1.1rem;text-transform:none;letter-spacing:0;color:var(--white)">Car Slash</h3><div class="rbody">
           <div class="jobrow"><span>개인 · 생존 액션</span><b>2020.01 — 2020.04</b></div>
           <div class="pills" style="margin-top:12px"><span class="pill">Unity 2018 · C#</span><span class="pill">Android</span></div>
-          <p style="margin-top:14px">여러 이동수단으로 점점 강해지는 적을 물리치는 생존 게임입니다.</p>
-          <ul>
-            <li><b>커스터마이징</b> — 차량 머테리얼 제어로 색상을 바꾸고, 3종 이동수단별 고유 스탯·조작감을 차별화했습니다.</li>
-            <li><b>난이도 밸런싱</b> — 플레이 타임 경과에 따라 적 스폰 주기를 단축하고 상위 객체를 생성하는 로직을 구현했습니다.</li>
-            <li><b>상태 관리</b> — 내구도·무기·이동속도 등 여러 변수의 업그레이드 시스템을 구축했습니다.</li>
-          </ul>
+          <div class="grid2" style="margin-top:14px">
+            <div>
+              <p style="margin-top:0">여러 이동수단으로 점점 강해지는 적을 물리치는 생존 게임입니다.</p>
+              <ul>
+                <li><b>커스터마이징</b> — 차량 머테리얼 제어로 색상을 바꾸고, 3종 이동수단별 고유 스탯·조작감을 차별화했습니다.</li>
+                <li><b>난이도 밸런싱</b> — 플레이 타임 경과에 따라 적 스폰 주기를 단축하고 상위 객체를 생성하는 로직을 구현했습니다.</li>
+                <li><b>상태 관리</b> — 내구도·무기·이동속도 등 여러 변수의 업그레이드 시스템을 구축했습니다.</li>
+              </ul>
+            </div>
+            <div>
+              <button class="ytf" data-yt="l96hNCMSeJE" aria-label="Car Slash 플레이 영상 재생"><img src="assets/img/game-carslash.webp" alt="Car Slash 이동수단 커스터마이징 화면" loading="lazy"><span class="ytp"><b>▶ 재생</b></span></button>
+              <p class="ytcap">클릭하면 유튜브에서 플레이 영상이 재생됩니다.</p>
+            </div>
+          </div>
         </div></div>
         <div class="rsec"><h3 style="font-size:1.1rem;text-transform:none;letter-spacing:0;color:var(--white)">Ball Game</h3><div class="rbody">
           <div class="jobrow"><span>개인 · 물리 기반 퍼즐</span><b>2019.08</b></div>
           <div class="pills" style="margin-top:12px"><span class="pill">Unity 2018 · C#</span><span class="pill">Android</span></div>
-          <p style="margin-top:14px">같은 단계의 공을 합쳐 더 높은 단계로 진화시키는 물리 기반 퍼즐 게임입니다.</p>
-          <ul>
-            <li><b>충돌·병합</b> — Collision 이벤트로 동일 오브젝트 충돌을 감지해 상위 오브젝트를 생성하고, 1~15단계 계층 구조를 설계했습니다.</li>
-            <li><b>랜덤 생성</b> — 플레이어가 다루는 1~5단계 공의 스폰 확률 로직을 구현했습니다.</li>
-            <li><b>게임 오버</b> — 경계선 접촉 시간 체크로 게임 오버 조건을 처리했습니다.</li>
-          </ul>
+          <div class="grid2" style="margin-top:14px">
+            <div>
+              <p style="margin-top:0">같은 단계의 공을 합쳐 더 높은 단계로 진화시키는 물리 기반 퍼즐 게임입니다.</p>
+              <ul>
+                <li><b>충돌·병합</b> — Collision 이벤트로 동일 오브젝트 충돌을 감지해 상위 오브젝트를 생성하고, 1~15단계 계층 구조를 설계했습니다.</li>
+                <li><b>랜덤 생성</b> — 플레이어가 다루는 1~5단계 공의 스폰 확률 로직을 구현했습니다.</li>
+                <li><b>게임 오버</b> — 경계선 접촉 시간 체크로 게임 오버 조건을 처리했습니다.</li>
+              </ul>
+            </div>
+            <div>
+              <button class="ytf" data-yt="gvcFFOTaqLQ" aria-label="Ball Game 플레이 영상 재생"><img src="assets/img/game-ballgame.webp" alt="Ball Game 공 합치기 퍼즐 화면" loading="lazy"><span class="ytp"><b>▶ 재생</b></span></button>
+              <p class="ytcap">클릭하면 유튜브(Shorts)에서 플레이 영상이 재생됩니다.</p>
+            </div>
+          </div>
         </div></div>
       </div>
       <div style="margin-top:28px"><button type="button" class="btn" data-back>← 뒤로가기</button></div>
@@ -1396,7 +1430,7 @@
         <tbody>
           <tr><td>서버·데이터 경계</td><td>백엔드·API·DB 없음</td><td>해당 없음</td></tr>
           <tr><td>입력 처리 · 폼</td><td>입력 폼·검색 기능 없음</td><td>해당 없음</td></tr>
-          <tr><td>출력 렌더링 · XSS</td><td>본문은 작성자가 넣은 정적 HTML이며, 스크립트는 외부·사용자 데이터를 <code class="inl">innerHTML</code>로 삽입하지 않습니다(고정 뷰 토글·고정 이미지 src/alt만 사용)</td><td style="color:var(--good)">소스에서 확인</td></tr>
+          <tr><td>출력 렌더링 · XSS</td><td>본문은 작성자가 넣은 정적 HTML이며, 스크립트는 외부·사용자 데이터를 <code class="inl">innerHTML</code>로 삽입하지 않습니다. 플레이 영상은 사용자가 클릭할 때만 고정된 유튜브(nocookie) 임베드를 불러오고, 평소에는 외부 호출이 없습니다</td><td style="color:var(--good)">소스에서 확인</td></tr>
           <tr><td>외부 링크</td><td>모든 <code class="inl">target="_blank"</code> 링크에 <code class="inl">rel="noopener noreferrer"</code>를 적용했습니다</td><td style="color:var(--good)">소스에서 확인</td></tr>
           <tr><td>비밀값 노출</td><td>공개 이미지의 쿠키·토큰·키·암호·해시·개인정보를 픽셀로 가렸고, 남은 캡처를 계속 확인하고 있습니다</td><td style="color:var(--amber)">이미지 추가 확인 중</td></tr>
           <tr><td>정적 산출물 정보 노출</td><td>배포 파일을 검토한 범위에서 키·토큰·개인정보를 발견하지 못했습니다</td><td style="color:var(--good)">소스에서 확인</td></tr>
@@ -1518,6 +1552,7 @@
 
   // in-view TOC scroll (avoids changing the route hash)
   document.addEventListener("click",function(e){
+    var yt=e.target.closest(".ytf[data-yt]"); if(yt){ e.preventDefault(); var id=yt.getAttribute("data-yt"); var w=document.createElement("div"); w.className="ytf"; var f=document.createElement("iframe"); f.src="https://www.youtube-nocookie.com/embed/"+encodeURIComponent(id)+"?autoplay=1&rel=0"; f.title="게임 플레이 영상"; f.setAttribute("allow","autoplay; encrypted-media; fullscreen; picture-in-picture"); f.setAttribute("allowfullscreen",""); w.appendChild(f); yt.replaceWith(w); return; }
     var bk=e.target.closest("[data-back]"); if(bk){ e.preventDefault(); if(history.length>1){ history.back(); } else { location.hash="#home"; } return; }
     var t=e.target.closest("[data-to]"); if(t){ e.preventDefault(); var el=document.getElementById(t.getAttribute("data-to")); if(el) el.scrollIntoView({behavior:"smooth",block:"start"}); return; }
   });
