@@ -115,7 +115,7 @@
   .profcard .top{display:flex;gap:16px;align-items:center;margin-bottom:16px}
   .profcard .pn b{color:var(--white);font-weight:600;font-size:16px;display:block}
   .profcard .pn span{font-family:var(--mono);font-size:11px;color:var(--dim);display:block;margin-top:4px}
-  .profcard .pphoto{width:112px;height:140px;object-fit:cover;object-position:top center;border:1px solid var(--line-2);border-radius:8px;filter:grayscale(1) contrast(1.03);margin-bottom:16px}
+  .profcard .pphoto{width:112px;height:140px;object-fit:cover;object-position:top center;border:1px solid var(--line-2);border-radius:8px;filter:none;margin-bottom:16px}
   .profcard .qnav{display:flex;flex-direction:column}
   .profcard .qnav a{font-family:var(--mono);font-size:13px;color:var(--muted);padding:11px 8px;border-top:1px solid var(--line-faint)}
   .profcard .qnav a:first-child{border-top:none}
@@ -326,8 +326,7 @@
         <div>
           <p class="kicker">모의해킹 포트폴리오</p>
           <h1 class="name" id="hero-name" tabindex="-1">성도윤</h1>
-          <p class="role">클라이언트 개발 경력 2년</p>
-          <p class="headline" style="text-wrap:balance">취약점의 원인을 추적하고, 확인한 증거로 설명합니다.</p>
+          <p class="headline" style="text-wrap:balance;margin-top:20px">취약점의 원인을 추적하고, 확인한 증거로 설명합니다.</p>
           <p class="intro">클라이언트 개발 실무에서 Unity와 WebView 사이의 통신을 설계하고, 기기별로 발생하는 문제를 해결했습니다. 지금은 웹·시스템 보안 실습에서 취약점의 영향을 확인하고 대응 방안을 보고서로 정리합니다.</p>
         </div>
         <aside class="profcard" id="contact" aria-label="요약 · 연락">
@@ -408,48 +407,42 @@
     <div class="wrap">
       <nav class="crumb" aria-label="위치"><a href="#home">홈</a><span class="sep">/</span><span>소개 · 경력</span></nav>
       <h1 class="dtitle" tabindex="-1">소개 · 경력</h1>
-      <p class="dsum">교육용 플랫폼과 HTML5 콘텐츠를 개발했습니다. 프로젝트별로 맡은 일과 해결한 문제를 정리했습니다.</p>
-      <div class="toc" role="group" aria-label="목차">
-        <button data-to="swink">스윙크 · 고객사</button><button data-to="tech">기술 스택</button><button data-to="personal">개인 프로젝트</button><button data-to="certs">자격 · 링크</button>
-      </div>
-      <div class="report job">
-        <div class="rsec" id="swink"><h3><span class="n">01</span> 스윙크 · 클라이언트 개발자</h3><div class="rbody">
-          <div class="jobrow"><span>2024.03 — 2026.03 말</span><b>스윙크 · 클라이언트 개발</b></div>
-          <p>교육용 플랫폼과 HTML5 인터랙티브 학습 콘텐츠를 개발했습니다. 프로젝트에 따라 Android·iOS·PC·모바일 웹 환경을 다뤘습니다. 아래는 고객사 프로젝트별로 맡은 일과 문제 해결입니다.</p>
-          <h4 style="margin-top:22px">키즈엠 젤리아이 — 교육용 플랫폼과 콘텐츠</h4>
+      <p class="dsum">스윙크에서 Unity·Cocos Creator로 교육용 플랫폼과 HTML5 인터랙티브 학습 콘텐츠를 개발했습니다. 고객사 프로젝트별로 맡은 일과 해결한 문제를 정리했습니다.</p>
+      <div class="report job" style="margin-top:8px">
+        <div class="rsec" style="border-top:none;padding-top:6px"><h3><span class="n">01</span> 스윙크 · 클라이언트 개발</h3><div class="rbody">
+          <div class="jobrow"><span>스윙크 · 클라이언트 개발 (Unity / Cocos Creator)</span><b>2024.03 — 2026.03</b></div>
+          <p>교육용 플랫폼과 HTML5 인터랙티브 학습 콘텐츠를 개발했습니다. 프로젝트에 따라 Android·iOS·PC·모바일 웹 환경을 다뤘습니다.</p>
+
+          <h4 style="margin-top:24px">키즈엠 젤리아이 — 교육용 플랫폼·콘텐츠 <span style="font-family:var(--mono);font-size:12px;color:var(--dim);font-weight:400">2024.07 — 2026.03</span></h4>
           <p>팀장 보조로 공통 개발 구조 정비, 콘텐츠 개발, 부서 간 기술 이슈 조율을 맡았습니다.</p>
+          <p style="font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;color:var(--amber);margin:16px 0 6px">■ 수행 업무</p>
           <ul>
-            <li><b>Unity–WebView 브릿지</b> — Unity와 WebView가 서로 기능을 호출하고 데이터를 주고받도록 통신 구조를 설계했습니다. 양쪽의 콜백과 데이터 형식을 맞췄습니다.</li>
-            <li><b>공통 기능과 배포</b> — 반복 기능을 외부 플러그인으로 분리해 여러 콘텐츠가 공유하도록 했고, 플랫폼별 빌드 파이프라인과 콘텐츠 리소스 업로드를 관리했습니다. 반복 빌드·검수·배포와 유지보수 부담을 줄였습니다.</li>
-            <li><b>초기 로딩</b> — 앱에 들어올 때 리소스를 한꺼번에 불러오던 구조를 바꿨습니다. 필요한 시점에 서버에서 로딩하도록 바꾸고 이미지 압축을 적용해 초기 진입을 개선했습니다.</li>
-            <li><b>Android 오디오</b> — 특정 Android 기기에서 WebAudio 음질이 떨어지는 문제를 분석했습니다. DOM의 오디오 객체를 직접 제어해 해결했습니다.</li>
+            <li><b>Hybrid Architecture</b> — Unity와 WebView가 서로 기능을 호출하고 데이터를 주고받는 브릿지 통신 구조를 설계·구현했습니다.</li>
+            <li><b>Core System</b> — 프로젝트 기본 아키텍처를 설계하고 Cocos Creator 기반 콘텐츠를 개발했습니다.</li>
+            <li><b>Deployment</b> — 플랫폼별 빌드 파이프라인을 관리하고 콘텐츠 리소스 서버 업로드 프로세스를 정립했습니다.</li>
+            <li><b>Collaboration</b> — 공통 개발 표준을 수립하고 개발 프로세스를 최적화하며 부서 간 기술 이슈 커뮤니케이션을 주도했습니다.</li>
           </ul>
-          <h4 style="margin-top:22px">메가스터디 · 천재교과서 — HTML5 인터랙티브 콘텐츠</h4>
-          <p>각각 2024.05 ~ 2024.10. Cocos Creator와 TypeScript로 학습 화면의 인터랙션과 콘텐츠 로직을 구현했습니다. 기기마다 달라지는 WebView 동작을 조정하고, 반복되는 기능은 공통 로직으로 정리했습니다.</p>
-        </div></div>
-        <div class="rsec" id="tech"><h3><span class="n">02</span> 기술 스택</h3><div class="rbody">
-          <div class="techtable">
-            <div class="tr"><div class="tg">실무 개발</div><div class="tt">Unity · C# · Cocos Creator · TypeScript · WebView</div><div class="te"><a href="#swink" data-to="swink">스윙크 경력</a></div></div>
-            <div class="tr"><div class="tg">시스템 · 도구</div><div class="tt">C++17 · Win32 API · YARA · SQLite · Sysmon</div><div class="te"><a href="#miniedr">miniEDR</a></div></div>
-            <div class="tr"><div class="tg">웹 · AI 보안</div><div class="tt">Python · FastAPI · React · Kafka · Loki · Grafana</div><div class="te"><a href="#myora">묘라</a></div></div>
-            <div class="tr"><div class="tg">진단 · 분석</div><div class="tt">Burp Suite · OWASP ZAP · OllyDbg · Wireshark · Volatility</div><div class="te"><a href="#writeups">실습·분석</a></div></div>
-          </div>
-        </div></div>
-        <div class="rsec" id="personal"><h3><span class="n">03</span> 개인 개발 프로젝트</h3><div class="rbody">
-          <p>Top Survival 온라인에서는 Photon 2로 멀티플레이를 구현했습니다. 뒤끝 서버로 인증과 저장을 처리하고, 그리드 인벤토리와 시야·전투 로직을 만들었습니다.</p>
-          <p style="margin-top:10px">이외 Zombie Crash · Car Slash · Ball Game을 개발했습니다.</p>
-          <figure class="fig" style="max-width:460px;margin-top:6px"><button class="zoom" aria-label="확대: Top Survival"><img src="assets/img/dev-01.webp" alt="Top Survival 게임 화면" loading="lazy"></button><figcaption>Top Survival — 탑뷰 전투·시야 시스템</figcaption></figure>
-        </div></div>
-        <div class="rsec" id="certs"><h3><span class="n">04</span> 자격증 · 링크</h3><div class="rbody">
-          <div class="about">
-            <div class="ab"><h4>자격증</h4>
-              <div class="line"><span>자격</span><b>네트워크관리사 2급</b></div>
-              <div class="line" style="border-bottom:none"><span>자격</span><b>정보처리기사</b></div>
-            </div>
-            <div class="ab"><h4>링크</h4>
-              <div class="line" style="border-bottom:none"><span>GitHub</span><b><a href="https://github.com/TL-cg11" target="_blank" rel="noopener noreferrer" style="color:var(--fg)">github.com/TL-cg11 ↗</a></b></div>
-            </div>
-          </div>
+          <p style="font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;color:var(--amber);margin:16px 0 6px">■ 주요 성과</p>
+          <ul>
+            <li><b>객체 지향적 설계·모듈화로 생산성 향상</b> — 초기 프로젝트의 중복 코드를 제거하기 위해 객체 지향 기반 공통 모듈 시스템을 설계하고, 공통 기능을 외부 플러그인으로 분리·모듈화해 유지보수 시 모든 프로젝트에 자동 반영되는 중앙 관리 구조를 구축했습니다. ⇒ 반복적인 빌드·검수 리드타임을 줄여 개발 효율을 높였습니다.</li>
+            <li><b>리소스 동적 할당으로 로딩 최적화</b> — 리소스 누적으로 인한 병목을 해결하기 위해 정적 로딩 방식을 서버 기반 동적 할당·지연 로딩 구조로 재설계하고, 이미지 압축과 메모리 관리 전략을 병행해 렌더링 성능을 확보했습니다. ⇒ 초기 진입 체감 로딩 시간을 단축했습니다.</li>
+            <li><b>DOM 직접 제어로 엔진 한계 극복</b> — 특정 Android에서 발생한 WebAudio 음질 저하를 Cocos 엔진 API 한계로 분석하고, 엔진 레벨을 우회해 DOM 레벨에서 오디오 객체를 직접 제어하는 방식으로 하드웨어 호환성 문제를 원천적으로 해결했습니다.</li>
+          </ul>
+
+          <h4 style="margin-top:26px">메가스터디 · 천재교과서 — HTML5 인터랙티브 콘텐츠 <span style="font-family:var(--mono);font-size:12px;color:var(--dim);font-weight:400">2024.05 — 2024.10</span></h4>
+          <p>Cocos Creator와 TypeScript로 학습 화면의 인터랙션과 콘텐츠 로직을 구현했습니다.</p>
+          <p style="font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;color:var(--amber);margin:16px 0 6px">■ 수행 업무</p>
+          <ul>
+            <li>교육 플랫폼용 인터랙티브 학습 콘텐츠 로직을 구현했습니다.</li>
+            <li>기획서·시나리오 기반의 UI/UX 인터랙션 시스템을 구현했습니다.</li>
+            <li>웹뷰 환경의 디바이스 파편화에 대응하고 콘텐츠를 최적화했습니다.</li>
+          </ul>
+          <p style="font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;color:var(--amber);margin:16px 0 6px">■ 주요 성과</p>
+          <ul>
+            <li><b>안정적 서비스 구현</b> — 다수의 콘텐츠를 일관된 품질 기준에 맞춰 안정적으로 개발·배포했습니다.</li>
+            <li><b>구조적 유연성 확보</b> — 반복되는 콘텐츠 패턴을 분석해 재사용 가능한 로직을 적용하고 개발 속도를 높였습니다.</li>
+            <li><b>실무 적응력</b> — 대규모 트래픽이 발생하는 실서비스 환경 기준에 맞춰 안정성이 확보된 콘텐츠를 개발했습니다.</li>
+          </ul>
         </div></div>
       </div>
       <div style="margin-top:28px"><button type="button" class="btn" data-back>← 뒤로가기</button></div>
