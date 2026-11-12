@@ -136,7 +136,9 @@
   @media(min-width:720px){.cards.two{grid-template-columns:1fr 1fr}}
   .ic{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:11px;background:var(--surface);overflow:hidden;transition:border-color .2s}
   .ic:hover{border-color:var(--line-2)}
-  .ic .icimg{aspect-ratio:16/8;background:#000;overflow:hidden;border-bottom:1px solid var(--line)}
+  .ic .icimg{display:block;aspect-ratio:16/8;background:#000;overflow:hidden;border-bottom:1px solid var(--line)}
+  .ic .iclinks{margin-top:auto;display:flex;gap:16px;padding-top:8px;font-family:var(--mono);font-size:12px}
+  .ic .iclinks a{color:var(--fg)} .ic .iclinks a:hover,.ic .iclinks a:focus-visible{color:var(--white)}
   .ic .icimg img{width:100%;height:100%;object-fit:cover;object-position:top left}
   .ic .icb{padding:17px 18px;display:flex;flex-direction:column;gap:8px;flex:1}
   .ic .ictag{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;color:var(--dim);text-transform:uppercase}
@@ -374,14 +376,14 @@
     <div class="wrap">
       <div class="ix"><div class="l"><b>프로젝트</b><span class="sl">/</span><span>PROJECTS</span></div><a href="#projects" style="color:var(--muted)">모든 프로젝트 →</a></div>
       <div class="cards two">
-        <a class="ic" href="#miniedr">
-          <div class="icimg"><img src="assets/img/edr-arch.webp" alt="miniEDR 구조도" loading="lazy"></div>
-          <div class="icb"><span class="ictag">SYSTEM · C++17</span><h3>miniEDR</h3><p>Windows에서 파일을 감시하고, YARA 규칙이나 SHA-256 해시가 일치하면 격리하도록 만들었습니다.</p><span class="icgo">프로젝트 보기 →</span></div>
-        </a>
-        <a class="ic" href="#myora">
-          <div class="icimg"><img src="assets/img/myora-dash.webp" alt="묘라 보안 대시보드" loading="lazy"></div>
-          <div class="icb"><span class="ictag">WEB · 팀장</span><h3>묘라 — 운세 서비스와 보안 모니터링</h3><p>팀장으로 서비스 개발과 인프라, 보안 모니터링을 맡았습니다. 개인정보 탐지에서 발생한 오탐·미탐을 분석하고 개선안을 정리했습니다.</p><span class="icgo">프로젝트 보기 →</span></div>
-        </a>
+        <div class="ic">
+          <a class="icimg" href="#miniedr"><img src="assets/img/edr-arch.webp" alt="miniEDR 구조도" loading="lazy"></a>
+          <div class="icb"><span class="ictag">SYSTEM · C++17</span><h3><a href="#miniedr" style="color:inherit">miniEDR</a></h3><p>Windows에서 파일을 감시하고, YARA 규칙이나 SHA-256 해시가 일치하면 격리하도록 만들었습니다.</p><div class="iclinks"><a href="#miniedr">프로젝트 보기 →</a><a href="https://github.com/TL-cg11/miniedr" target="_blank" rel="noopener noreferrer">GitHub ↗</a></div></div>
+        </div>
+        <div class="ic">
+          <a class="icimg" href="#myora"><img src="assets/img/myora-dash.webp" alt="묘라 보안 대시보드" loading="lazy"></a>
+          <div class="icb"><span class="ictag">WEB · 팀장</span><h3><a href="#myora" style="color:inherit">묘라 — 운세 서비스와 보안 모니터링</a></h3><p>팀장으로 서비스 개발과 인프라, 보안 모니터링을 맡았습니다. 개인정보 탐지에서 발생한 오탐·미탐을 분석하고 개선안을 정리했습니다.</p><div class="iclinks"><a href="#myora">프로젝트 보기 →</a><a href="https://github.com/TL-cg11/Myora" target="_blank" rel="noopener noreferrer">GitHub ↗</a></div></div>
+        </div>
       </div>
     </div>
   </section>
@@ -592,8 +594,8 @@
       <p class="dsum">보안 프로젝트(miniEDR·묘라)와 함께, 스윙크에서 진행한 클라이언트 개발 실무와 개인 개발 프로젝트를 정리했습니다.</p>
       <div class="subhead" style="margin-top:22px">보안 프로젝트</div>
       <div class="cards two">
-        <a class="ic" href="#miniedr"><div class="icimg"><img src="assets/img/edr-design.webp" alt="miniEDR 모듈" loading="lazy"></div><div class="icb"><span class="ictag">SYSTEM · C++17 · 개인</span><h3>miniEDR</h3><p>Windows에서 파일을 감시하고, YARA 규칙이나 SHA-256 해시가 일치하면 격리하도록 만들었습니다.</p><span class="icgo">프로젝트 보기 →</span></div></a>
-        <a class="ic" href="#myora"><div class="icimg"><img src="assets/img/myora-home.webp" alt="묘라 서비스" loading="lazy"></div><div class="icb"><span class="ictag">WEB · 팀 · 팀장</span><h3>묘라 — 운세 서비스와 보안 모니터링</h3><p>팀장으로 서비스 개발과 인프라, 보안 모니터링을 맡았습니다. 개인정보 탐지에서 발생한 오탐·미탐을 분석하고 개선안을 정리했습니다.</p><span class="icgo">프로젝트 보기 →</span></div></a>
+        <div class="ic"><a class="icimg" href="#miniedr"><img src="assets/img/edr-design.webp" alt="miniEDR 모듈" loading="lazy"></a><div class="icb"><span class="ictag">SYSTEM · C++17 · 개인</span><h3><a href="#miniedr" style="color:inherit">miniEDR</a></h3><p>Windows에서 파일을 감시하고, YARA 규칙이나 SHA-256 해시가 일치하면 격리하도록 만들었습니다.</p><div class="iclinks"><a href="#miniedr">프로젝트 보기 →</a><a href="https://github.com/TL-cg11/miniedr" target="_blank" rel="noopener noreferrer">GitHub ↗</a></div></div></div>
+        <div class="ic"><a class="icimg" href="#myora"><img src="assets/img/myora-home.webp" alt="묘라 서비스" loading="lazy"></a><div class="icb"><span class="ictag">WEB · 팀 · 팀장</span><h3><a href="#myora" style="color:inherit">묘라 — 운세 서비스와 보안 모니터링</a></h3><p>팀장으로 서비스 개발과 인프라, 보안 모니터링을 맡았습니다. 개인정보 탐지에서 발생한 오탐·미탐을 분석하고 개선안을 정리했습니다.</p><div class="iclinks"><a href="#myora">프로젝트 보기 →</a><a href="https://github.com/TL-cg11/Myora" target="_blank" rel="noopener noreferrer">GitHub ↗</a></div></div></div>
       </div>
 
       <div class="subhead">실무 프로젝트 · 스윙크</div>
@@ -1144,26 +1146,38 @@
 
       <article class="wuitem" id="it-pfsense">
         <div class="wuih"><span class="ft">관제</span><h3>pfSense 구성·정책</h3><a class="anchor" href="#pfsense">#pfsense</a></div>
-        <p>pfSense에서 WAN·LAN 인터페이스를 설정한 뒤, 관리 화면에서 LAN 방화벽 규칙을 추가하고 편집했습니다.</p>
+        <p>pfSense에서 WAN·LAN 인터페이스를 설정하고 대시보드로 상태를 확인한 뒤, 관리 화면에서 LAN 방화벽 규칙을 추가하고 편집했습니다.</p>
         <div class="figrow two">
-          <figure class="fig"><button class="zoom" aria-label="확대: 방화벽 규칙"><img src="assets/img/pfsense-07.webp" alt="pfSense LAN 방화벽 규칙 목록" loading="lazy"></button><figcaption>LAN 방화벽 규칙 목록</figcaption></figure>
-          <figure class="fig"><button class="zoom" aria-label="확대: 규칙 편집"><img src="assets/img/pfsense-08.webp" alt="pfSense 방화벽 규칙 편집 화면" loading="lazy"></button><figcaption>방화벽 규칙 편집</figcaption></figure>
+          <figure class="fig"><button class="zoom" aria-label="확대: 인터페이스 설정"><img src="assets/img/pfsense-02.webp" alt="pfSense 콘솔 메뉴에서 WAN(em0)·LAN(em1) 인터페이스와 IP가 할당된 상태" loading="lazy"></button><figcaption>인터페이스 설정 — WAN(em0)·LAN(em1)에 IP를 할당했습니다.</figcaption></figure>
+          <figure class="fig"><button class="zoom" aria-label="확대: 대시보드"><img src="assets/img/pfsense-06.webp" alt="pfSense 대시보드의 시스템 정보와 인터페이스 상태" loading="lazy"></button><figcaption>대시보드 — 버전·인터페이스 상태를 확인했습니다.</figcaption></figure>
+        </div>
+        <div class="figrow two" style="margin-top:14px">
+          <figure class="fig"><button class="zoom" aria-label="확대: 방화벽 규칙"><img src="assets/img/pfsense-07.webp" alt="pfSense LAN 방화벽 규칙 목록" loading="lazy"></button><figcaption>규칙 목록 — LAN 방화벽 규칙을 확인했습니다.</figcaption></figure>
+          <figure class="fig"><button class="zoom" aria-label="확대: 규칙 편집"><img src="assets/img/pfsense-08.webp" alt="pfSense 방화벽 규칙 편집 화면" loading="lazy"></button><figcaption>규칙 편집 — 규칙을 추가·편집했습니다.</figcaption></figure>
         </div>
       </article>
       <article class="wuitem" id="it-elastic">
         <div class="wuih"><span class="ft">관제</span><h3>Elastic Stack 수집 구성</h3><a class="anchor" href="#elastic">#elastic</a></div>
-        <p>Suricata에서 NFQUEUE 연동을 설정하고 엔진을 실행했습니다. 이벤트를 Filebeat와 Logstash로 수집하는 파이프라인을 구성했습니다.</p>
+        <p>Suricata에서 NFQUEUE 연동을 설정해 엔진을 실행하고, 이벤트를 수집해 Elasticsearch에 적재한 뒤 Kibana에서 확인하는 파이프라인을 구성했습니다.</p>
         <div class="figrow two">
-          <figure class="fig"><button class="zoom" aria-label="확대: NFQueue 지원"><img src="assets/img/elastic-03.webp" alt="Suricata 빌드 구성에서 NFQueue support: yes 확인" loading="lazy"></button><figcaption>Suricata NFQueue 지원 확인</figcaption></figure>
-          <figure class="fig"><button class="zoom" aria-label="확대: 엔진 기동"><img src="assets/img/elastic-04.webp" alt="Suricata 7.0.4 엔진이 기동된 로그" loading="lazy"></button><figcaption>Suricata 엔진 기동 로그</figcaption></figure>
+          <figure class="fig"><button class="zoom" aria-label="확대: NFQueue 지원"><img src="assets/img/elastic-03.webp" alt="Suricata 빌드 구성에서 NFQueue support: yes 확인" loading="lazy"></button><figcaption>빌드 — Suricata의 NFQueue 지원을 확인했습니다.</figcaption></figure>
+          <figure class="fig"><button class="zoom" aria-label="확대: 엔진 기동"><img src="assets/img/elastic-04.webp" alt="Suricata 7.0.4 엔진이 기동된 로그" loading="lazy"></button><figcaption>기동 — Suricata 7.0.4 엔진이 실행된 것을 확인했습니다.</figcaption></figure>
+        </div>
+        <div class="figrow two" style="margin-top:14px">
+          <figure class="fig"><button class="zoom" aria-label="확대: Elasticsearch"><img src="assets/img/elastic-06.webp" alt="Elasticsearch REST 응답으로 확인한 클러스터·버전 정보" loading="lazy"></button><figcaption>저장 — Elasticsearch REST 응답으로 클러스터가 동작하는 것을 확인했습니다.</figcaption></figure>
+          <figure class="fig"><button class="zoom" aria-label="확대: Kibana"><img src="assets/img/elastic-07.webp" alt="Kibana 홈 화면" loading="lazy"></button><figcaption>시각화 — Kibana로 수집 데이터를 확인할 진입점을 구성했습니다.</figcaption></figure>
         </div>
       </article>
       <article class="wuitem" id="it-packet">
         <div class="wuih"><span class="ft">패킷</span><h3>패킷 분석 — ARP · FTP · DDoS</h3><a class="anchor" href="#packet">#packet</a></div>
-        <p>패킷 캡처에서 ARP 스푸핑 흔적, FTP 평문 정보, 대량 요청 구간을 살펴봤습니다.</p>
+        <p>패킷 캡처에서 ARP 스푸핑 흔적, FTP 로그인 시도, 대량 요청 구간을 분석 대상별로 살펴봤습니다.</p>
         <div class="figrow two">
-          <figure class="fig"><button class="zoom" aria-label="확대: 패킷 분석 1"><img src="assets/img/packet-03.webp" alt="프로토콜별 패킷 분석 화면" loading="lazy"></button><figcaption>프로토콜별 트래픽 분석</figcaption></figure>
-          <figure class="fig"><button class="zoom" aria-label="확대: 패킷 분석 2"><img src="assets/img/packet-08.webp" alt="공격 트래픽 패턴 분석" loading="lazy"></button><figcaption>공격 트래픽 패턴</figcaption></figure>
+          <figure class="fig"><button class="zoom" aria-label="확대: ARP 스푸핑"><img src="assets/img/packet-01.webp" alt="같은 IP에 다른 MAC이 응답하는 ARP 중복 탐지(duplicate use detected)" loading="lazy"></button><figcaption>ARP — 같은 IP에 다른 MAC이 응답하는 ARP 스푸핑 흔적을 확인했습니다.</figcaption></figure>
+          <figure class="fig"><button class="zoom" aria-label="확대: FTP 분석"><img src="assets/img/packet-06.webp" alt="ftp.response.code==230 필터 결과가 비어 성공 로그인이 없음을 확인" loading="lazy"></button><figcaption>FTP — 성공 응답(230)을 필터하자 결과가 비어, 로그인 시도가 모두 실패한 것을 확인했습니다.</figcaption></figure>
+        </div>
+        <div class="figrow two" style="margin-top:14px">
+          <figure class="fig"><button class="zoom" aria-label="확대: 프로토콜 분석"><img src="assets/img/packet-03.webp" alt="프로토콜별 패킷 분석 화면" loading="lazy"></button><figcaption>프로토콜 — 프로토콜별 트래픽을 분석했습니다.</figcaption></figure>
+          <figure class="fig"><button class="zoom" aria-label="확대: 공격 트래픽"><img src="assets/img/packet-08.webp" alt="공격 트래픽 패턴 분석" loading="lazy"></button><figcaption>DDoS — 대량 요청이 발생한 공격 트래픽 구간을 확인했습니다.</figcaption></figure>
         </div>
       </article>
       <article class="wuitem" id="it-nitroba">
@@ -1192,10 +1206,14 @@
 
       <article class="wuitem" id="it-dbd">
         <div class="wuih"><span class="ft">침해 분석</span><h3>DBD 침해 분석 1·2</h3><a class="anchor" href="#dbd">#dbd</a></div>
-        <p>브라우저 캐시와 웹 로그에서 다운로드 출처, 시각, 파일을 찾아 감염 시나리오의 타임라인을 구성했습니다.</p>
+        <p>브라우저 캐시와 웹 로그에서 다운로드 출처, 시각, 파일을 찾아 감염 시나리오의 타임라인을 구성했습니다. 감염 페이지가 내려준 악성 스크립트와 최종 페이로드까지 연결했습니다.</p>
         <div class="figrow two">
-          <figure class="fig"><button class="zoom" aria-label="확대: 악성 스크립트"><img src="assets/img/dbd-02.webp" alt="감염 페이지의 난독화된 악성 자바스크립트" loading="lazy"></button><figcaption>난독화된 악성 JavaScript</figcaption></figure>
-          <figure class="fig"><button class="zoom" aria-label="확대: 캐시 아티팩트"><img src="assets/img/dbd-04.webp" alt="브라우저 캐시에 남은 악성 스크립트 다운로드 출처와 시간" loading="lazy"></button><figcaption>캐시의 다운로드 출처·시간 단서</figcaption></figure>
+          <figure class="fig"><button class="zoom" aria-label="확대: 악성 스크립트"><img src="assets/img/dbd-02.webp" alt="감염 페이지의 난독화된 악성 자바스크립트" loading="lazy"></button><figcaption>악성 스크립트 — 감염 페이지의 난독화된 JavaScript를 확인했습니다.</figcaption></figure>
+          <figure class="fig"><button class="zoom" aria-label="확대: 식별한 스크립트"><img src="assets/img/dbd-03.webp" alt="분석으로 식별한 악성 스크립트 파일 목록" loading="lazy"></button><figcaption>식별 — 관련된 악성 스크립트 파일을 추려냈습니다.</figcaption></figure>
+        </div>
+        <div class="figrow two" style="margin-top:14px">
+          <figure class="fig"><button class="zoom" aria-label="확대: 캐시 아티팩트"><img src="assets/img/dbd-04.webp" alt="브라우저 캐시에 남은 악성 스크립트 다운로드 출처와 시간" loading="lazy"></button><figcaption>캐시 단서 — 다운로드 출처와 시각을 확인했습니다.</figcaption></figure>
+          <figure class="fig"><button class="zoom" aria-label="확대: 최종 페이로드"><img src="assets/img/dbd-08.webp" alt="svchost.exe로 위장했지만 설명이 hidden-tear인 드롭된 실행 파일 속성" loading="lazy"></button><figcaption>페이로드 — svchost로 위장한 드롭 파일이 실제로는 hidden-tear 계열임을 확인했습니다.</figcaption></figure>
         </div>
       </article>
       <article class="wuitem" id="it-deface">
@@ -1237,16 +1255,24 @@
         <div class="wuih"><span class="ft">환경 구축</span><h3>하이퍼바이저·분석 환경</h3><a class="anchor" href="#hyper">#hyper</a></div>
         <p>샘플 분석에 사용할 VM을 구성하고 가상화가 활성화됐는지 확인했습니다. 자동 업데이트·방화벽·실시간 보호를 꺼 샘플 실행에 영향을 주지 않도록 했습니다.</p>
         <div class="figrow two">
-          <figure class="fig"><button class="zoom" aria-label="확대: 가상화 활성"><img src="assets/img/hyper-00.webp" alt="작업 관리자에서 가상화 사용 상태 확인" loading="lazy"></button><figcaption>가상화 사용 상태</figcaption></figure>
-          <figure class="fig"><button class="zoom" aria-label="확대: 보호 기능 해제"><img src="assets/img/hyper-05.webp" alt="분석 환경을 위해 보호 기능을 끈 Windows 보안 설정" loading="lazy"></button><figcaption>분석용 보호 기능 해제</figcaption></figure>
+          <figure class="fig"><button class="zoom" aria-label="확대: 가상화 활성"><img src="assets/img/hyper-00.webp" alt="작업 관리자에서 가상화 사용 상태 확인" loading="lazy"></button><figcaption>가상화 — 사용 상태를 확인했습니다.</figcaption></figure>
+          <figure class="fig"><button class="zoom" aria-label="확대: 자동 업데이트 차단"><img src="assets/img/hyper-01.webp" alt="Windows 자동 업데이트 옵션을 끈 화면" loading="lazy"></button><figcaption>업데이트 — 자동 업데이트를 꺼 환경 변화를 막았습니다.</figcaption></figure>
+        </div>
+        <div class="figrow two" style="margin-top:14px">
+          <figure class="fig"><button class="zoom" aria-label="확대: 방화벽 해제"><img src="assets/img/hyper-03.webp" alt="Windows Defender 방화벽을 끈 설정" loading="lazy"></button><figcaption>방화벽 — 샘플 통신을 막지 않도록 방화벽을 껐습니다.</figcaption></figure>
+          <figure class="fig"><button class="zoom" aria-label="확대: 보호 기능 해제"><img src="assets/img/hyper-05.webp" alt="분석 환경을 위해 보호 기능을 끈 Windows 보안 설정" loading="lazy"></button><figcaption>보호 해제 — 바이러스·실시간 보호를 꺼 실행에 영향을 없앴습니다.</figcaption></figure>
         </div>
       </article>
       <article class="wuitem" id="it-recon">
         <div class="wuih"><span class="ft">IR 수집</span><h3>IR 아티팩트 수집 (Windows·Linux)</h3><a class="anchor" href="#recon">#recon</a></div>
-        <p>Windows와 Linux에서 침해 대응용 수집 스크립트를 실행했습니다. 결과가 항목별 폴더에 생성된 것을 확인했습니다.</p>
+        <p>Windows와 Linux에서 침해 대응용 수집 스크립트를 실행하고, 결과가 항목별 폴더(시스템·프로세스·네트워크·서비스·지속성·사용자·아티팩트 등)에 생성된 것을 확인했습니다.</p>
         <div class="figrow two">
-          <figure class="fig"><button class="zoom" aria-label="확대: Windows IR 수집"><img src="assets/img/recon-01.webp" alt="Windows IR 수집 스크립트 실행과 산출 디렉터리" loading="lazy"></button><figcaption>Windows IR 아티팩트 수집</figcaption></figure>
-          <figure class="fig"><button class="zoom" aria-label="확대: Linux IR 수집"><img src="assets/img/recon-04.webp" alt="Linux IR 수집 스크립트 실행 로그" loading="lazy"></button><figcaption>Linux IR 아티팩트 수집</figcaption></figure>
+          <figure class="fig"><button class="zoom" aria-label="확대: Windows IR 실행"><img src="assets/img/recon-01.webp" alt="Windows IR 수집 스크립트 실행과 산출 디렉터리" loading="lazy"></button><figcaption>Windows 실행 — 외부 도구로 아티팩트를 수집했습니다.</figcaption></figure>
+          <figure class="fig"><button class="zoom" aria-label="확대: Windows IR 산출물"><img src="assets/img/recon-03.webp" alt="Windows IR 산출물이 항목별 폴더로 정리된 결과" loading="lazy"></button><figcaption>Windows 산출물 — 항목별 폴더로 정리된 결과를 확인했습니다.</figcaption></figure>
+        </div>
+        <div class="figrow two" style="margin-top:14px">
+          <figure class="fig"><button class="zoom" aria-label="확대: Linux IR 실행"><img src="assets/img/recon-04.webp" alt="Linux IR 수집 스크립트 실행 로그" loading="lazy"></button><figcaption>Linux 실행 — 수집 스크립트를 실행했습니다.</figcaption></figure>
+          <figure class="fig"><button class="zoom" aria-label="확대: Linux IR 산출물"><img src="assets/img/recon-05.webp" alt="Linux IR 산출물이 항목별 폴더로 정리된 결과" loading="lazy"></button><figcaption>Linux 산출물 — 항목별 폴더로 정리된 결과를 확인했습니다.</figcaption></figure>
         </div>
       </article>
       <div class="listfoot" style="margin-top:28px"><button type="button" class="btn" data-back>← 뒤로가기</button></div>
@@ -1276,6 +1302,11 @@
           <figure class="fig"><button class="zoom" aria-label="확대: PE 구조"><img src="assets/img/m518-00.webp" alt="DIE로 518.exe PE 구조·지표 확인" loading="lazy"></button><figcaption>정적 — PE 구조 확인(DIE)</figcaption></figure>
           <figure class="fig"><button class="zoom" aria-label="확대: Autoruns"><img src="assets/img/m518-21.webp" alt="Autoruns 자동실행 목록에 518.exe가 등록됨" loading="lazy"></button><figcaption>Autoruns — 자동실행에 518.exe</figcaption></figure>
           <figure class="fig"><button class="zoom" aria-label="확대: Regshot"><img src="assets/img/m518-34.webp" alt="Regshot 전후 비교에서 Run 키에 518.exe 값이 새로 추가됨" loading="lazy"></button><figcaption>Regshot — Run 키에 518.exe 값 추가</figcaption></figure>
+        </div>
+        <p style="margin-top:14px">Sysmon으로 실행 행위도 관찰했습니다. 518.exe의 프로세스 생성과, 그 프로세스가 cmd.exe를 자식으로 실행하는 것을 이벤트로 확인했습니다.</p>
+        <div class="figrow two" style="margin-top:4px">
+          <figure class="fig"><button class="zoom" aria-label="확대: Sysmon 프로세스 생성"><img src="assets/img/m518-07.webp" alt="Sysmon 이벤트에서 518.exe 프로세스 생성이 기록됨" loading="lazy"></button><figcaption>동적 — Sysmon이 518.exe의 프로세스 생성을 기록했습니다.</figcaption></figure>
+          <figure class="fig"><button class="zoom" aria-label="확대: 자식 프로세스"><img src="assets/img/m518-08.webp" alt="Sysmon 이벤트에서 518.exe가 cmd.exe를 자식 프로세스로 실행" loading="lazy"></button><figcaption>행위 — 518.exe가 cmd.exe를 자식 프로세스로 실행한 것을 확인했습니다.</figcaption></figure>
         </div>
       </article>
       <article class="wuitem" id="it-beast">
