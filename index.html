@@ -183,6 +183,24 @@
   .wuitem .st b{color:var(--muted);font-weight:600}
   .wuitem figure.fig{margin-top:14px;max-width:760px}
 
+  /* solo mode — show one practice as its own page (addressable detail) */
+  .solohead,.solofoot{display:none}
+  .view[data-solo] > section > .wrap > .crumb,
+  .view[data-solo] > section > .wrap > .dtitle,
+  .view[data-solo] > section > .wrap > .dsum,
+  .view[data-solo] > section > .wrap > .meta,
+  .view[data-solo] .listfoot,
+  .view[data-solo] .wupnote{display:none}
+  .view[data-solo] .wuitem{display:none}
+  .view[data-solo] .wuitem.solo{display:block;border-top:none;padding:2px 0 0}
+  .view[data-solo] .solohead,.view[data-solo] .solofoot{display:block}
+  .view[data-solo] .wuitem.solo .wuih{display:block}
+  .view[data-solo] .wuitem.solo .wuih .ft{display:inline-block;margin-bottom:13px;font-size:11px;padding:3px 10px}
+  .view[data-solo] .wuitem.solo .wuih h3{font-size:clamp(1.6rem,4.5vw,2.1rem);font-weight:700;letter-spacing:-0.025em;line-height:1.14;color:var(--white)}
+  .view[data-solo] .wuitem.solo .wuih .anchor{display:none}
+  .view[data-solo] .wuitem.solo > p{max-width:62rem;font-size:16px}
+  .solohead .crumb{margin-bottom:6px}
+
   .report .rsec{border-top:1px solid var(--line);padding:26px 0;scroll-margin-top:80px}
   .report .rsec h3{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--white);display:flex;gap:9px;align-items:baseline}
   .report .rsec h3 .n{color:var(--dim)}
@@ -1312,35 +1330,76 @@
     dbd:{v:"forensic",a:"it-dbd"},recon:{v:"forensic",a:"it-recon"},deface:{v:"forensic",a:"it-deface"},ftk:{v:"forensic",a:"it-ftk"},driveby:{v:"forensic",a:"it-driveby"},cuckoo:{v:"forensic",a:"it-cuckoo"},hyper:{v:"forensic",a:"it-hyper"},
     m518:{v:"malware",a:"it-m518"},beast:{v:"malware",a:"it-beast"},clickfix:{v:"malware",a:"it-clickfix"},wanna:{v:"malware",a:"it-wanna"},htear:{v:"malware",a:"it-htear"},remcos:{v:"malware",a:"it-remcos"},orcus:{v:"malware",a:"it-orcus"},badusb:{v:"malware",a:"it-badusb"},banker:{v:"malware",a:"it-banker"},installlmp:{v:"malware",a:"it-installlmp"},livemanager:{v:"malware",a:"it-livemanager"}
   };
+  // collection views that hold addressable practice items, and their field labels
+  var FIELDS=["web","system","network","forensic","malware"];
+  var FIELDLABEL={web:"웹 진단",system:"시스템·리버싱",network:"네트워크·관제",forensic:"침해사고·포렌식",malware:"악성코드"};
+  // optional "related practice" links shown in a solo page footer
+  var RELATED={
+    driveby:[["#dbd","DBD 침해 분석"]], dbd:[["#driveby","드라이브-바이 실습"]],
+    installlmp:[["#livemanager","LiveManagerPlayer"]], livemanager:[["#installlmp","Install_LiveManagerPlayer.exe"]],
+    openedr:[["#miniedr","miniEDR 프로젝트"]],
+    nmap:[["#ssploit","SearchSploit 취약점 검색"]], ssploit:[["#nmap","Nmap 포트 스캐닝"]]
+  };
+  var listScroll={}, curView=null, curSolo=false;
+  // tag each collection view's list-mode footer so solo mode can hide it
+  FIELDS.forEach(function(v){
+    var wrap=document.querySelector("#view-"+v+" .wrap"); if(!wrap) return;
+    for(var i=wrap.children.length-1;i>=0;i--){ var c=wrap.children[i];
+      if(c.tagName==="DIV" && c.querySelector('a.btn[href="#writeups"]')){ c.classList.add("listfoot"); break; } }
+  });
   var navlinks=document.querySelectorAll(".navmenu a[data-nav]");
 
   function routeName(){ var h=(location.hash||"").replace(/^#/,""); if(h==="contact") return "home"; if(VIEWS.indexOf(h)>=0) return h; if(ITEMS[h]) return ITEMS[h].v; return "home"; }
-  function show(name){
+  function show(name,skipFocus){
     VIEWS.forEach(function(v){ var el=document.getElementById("view-"+v); if(el) el.hidden=(v!==name); });
     var grp=GROUP[name]||"";
     navlinks.forEach(function(a){ if(a.getAttribute("data-nav")===grp){ a.setAttribute("aria-current","true"); } else { a.removeAttribute("aria-current"); } });
     window.scrollTo(0,0);
+    if(skipFocus) return;
     var view=document.getElementById("view-"+name);
     if(view){ var h=view.querySelector(".dtitle, h1.name"); if(h){ try{ h.focus({preventScroll:true}); }catch(e){ h.focus(); } } }
   }
-  function scrollToItem(a){
-    var target=document.getElementById(a); if(!target) return;
-    var userScrolled=false;
-    function onUser(){ userScrolled=true; }
-    window.addEventListener("wheel",onUser,{passive:true});
-    window.addEventListener("touchmove",onUser,{passive:true});
-    function go(){ if(userScrolled) return; try{ target.scrollIntoView({block:"start"}); }catch(e){} }
-    go();
-    var hd=target.querySelector("h3"); if(hd){ hd.setAttribute("tabindex","-1"); try{ hd.focus({preventScroll:true}); }catch(e){ hd.focus(); } }
-    var view=target.closest(".view");
-    if(view){ Array.prototype.forEach.call(view.querySelectorAll("img"),function(im){ if(!im.complete){ im.addEventListener("load",go,{once:true}); im.addEventListener("error",go,{once:true}); } }); }
-    setTimeout(function(){ go(); window.removeEventListener("wheel",onUser); window.removeEventListener("touchmove",onUser); },800);
+  // solo mode: render a single practice item as its own page
+  function clearSolo(){
+    VIEWS.forEach(function(v){ var el=document.getElementById("view-"+v); if(!el) return;
+      el.removeAttribute("data-solo");
+      Array.prototype.forEach.call(el.querySelectorAll(".wuitem.solo"),function(it){ it.classList.remove("solo"); });
+    });
+  }
+  function enterSolo(vname,hash,anchorId){
+    clearSolo();
+    var view=document.getElementById("view-"+vname); if(!view) return;
+    var item=document.getElementById(anchorId); if(!item) return;
+    var wrap=view.querySelector(".wrap"); if(!wrap) return;
+    item.classList.add("solo");
+    view.setAttribute("data-solo","true");
+    var head=wrap.querySelector(".solohead");
+    if(!head){ head=document.createElement("div"); head.className="solohead"; wrap.insertBefore(head,wrap.firstChild); }
+    var foot=wrap.querySelector(".solofoot");
+    if(!foot){ foot=document.createElement("div"); foot.className="solofoot"; wrap.appendChild(foot); }
+    var titleEl=item.querySelector(".wuih h3"), title=titleEl?titleEl.textContent:"";
+    var field=FIELDLABEL[vname]||"실습·분석";
+    head.innerHTML='<nav class="crumb" aria-label="위치"><a href="#home">홈</a><span class="sep">/</span>'+
+      '<a href="#writeups">실습·분석</a><span class="sep">/</span><a href="#'+vname+'">'+field+'</a>'+
+      '<span class="sep">/</span><span class="cur"></span></nav>';
+    head.querySelector(".cur").textContent=title; // set as text to avoid markup issues
+    var rel=(RELATED[hash]||[]).map(function(r){ return '<a class="btn sm" href="'+r[0]+'">관련 · '+r[1]+'</a>'; }).join("");
+    foot.innerHTML='<div style="margin-top:32px;border-top:1px solid var(--line);padding-top:22px;display:flex;gap:10px;flex-wrap:wrap">'+
+      '<a class="btn" href="#'+vname+'">← '+field+' 목록</a>'+
+      '<a class="btn" href="#writeups">실습·분석 전체</a>'+rel+
+      '<a class="btn" href="#home">홈</a></div>';
+    window.scrollTo(0,0);
+    if(titleEl){ titleEl.setAttribute("tabindex","-1"); try{ titleEl.focus({preventScroll:true}); }catch(e){ titleEl.focus(); } }
   }
   function route(){
     var h=(location.hash||"").replace(/^#/,"");
-    if(h==="contact"){ show("home"); var c=document.getElementById("contact"); if(c) c.scrollIntoView(); return; }
-    if(ITEMS[h]){ show(ITEMS[h].v); scrollToItem(ITEMS[h].a); return; }
-    show(routeName());
+    // remember the scroll position of the list view we are leaving, so returning restores it
+    if(!curSolo && curView && (curView==="writeups"||FIELDLABEL[curView])){ try{ listScroll[curView]=window.scrollY||window.pageYOffset||0; }catch(e){} }
+    if(h==="contact"){ clearSolo(); show("home"); curView="home"; curSolo=false; var c=document.getElementById("contact"); if(c) c.scrollIntoView(); return; }
+    if(ITEMS[h]){ var it=ITEMS[h]; show(it.v,true); enterSolo(it.v,h,it.a); curView=it.v; curSolo=true; return; }
+    var name=routeName();
+    clearSolo(); show(name); curView=name; curSolo=false;
+    if(listScroll[name]!=null){ var y=listScroll[name]; try{ window.scrollTo(0,y); }catch(e){} }
   }
   window.addEventListener("hashchange",route);
 
