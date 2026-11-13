@@ -13,7 +13,7 @@
     --bg:#070708; --surface:#0b0b0d; --surface-2:#0f0f12; --panel:#121215;
     --line:#242428; --line-2:#323238; --line-faint:#1b1b1f;
     --white:#ffffff; --fg:#e8e8ea; --muted:#b4b4ba; --dim:#8b8b93; --faint:#4a4a50;
-    --amber:#e0cb92; --good:#9fcf9f;
+    --amber:#e0cb92; --good:#9fcf9f; --mint:#5fd0b8;
     --header-bg:rgba(7,7,8,.9); --footer-bg:#050506;
     --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
     --sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
@@ -24,14 +24,14 @@
     --bg:#ffffff; --surface:#f7f7f8; --surface-2:#f1f1f3; --panel:#ebebed;
     --line:#e3e3e6; --line-2:#d2d2d6; --line-faint:#edeef0;
     --white:#0b0b0d; --fg:#1c1c1f; --muted:#52525a; --dim:#6c6c74; --faint:#a6a6ad;
-    --amber:#8a6d14; --good:#2a6e31;
+    --amber:#8a6d14; --good:#2a6e31; --mint:#1f8f77;
     --header-bg:rgba(255,255,255,.88); --footer-bg:#f3f3f4; color-scheme:light;
   }}
   :root[data-theme="light"]{
     --bg:#ffffff; --surface:#f7f7f8; --surface-2:#f1f1f3; --panel:#ebebed;
     --line:#e3e3e6; --line-2:#d2d2d6; --line-faint:#edeef0;
     --white:#0b0b0d; --fg:#1c1c1f; --muted:#52525a; --dim:#6c6c74; --faint:#a6a6ad;
-    --amber:#8a6d14; --good:#2a6e31;
+    --amber:#8a6d14; --good:#2a6e31; --mint:#1f8f77;
     --header-bg:rgba(255,255,255,.88); --footer-bg:#f3f3f4; color-scheme:light;
   }
   *{box-sizing:border-box}
@@ -155,6 +155,45 @@
   .rowlist .rgo{font-family:var(--mono);font-size:12px;color:var(--dim)}
   .rowlist a.row:hover .rgo{color:var(--white)}
   @media(max-width:560px){.rowlist a.row{grid-template-columns:1fr;gap:8px}.rowlist .rgo{display:none}}
+
+  /* ===== mind map home ===== */
+  .mm{padding-block:30px 56px}
+  .mm .mmhead{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim)}
+  .mm .mmsub{color:var(--muted);font-weight:300;margin:8px 0 22px;max-width:48rem;word-break:keep-all}
+  .mm-graph{position:relative;width:100%;aspect-ratio:1000/470;min-height:360px}
+  .mm-graph svg.mm-lines{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+  .mm-edge{stroke:var(--line-2);stroke-width:1.6;fill:none;transition:stroke .2s,stroke-width .2s}
+  .mm-edge.sel{stroke:var(--mint);stroke-width:2.6}
+  .mm-node{position:absolute;transform:translate(-50%,-50%);display:inline-flex;align-items:center;justify-content:center;text-align:center;border:1.5px solid var(--line-2);background:var(--surface);color:var(--fg);border-radius:9px;padding:10px 14px;font-size:13px;line-height:1.3;font-weight:600;word-break:keep-all;max-width:210px;transition:border-color .2s,color .2s,background .2s,opacity .2s}
+  .mm-node.root{background:var(--panel);font-family:var(--mono);font-size:12px;letter-spacing:.02em;color:var(--white)}
+  .mm-node.topic{background:var(--surface-2);font-size:13.5px}
+  button.mm-node{cursor:pointer}
+  button.mm-node:hover,button.mm-node:focus-visible{border-color:var(--white);color:var(--white)}
+  .mm-node.sel{border-color:var(--mint);color:var(--white)}
+  button.mm-node.sel{background:rgba(95,208,184,.12)}
+  .mm.dim-active .mm-node:not(.sel){opacity:.42}
+  .mm.dim-active .mm-edge:not(.sel){opacity:.3}
+  .mm-preview{border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:20px 22px;margin-top:26px;max-width:58rem}
+  .mm-preview .pk{font-family:var(--mono);font-size:11px;letter-spacing:.07em;color:var(--mint);text-transform:uppercase}
+  .mm-preview h3{font-size:1.3rem;color:var(--white);font-weight:600;margin:9px 0 10px;letter-spacing:-.01em}
+  .mm-preview p{color:var(--muted);line-height:1.72;word-break:keep-all;margin:0 0 16px;max-width:54rem}
+  .mm-preview .btn.p{background:var(--mint);color:#06130f;border-color:var(--mint)}
+  .mm-preview .btn.p:hover{opacity:.9}
+  .mm-tree{display:none}
+  @media(max-width:820px){
+    .mm-graph{display:none}
+    .mm-tree{display:block;border-top:1px solid var(--line);margin-top:4px}
+    .mt-root{font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;color:var(--dim);text-transform:uppercase;padding:14px 2px 6px}
+    .mt-topic{border-top:1px solid var(--line-faint)}
+    .mt-tbtn{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;background:none;border:0;color:var(--fg);font-family:var(--sans);font-size:16px;font-weight:600;padding:15px 4px;cursor:pointer;text-align:left}
+    .mt-tbtn .chev{font-family:var(--mono);font-size:13px;color:var(--dim);transition:transform .2s,color .2s}
+    .mt-topic[data-open="true"] .mt-tbtn .chev{transform:rotate(90deg);color:var(--mint)}
+    .mt-cases{display:none;padding:2px 0 12px 16px;margin-left:7px;border-left:2px solid var(--line-faint)}
+    .mt-topic[data-open="true"] .mt-cases{display:block}
+    button.mt-case{display:block;width:100%;text-align:left;background:none;border:0;color:var(--muted);font-family:var(--sans);font-size:14.5px;padding:10px 6px;border-radius:5px;cursor:pointer;word-break:keep-all;line-height:1.4;border-left:2px solid transparent;margin-left:-2px}
+    button.mt-case:hover{color:var(--white)}
+    button.mt-case[aria-current="true"]{color:var(--white);border-left-color:var(--mint)}
+  }
 
   /* crumb / toc (detail views) */
   .crumb{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:12px;color:var(--dim);margin-bottom:22px;flex-wrap:wrap}
@@ -345,56 +384,58 @@
   </section>
 
   <section class="band">
-    <div class="wrap">
-      <div class="ix"><div class="l"><b>경력</b><span class="sl">/</span><span>BACKGROUND</span></div></div>
-      <div class="job">
-        <div class="jobrow"><span>스윙크 · 클라이언트 개발</span><b>2024.03 — 2026.03</b></div>
-        <p class="intro" style="margin-top:14px;max-width:56rem">Unity와 Cocos Creator로 교육용 플랫폼과 HTML5 콘텐츠를 개발했습니다. 공통 기능을 플러그인으로 분리하고 콘텐츠 로딩 방식을 개선했습니다.</p>
-        <div style="margin-top:16px"><a class="btn sm" href="#about">경력 상세 보기 →</a></div>
+    <div class="wrap mm">
+      <div class="mmhead">보안 작업 기록 · MIND MAP</div>
+      <p class="mmsub">주제를 따라 대표 작업을 연결했습니다. 사례를 선택하면 아래에 요약과 사례 읽기가 열립니다. 전체 실습은 상단 <a href="#writeups" style="color:var(--fg)">실습·분석</a>에서 볼 수 있습니다.</p>
+      <div class="mm-graph" id="mmGraph" aria-hidden="true">
+        <svg class="mm-lines" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+          <path class="mm-edge" data-edge="root-web"></path>
+          <path class="mm-edge" data-edge="root-sys"></path>
+          <path class="mm-edge" data-edge="root-det"></path>
+          <path class="mm-edge" data-edge="web-dvwa"></path>
+          <path class="mm-edge" data-edge="web-wordpress"></path>
+          <path class="mm-edge" data-edge="sys-calc"></path>
+          <path class="mm-edge" data-edge="det-m518"></path>
+          <path class="mm-edge" data-edge="det-miniedr"></path>
+        </svg>
+        <div class="mm-node root" data-node="root" style="left:7%;top:50%">보안 작업 기록</div>
+        <div class="mm-node topic" data-node="web" style="left:39%;top:19%">웹 취약점 진단</div>
+        <div class="mm-node topic" data-node="sys" style="left:39%;top:50%">시스템·리버싱</div>
+        <div class="mm-node topic" data-node="det" style="left:39%;top:81%">탐지·증거 분석</div>
+        <button type="button" class="mm-node case" data-node="dvwa" style="left:79%;top:10%">DVWA SQL Injection 조치</button>
+        <button type="button" class="mm-node case" data-node="wordpress" style="left:79%;top:29%">WordPress 플러그인 진단 실습</button>
+        <button type="button" class="mm-node case" data-node="calc" style="left:79%;top:50%">Calc.exe 어셈블리 해석</button>
+        <button type="button" class="mm-node case" data-node="m518" style="left:79%;top:71%">518.exe 정적·동적 분석</button>
+        <button type="button" class="mm-node case" data-node="miniedr" style="left:79%;top:90%">miniEDR 파일 감시와 격리</button>
       </div>
-    </div>
-  </section>
-
-  <section class="band">
-    <div class="wrap">
-      <div class="ix"><div class="l"><b>진단 사례</b><span class="sl">/</span><span>CASES</span></div><a href="#cases" style="color:var(--muted)">모든 사례 →</a></div>
-      <div class="cards two">
-        <a class="ic" href="#dvwa">
-          <div class="icimg"><img src="assets/img/dvwa-26.webp" alt="DVWA ZAP 재스캔 화면" loading="lazy"></div>
-          <div class="icb"><span class="ictag">WEB · CWE-89</span><h3>DVWA SQL Injection — 취약 코드 분석과 조치</h3><p>입력값을 쿼리에 직접 붙이던 코드를 매개변수 바인딩으로 수정했습니다. ZAP 재스캔에서 해당 SQL Injection 경고가 사라졌습니다.</p><span class="icgo">사례 읽기 →</span></div>
-        </a>
-        <a class="ic" href="#wordpress">
-          <div class="icimg"><img src="assets/img/wp-33.webp" alt="WordPress 탐지 화면" loading="lazy"></div>
-          <div class="icb"><span class="ictag">WEB · 연계 실습</span><h3>WordPress 플러그인 취약점 연계 실습</h3><p>실습용 WordPress에서 두 플러그인의 공개 취약점을 재현했습니다. 권한 변화와 데이터 접근을 확인하고 Snort 탐지 결과를 대조했습니다.</p><span class="icgo">사례 읽기 →</span></div>
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <section class="band">
-    <div class="wrap">
-      <div class="ix"><div class="l"><b>프로젝트</b><span class="sl">/</span><span>PROJECTS</span></div><a href="#projects" style="color:var(--muted)">모든 프로젝트 →</a></div>
-      <div class="cards two">
-        <div class="ic">
-          <a class="icimg" href="#miniedr"><img src="assets/img/edr-arch.webp" alt="miniEDR 구조도" loading="lazy"></a>
-          <div class="icb"><span class="ictag">SYSTEM · C++17</span><h3><a href="#miniedr" style="color:inherit">miniEDR</a></h3><p>Windows에서 파일을 감시하고, YARA 규칙이나 SHA-256 해시가 일치하면 격리하도록 만들었습니다.</p><div class="iclinks"><a href="#miniedr">프로젝트 보기 →</a><a href="https://github.com/TL-cg11/miniedr" target="_blank" rel="noopener noreferrer">GitHub ↗</a></div></div>
+      <div class="mm-tree" aria-label="보안 작업 기록 마인드맵">
+        <div class="mt-root">보안 작업 기록</div>
+        <div class="mt-topic" data-open="true" data-topic="web">
+          <button type="button" class="mt-tbtn" aria-expanded="true">웹 취약점 진단 <span class="chev">▸</span></button>
+          <div class="mt-cases">
+            <button type="button" class="mt-case" data-node="dvwa">DVWA SQL Injection 조치</button>
+            <button type="button" class="mt-case" data-node="wordpress">WordPress 플러그인 진단 실습</button>
+          </div>
         </div>
-        <div class="ic">
-          <a class="icimg" href="#myora"><img src="assets/img/myora-dash.webp" alt="묘라 보안 대시보드" loading="lazy"></a>
-          <div class="icb"><span class="ictag">WEB · 팀장</span><h3><a href="#myora" style="color:inherit">묘라 — 운세 서비스와 보안 모니터링</a></h3><p>팀장으로 서비스 개발과 인프라, 보안 모니터링을 맡았습니다. 개인정보 탐지에서 발생한 오탐·미탐을 분석하고 개선안을 정리했습니다.</p><div class="iclinks"><a href="#myora">프로젝트 보기 →</a><a href="https://github.com/TL-cg11/Myora" target="_blank" rel="noopener noreferrer">GitHub ↗</a></div></div>
+        <div class="mt-topic" data-topic="sys">
+          <button type="button" class="mt-tbtn" aria-expanded="false">시스템·리버싱 <span class="chev">▸</span></button>
+          <div class="mt-cases">
+            <button type="button" class="mt-case" data-node="calc">Calc.exe 어셈블리 해석</button>
+          </div>
+        </div>
+        <div class="mt-topic" data-topic="det">
+          <button type="button" class="mt-tbtn" aria-expanded="false">탐지·증거 분석 <span class="chev">▸</span></button>
+          <div class="mt-cases">
+            <button type="button" class="mt-case" data-node="m518">518.exe 정적·동적 분석</button>
+            <button type="button" class="mt-case" data-node="miniedr">miniEDR 파일 감시와 격리</button>
+          </div>
         </div>
       </div>
-    </div>
-  </section>
-
-  <section class="band">
-    <div class="wrap">
-      <div class="ix"><div class="l"><b>실습·분석</b><span class="sl">/</span><span>PRACTICE LOGS</span></div><a href="#writeups" style="color:var(--muted)">전체 보기 →</a></div>
-      <div class="rowlist">
-        <a class="row" href="#ssrf"><span class="rdom">WEB</span><span class="rt"><b>SSRF 문자열 필터 우회</b><span>입력 주소를 검사하는 방식과 서버가 주소를 해석하는 방식의 차이를 확인했습니다.</span></span><span class="rgo">읽기 →</span></a>
-        <a class="row" href="#bof"><span class="rdom">SYSTEM · BOF</span><span class="rt"><b>디버거로 따라간 메모장 실행</b><span>디버거로 스택과 호출 흐름을 따라가며 메모장 실행을 확인했습니다.</span></span><span class="rgo">읽기 →</span></a>
-        <a class="row" href="#malware"><span class="rdom">MALWARE</span><span class="rt"><b>악성코드 정적·동적 분석</b><span>자동 실행 등록과 메모리·디스크에 남은 흔적을 분석했습니다.</span></span><span class="rgo">읽기 →</span></a>
-        <a class="row" href="#writeups"><span class="rdom">ALL</span><span class="rt"><b>전체 실습·분석 보기</b></span><span class="rgo">목록 →</span></a>
+      <div class="mm-preview" id="mmPreview" aria-live="polite">
+        <div class="pk" id="mmpTag">웹 취약점 진단</div>
+        <h3 id="mmpTitle">DVWA SQL Injection — 취약 코드 분석과 조치</h3>
+        <p id="mmpSum">입력값을 쿼리에 직접 붙이던 코드를 매개변수 바인딩으로 수정했습니다. ZAP 재스캔에서 해당 SQL Injection 경고가 사라졌습니다.</p>
+        <a class="btn p" id="mmpLink" href="#dvwa">사례 읽기 →</a>
       </div>
     </div>
   </section>
@@ -1600,6 +1641,7 @@
       if(view){ var h=view.querySelector(".dtitle, h1.name"); if(h){ try{ h.focus({preventScroll:true}); }catch(e){ h.focus(); } } }
     }
     jump(0);
+    if(name==="home" && window.__mmLayout){ requestAnimationFrame(window.__mmLayout); }
   }
   // solo mode: render a single practice item as its own page
   function clearSolo(){
@@ -1667,6 +1709,49 @@
     if(!lb.hidden){ if(e.key==="Escape") closeLB(); else if(e.key==="Tab"){ e.preventDefault(); lbx.focus(); } return; }
     if(e.key==="Escape" && nav.getAttribute("data-open")==="true"){ setNav(false); tg.focus(); }
   });
+
+  // ===== mind map home =====
+  (function(){
+    var PREV={
+      dvwa:{topic:"web",tag:"웹 취약점 진단",title:"DVWA SQL Injection — 취약 코드 분석과 조치",sum:"입력값을 쿼리에 직접 붙이던 코드를 매개변수 바인딩으로 수정했습니다. ZAP 재스캔에서 해당 SQL Injection 경고가 사라졌습니다.",hash:"#dvwa"},
+      wordpress:{topic:"web",tag:"웹 취약점 진단",title:"WordPress 플러그인 취약점 연계 실습",sum:"실습용 WordPress에서 두 플러그인의 공개 취약점을 재현했습니다. 권한 변화와 데이터 접근을 확인하고 Snort 탐지 결과를 대조했습니다.",hash:"#wordpress"},
+      calc:{topic:"sys",tag:"시스템·리버싱",title:"Calc.exe 어셈블리 해석",sum:"어셈블리에서 계산 로직을 복원하고, 연산을 바꾸자 계산 결과가 달라지는 것을 확인했습니다.",hash:"#calc"},
+      m518:{topic:"det",tag:"탐지·증거 분석",title:"518.exe 정적·동적 분석",sum:"DIE로 PE 구조를 확인하고, Autoruns·Regshot·Sysmon을 교차해 레지스트리 자동 실행 등록과 실행 행위를 확인했습니다.",hash:"#m518"},
+      miniedr:{topic:"det",tag:"탐지·증거 분석",title:"miniEDR — Windows 파일 감시와 격리",sum:"Windows에서 파일을 감시하고, YARA 규칙이나 SHA-256 해시가 일치하면 자동으로 격리하고 기록하도록 만들었습니다.",hash:"#miniedr"}
+    };
+    var EDGES=[["root","web"],["root","sys"],["root","det"],["web","dvwa"],["web","wordpress"],["sys","calc"],["det","m518"],["det","miniedr"]];
+    var graph=document.getElementById("mmGraph"), mm=graph?graph.closest(".mm"):null;
+    function box(el,gr){ var r=el.getBoundingClientRect(); return {l:r.left-gr.left,t:r.top-gr.top,r:r.right-gr.left,cx:r.left+r.width/2-gr.left,cy:r.top+r.height/2-gr.top}; }
+    function layout(){
+      if(!graph) return; var gr=graph.getBoundingClientRect(); if(gr.width<2) return;
+      EDGES.forEach(function(e){
+        var a=graph.querySelector('[data-node="'+e[0]+'"]'), b=graph.querySelector('[data-node="'+e[1]+'"]'), p=graph.querySelector('[data-edge="'+e[0]+'-'+e[1]+'"]');
+        if(!a||!b||!p) return;
+        var A=box(a,gr), B=box(b,gr), x1=A.r,y1=A.cy,x2=B.l,y2=B.cy,mx=(x1+x2)/2;
+        p.setAttribute("d","M"+x1.toFixed(1)+","+y1.toFixed(1)+" C"+mx.toFixed(1)+","+y1.toFixed(1)+" "+mx.toFixed(1)+","+y2.toFixed(1)+" "+x2.toFixed(1)+","+y2.toFixed(1));
+      });
+    }
+    function setSel(id){
+      if(!PREV[id]) return; var tp=PREV[id].topic, pv=PREV[id];
+      if(graph){
+        Array.prototype.forEach.call(graph.querySelectorAll(".mm-node"),function(n){ var nd=n.getAttribute("data-node"); n.classList.toggle("sel", nd===id||nd===tp||nd==="root"); });
+        Array.prototype.forEach.call(graph.querySelectorAll(".mm-edge"),function(p){ var d=p.getAttribute("data-edge"); p.classList.toggle("sel", d==="root-"+tp||d===tp+"-"+id); });
+      }
+      if(mm) mm.classList.add("dim-active");
+      var t=document.getElementById("mmpTag"),ti=document.getElementById("mmpTitle"),su=document.getElementById("mmpSum"),lk=document.getElementById("mmpLink");
+      if(t)t.textContent=pv.tag; if(ti)ti.textContent=pv.title; if(su)su.textContent=pv.sum; if(lk)lk.setAttribute("href",pv.hash);
+      Array.prototype.forEach.call(document.querySelectorAll(".mt-topic"),function(mt){ var open=mt.getAttribute("data-topic")===tp; mt.setAttribute("data-open",open?"true":"false"); var b=mt.querySelector(".mt-tbtn"); if(b)b.setAttribute("aria-expanded",open?"true":"false"); });
+      Array.prototype.forEach.call(document.querySelectorAll(".mt-case"),function(c){ c.setAttribute("aria-current", c.getAttribute("data-node")===id?"true":"false"); });
+    }
+    document.addEventListener("click",function(e){
+      var cn=e.target.closest(".mm-node.case,.mt-case"); if(cn){ setSel(cn.getAttribute("data-node")); return; }
+      var tb=e.target.closest(".mt-tbtn"); if(tb){ var mt=tb.closest(".mt-topic"), open=mt.getAttribute("data-open")!=="true"; mt.setAttribute("data-open",open?"true":"false"); tb.setAttribute("aria-expanded",open?"true":"false"); }
+    });
+    var rt; window.addEventListener("resize",function(){ clearTimeout(rt); rt=setTimeout(layout,120); });
+    window.__mmLayout=layout;
+    setSel("dvwa");
+    requestAnimationFrame(layout);
+  })();
 
   route();
 })();
